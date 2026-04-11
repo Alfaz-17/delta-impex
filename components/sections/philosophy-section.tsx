@@ -64,7 +64,7 @@ export function PhilosophySection() {
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
                   <div className="absolute bottom-10 left-10">
-                    <span className="backdrop-blur-xl px-6 py-3 text-sm font-medium rounded-full bg-white/20 text-white font-tech border border-white/30 shadow-lg">
+                    <span className="backdrop-blur-xl px-6 py-3 text-sm font-medium rounded-full bg-primary/80 text-white font-tech border border-white/20 shadow-lg">
                       Marine & Industrial Parts
                     </span>
                   </div>
@@ -89,7 +89,7 @@ export function PhilosophySection() {
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
                   <div className="absolute bottom-10 left-10">
-                    <span className="backdrop-blur-xl px-6 py-3 text-sm font-medium rounded-full bg-white/20 text-white font-tech border border-white/30 shadow-lg">
+                    <span className="backdrop-blur-xl px-6 py-3 text-sm font-medium rounded-full bg-primary/80 text-white font-tech border border-white/20 shadow-lg">
                       RO Water Treatment
                     </span>
                   </div>

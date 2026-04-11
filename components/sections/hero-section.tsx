@@ -82,7 +82,7 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
               <Link 
                 href="/contact"
-                className="bg-white text-black px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+                className="bg-primary text-primary-foreground px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(7,65,115,0.3)]"
               >
                 Request a Quote
               </Link>
