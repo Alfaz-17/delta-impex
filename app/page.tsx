@@ -1,5 +1,5 @@
 import { Header } from "@/components/header";
-import { ImageSequenceScroll } from "@/components/sections/image-sequence-scroll";
+import { HeroSection } from "@/components/sections/hero-section";
 import { PhilosophySection } from "@/components/sections/philosophy-section";
 import { BrandsMarquee } from "@/components/sections/brands-marquee";
 import { TechnologySection } from "@/components/sections/technology-section";
@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
-      <ImageSequenceScroll />
+      <HeroSection />
       <PhilosophySection />
       <AboutPreviewSection />
       <BrandsMarquee />

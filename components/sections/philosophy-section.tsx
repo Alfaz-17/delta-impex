@@ -2,138 +2,100 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useCallback } from "react";
+import { useRef } from "react";
+import { useScroll, useTransform, motion, useSpring } from "framer-motion";
 
 export function PhilosophySection() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-  const leftCardRef = useRef<HTMLAnchorElement>(null);
-  const rightCardRef = useRef<HTMLAnchorElement>(null);
-  const rafRef = useRef<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const updateTransforms = useCallback(() => {
-    if (!sectionRef.current) return;
-    
-    const rect = sectionRef.current.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-    const sectionHeight = sectionRef.current.offsetHeight;
-    
-    // Calculate progress based on scroll position
-    const scrollableRange = sectionHeight - windowHeight;
-    const scrolled = -rect.top;
-    const progress = Math.max(0, Math.min(1, scrolled / scrollableRange));
-    
-    // Alpine comes from left (-100% to 0%)
-    const alpineTranslateX = (1 - progress) * -100;
-    
-    // Forest comes from right (100% to 0%)
-    const forestTranslateX = (1 - progress) * 100;
-    
-    // Title fades out as blocks come together
-    const titleOpacity = (1 - progress).toString();
-    
-    // Direct DOM updates
-    if (titleRef.current) {
-      titleRef.current.style.opacity = titleOpacity;
-    }
-    if (leftCardRef.current) {
-      leftCardRef.current.style.transform = `translate3d(${alpineTranslateX}%, 0, 0)`;
-    }
-    if (rightCardRef.current) {
-      rightCardRef.current.style.transform = `translate3d(${forestTranslateX}%, 0, 0)`;
-    }
-  }, []);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Cancel any pending animation frame
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-      
-      // Use requestAnimationFrame for smooth updates
-      rafRef.current = requestAnimationFrame(updateTransforms);
-    };
+  // Apply a gentle spring so the effect is ultra smooth and not jerky
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 70,
+    damping: 20,
+    restDelta: 0.001,
+  });
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    updateTransforms();
-    
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, [updateTransforms]);
+  // Translate left box from -150% to 0%
+  const leftX = useTransform(smoothProgress, [0, 1], ["-150%", "0%"]);
+  // Translate right box from 150% to 0%
+  const rightX = useTransform(smoothProgress, [0, 1], ["150%", "0%"]);
+  // Title fades out as cards collapse
+  const titleOpacity = useTransform(smoothProgress, [0, 0.8], [1, 0]);
 
   return (
     <section id="parts" className="bg-background">
       {/* Scroll-Animated Product Grid */}
-      <div ref={sectionRef} className="relative" style={{ height: "200vh" }}>
+      <div ref={containerRef} className="relative h-[250vh]">
         <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
           <div className="relative w-full">
             {/* Title - positioned behind the blocks */}
-            <div 
-              ref={titleRef}
-              className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 will-change-[opacity]"
-              style={{ opacity: 1 }}
+            <motion.div 
+              className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
+              style={{ opacity: titleOpacity }}
             >
               <h2 className="text-[12vw] font-medium leading-[0.95] tracking-tighter text-foreground md:text-[10vw] lg:text-[8vw] text-center px-6 font-display">
                 Our Core Divisions.
               </h2>
-            </div>
+            </motion.div>
 
-            {/* Product Grid */}
-            <div className="relative z-10 grid grid-cols-1 gap-4 px-6 md:grid-cols-2 md:px-12 lg:px-20">
-              {/* Alpine Image - comes from left */}
-              <Link 
-                ref={leftCardRef}
-                href="/divisions/marine-parts"
-                className="relative aspect-[4/3] overflow-hidden rounded-2xl group cursor-pointer will-change-transform"
-                style={{
-                  transform: `translate3d(-100%, 0, 0)`,
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
-                }}
-              >
-                <Image
-                  src="/images/marine-parts-clean.png"
-                  alt="Marine and Industrial spare parts"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
-                <div className="absolute bottom-6 left-6">
-                  <span className="backdrop-blur-md px-4 py-2 text-sm font-medium rounded-full bg-[rgba(255,255,255,0.2)] text-white font-tech">
-                    Marine & Industrial Parts
-                  </span>
-                </div>
-              </Link>
+            {/* Product Grid with 32px gap */}
+            <div className="relative z-10 grid grid-cols-1 gap-8 px-6 md:grid-cols-2 md:px-12 lg:px-20 max-w-[100rem] mx-auto">
+              
+              {/* Left Image */}
+              <motion.div style={{ x: leftX }}>
+                <Link 
+                  href="/divisions/marine-parts"
+                  className="relative block aspect-[4/3] overflow-hidden rounded-[3rem] group cursor-pointer shadow-2xl"
+                  style={{
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
+                >
+                  <Image
+                    src="/images/marine-parts-clean.png"
+                    alt="Marine and Industrial spare parts"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
+                  <div className="absolute bottom-10 left-10">
+                    <span className="backdrop-blur-xl px-6 py-3 text-sm font-medium rounded-full bg-white/20 text-white font-tech border border-white/30 shadow-lg">
+                      Marine & Industrial Parts
+                    </span>
+                  </div>
+                </Link>
+              </motion.div>
 
-              {/* Forest Image - comes from right */}
-              <Link 
-                ref={rightCardRef}
-                href="/divisions/ro-systems"
-                className="relative aspect-[4/3] overflow-hidden rounded-2xl group cursor-pointer will-change-transform"
-                style={{
-                  transform: `translate3d(100%, 0, 0)`,
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
-                }}
-              >
-                <Image
-                  src="/ro/ro-plant-clean.png"
-                  alt="RO Water Treatment Plants and systems"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
-                <div className="absolute bottom-6 left-6">
-                  <span className="backdrop-blur-md px-4 py-2 text-sm font-medium rounded-full bg-[rgba(255,255,255,0.2)] text-white font-tech">
-                    RO Water Treatment
-                  </span>
-                </div>
-              </Link>
+              {/* Right Image */}
+              <motion.div style={{ x: rightX }}>
+                <Link 
+                  href="/divisions/ro-systems"
+                  className="relative block aspect-[4/3] overflow-hidden rounded-[3rem] group cursor-pointer shadow-2xl"
+                  style={{
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
+                >
+                  <Image
+                    src="/ro/ro-plant-clean.png"
+                    alt="RO Water Treatment Plants and systems"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
+                  <div className="absolute bottom-10 left-10">
+                    <span className="backdrop-blur-xl px-6 py-3 text-sm font-medium rounded-full bg-white/20 text-white font-tech border border-white/30 shadow-lg">
+                      RO Water Treatment
+                    </span>
+                  </div>
+                </Link>
+              </motion.div>
+
             </div>
           </div>
         </div>
