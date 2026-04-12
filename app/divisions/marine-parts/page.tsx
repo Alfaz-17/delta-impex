@@ -2,16 +2,10 @@
 
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
-import { FeaturedProductsSection } from "@/components/sections/featured-products-section";
+import { ProductCatalog } from "@/components/product-catalog";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-
-const categories = [
-  { title: "Main Propulsion", items: ["Cylinder Liners", "Pistons", "Crankshafts", "Bearings"] },
-  { title: "Auxiliary Engines", items: ["Fuel Pumps", "Injectors", "Turbochargers", "Valves"] },
-  { title: "Industrial Power", items: ["Generators", "Control Panels", "Switchgears", "Transformers"] },
-  { title: "Deck Machinery", items: ["Winches", "Windlasses", "Capstans", "Hydraulic Pumps"] },
-];
+import type { Metadata } from 'next'
 
 export default function MarinePartsPage() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -63,21 +57,65 @@ export default function MarinePartsPage() {
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background">
+      {/* E-Commerce Catalog Section */}
+      <ProductCatalog divisionSlug="marine-industrial" divisionName="Marine & Industrial" />
+
+      {/* Main Content Info */}
+      <section className="px-6 py-24 md:px-12 md:py-32 bg-background border-b border-border/50 border-t">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 mb-24">
-            <div>
-              <h2 className="font-display text-4xl md:text-5xl font-medium tracking-tighter mb-8 italic">
-                Sourcing Excellence.
-              </h2>
-              <p className="font-sans text-lg text-muted-foreground leading-relaxed">
-                Delta Impex is a leading supplier of high-quality marine engine spare parts and industrial machinery. 
-                With a deep network of trusted manufacturers and reconditioners, we provide solutions that ensure 
-                operational continuity for vessels and power plants worldwide.
-              </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+            <div className="space-y-12">
+              <div>
+                <h2 className="font-display text-4xl font-medium tracking-tighter mb-4 italic">
+                  Marine & Ship Spare Parts
+                </h2>
+                <p className="font-sans text-lg text-muted-foreground leading-relaxed mb-6">
+                  We supply all types of ship spare parts for main and auxiliary machinery, including:
+                </p>
+                <ul className="list-disc pl-5 space-y-2 font-sans text-muted-foreground mb-6">
+                  <li>Main engine & auxiliary engine spares</li>
+                  <li>Turbochargers, pumps & compressors</li>
+                  <li>Purifiers & separators</li>
+                  <li>Heat exchangers & coolers</li>
+                  <li>Electrical & navigation equipment</li>
+                  <li>Deck & engine room machinery</li>
+                  <li>All types of marine consumables</li>
+                </ul>
+                <p className="font-sans font-bold text-foreground mb-2">Available in:</p>
+                <ul className="list-disc pl-5 space-y-2 font-sans text-muted-foreground">
+                  <li>New</li>
+                  <li>Used</li>
+                  <li>Reconditioned</li>
+                </ul>
+              </div>
+
+              <div>
+                <h2 className="font-display text-4xl font-medium tracking-tighter mb-4 italic">
+                  Industrial Solutions
+                </h2>
+                <p className="font-sans text-lg text-muted-foreground leading-relaxed mb-6">
+                  We provide similar solutions for land-based industries, including:
+                </p>
+                <ul className="list-disc pl-5 space-y-2 font-sans text-muted-foreground">
+                  <li>Industrial engines</li>
+                  <li>Generator sets (gensets)</li>
+                  <li>Machinery spare parts</li>
+                  <li>Industrial equipment & components</li>
+                </ul>
+              </div>
+
+              <div>
+                <h2 className="font-display text-4xl font-medium tracking-tighter mb-4 italic">
+                  Power Plant Supply
+                </h2>
+                <ul className="list-disc pl-5 space-y-2 font-sans text-muted-foreground">
+                  <li>Power plant equipment</li>
+                  <li>Engines & generators</li>
+                  <li>Spare parts & support</li>
+                </ul>
+              </div>
             </div>
-            <div className="relative aspect-square rounded-3xl overflow-hidden">
+            <div className="relative aspect-[16/9] lg:aspect-square rounded-3xl overflow-hidden">
               <Image
                 src="/images/mood/hero-marine-detail.png"
                 alt="Precision marine parts inspection"
@@ -86,33 +124,9 @@ export default function MarinePartsPage() {
               />
             </div>
           </div>
-
-          {/* Categories Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {categories.map((cat, i) => (
-              <div key={i} className="p-8 border border-border rounded-3xl hover:bg-muted transition-colors duration-500">
-                <h3 className="font-tech text-xs uppercase tracking-widest text-primary mb-6">{cat.title}</h3>
-                <ul className="space-y-3">
-                  {cat.items.map((item, j) => (
-                    <li key={j} className="font-sans text-sm text-muted-foreground flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-foreground/20" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* Featured Products Grid */}
-      <FeaturedProductsSection 
-        initialCategory="marine" 
-        hideTabs={true} 
-        title="Inventory." 
-        subtitle="Marine Engineering Solutions."
-      />
 
       {/* Call to Action Bar */}
       <section className="bg-foreground text-background py-20">

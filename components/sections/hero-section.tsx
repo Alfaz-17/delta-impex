@@ -70,14 +70,14 @@ export function HeroSection() {
               pointerEvents: textPointerEvents as any
             }}
           >
-            <p className="tracking-[0.3em] text-white/80 uppercase text-[10px] sm:text-xs font-semibold mb-3 border-l-2 border-white/50 pl-4">
-              Powering Marine & Industrial Progress
+            <p className="label-tech pl-4 border-l-2 border-white/50 text-white/80 mb-3">
+              Your Trusted Partner for Marine & Industrial Solutions
             </p>
-            <h1 className="max-w-5xl text-[12vw] sm:text-[7vw] md:text-[10vw] lg:text-[6vw] font-black leading-[0.9] tracking-tighter text-white font-display uppercase mb-4 drop-shadow-lg">
+            <h1 className="max-w-5xl text-[12vw] sm:text-[7vw] md:text-[10vw] lg:text-[6vw] heading-display text-white uppercase mb-4 drop-shadow-lg">
               DELTA IMPEX
             </h1>
             <p className="max-w-xl text-white/80 text-xs sm:text-sm md:text-base font-light leading-relaxed mb-8 drop-shadow">
-              Your trusted partner for marine and industrial supply solutions. From vessels at sea to industrial plants on land, we deliver high-quality machinery parts and reverse osmosis systems.
+              Delta Impex is a reliable supplier of all types of ship spare parts and industrial equipment, serving clients across marine and land-based industries. We specialize in providing new, used, and reconditioned spare parts, ensuring cost-effective and high-quality solutions. From vessels at sea to industrial plants on land, we deliver dependable products tailored to your requirements.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
               <Link 
@@ -108,23 +108,32 @@ export function HeroSection() {
             opacity: columnOpacity
           }}
         >
-          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl">
+          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
             <Image
               src="/images/mood/hero-marine-sunset.png"
               alt="Marine engineering solutions at sea"
               fill
               priority
-              className="object-cover"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
+            {/* Global dark opacity base + heavy gradient */}
+            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-6 md:p-8">
+              <h3 className="font-display font-medium text-white text-xl md:text-2xl mb-2 leading-tight drop-shadow-lg">Marine Operations</h3>
+              <p className="font-sans text-xs md:text-sm text-white/90 leading-relaxed drop-shadow">Delivering critical spare parts to vessels worldwide, ensuring zero downtime at sea.</p>
+            </div>
           </div>
-          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl">
+          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
             <Image
               src="/images/mood/hero-marine-detail.png"
               alt="Precision marine machinery detail"
               fill
               priority
-              className="object-cover"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
+            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-6 md:p-8">
+              <h3 className="font-display font-medium text-white text-xl md:text-2xl mb-2 leading-tight drop-shadow-lg">Precision Spares</h3>
+              <p className="font-sans text-xs md:text-sm text-white/90 leading-relaxed drop-shadow">Sourcing rigorously tested new, used, and reconditioned mechanical components.</p>
+            </div>
           </div>
         </motion.div>
 
@@ -140,23 +149,31 @@ export function HeroSection() {
             opacity: columnOpacity
           }}
         >
-          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl">
+          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
             <Image
               src="/images/mood/hero-industrial-scale.png"
               alt="Industrial spare parts supply and power plants"
               fill
               priority
-              className="object-cover"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
+            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-6 md:p-8">
+              <h3 className="font-display font-medium text-white text-xl md:text-2xl mb-2 leading-tight drop-shadow-lg">Industrial Supply</h3>
+              <p className="font-sans text-xs md:text-sm text-white/90 leading-relaxed drop-shadow">Equipping land-based factories and power plants with heavy-duty machinery.</p>
+            </div>
           </div>
-          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl">
+          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
             <Image
-              src="/images/mood/hero-industrial-detail.png"
-              alt="Advanced industrial inspection and equipment"
+              src="/ro/ro-plant-clean.png"
+              alt="Industrial RO Water Treatment Plant"
               fill
               priority
-              className="object-cover"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
+            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-6 md:p-8">
+              <h3 className="font-display font-medium text-white text-xl md:text-2xl mb-2 leading-tight drop-shadow-lg">RO Water Systems</h3>
+              <p className="font-sans text-xs md:text-sm text-white/90 leading-relaxed drop-shadow">Purifying seawater with industrial-scale Reverse Osmosis desalination plants.</p>
+            </div>
           </div>
         </motion.div>
 

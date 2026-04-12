@@ -2,11 +2,11 @@
 
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
-import { EditorialSection } from "@/components/sections/editorial-section";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-
+import { Check } from "lucide-react";
+import type { Metadata } from 'next'
 function ScrollRevealText({ text }: { text: string }) {
   const containerRef = useRef<HTMLParagraphElement>(null);
   const [progress, setProgress] = useState(0);
@@ -145,7 +145,7 @@ export default function AboutPage() {
       <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-foreground">
         <div className="absolute inset-0">
           <Image
-            src="/images/hero-main.png"
+            src="/images/hero-clean.png"
             alt="Marine and Industrial engineering legacy"
             fill
             className="object-cover contrast-[1.1] saturate-[1.1] opacity-60"
@@ -171,32 +171,229 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Intro Text Section */}
-      <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background">
-        <div className="mx-auto max-w-5xl">
-          <ScrollRevealText text="Delta Impex is specialized in providing premium marine and industrial machinery spare parts and advanced RO water treatment systems. Built on a foundation of reliability and precision, we serve the global fleet and engineering industries with unwavering commitment." />
+      {/* About Section - Split Layout */}
+      <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background border-b border-border">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+            
+            {/* Sticky Left Column */}
+            <div className="lg:col-span-4">
+              <div className="sticky top-32">
+                <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-muted-foreground mb-4">
+                  Company Overview
+                </p>
+                <h2 className="font-display text-4xl leading-tight md:text-5xl font-medium text-foreground">
+                  About Delta Impex.
+                </h2>
+              </div>
+            </div>
+
+            {/* Scrolling Right Column */}
+            <div className="lg:col-span-8 space-y-16">
+              <FadeInOnScroll>
+                <div className="space-y-2">
+                  <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Introduction</p>
+                  <p className="text-xl md:text-3xl leading-relaxed font-sans text-foreground font-medium">
+                    Delta Impex is a Bhavnagar-based company specializing in <span className="text-primary">marine spare parts, industrial solutions, and RO water treatment systems</span>, delivering reliable and cost-effective solutions to clients across both maritime and land-based industries.
+                  </p>
+                </div>
+              </FadeInOnScroll>
+              
+              <FadeInOnScroll delay={0.1}>
+                <div className="space-y-4">
+                  <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Marine Division</p>
+                  <h3 className="font-display text-2xl font-medium text-foreground">Global Marine Engineering.</h3>
+                  <p className="text-lg md:text-xl leading-relaxed font-sans text-muted-foreground">
+                    In the <strong className="text-foreground font-medium border-b border-primary/20">marine sector</strong>, we supply a complete range of ship spare parts and machinery, including main and auxiliary engine components, turbochargers, pumps, compressors, navigation equipment, and engine room systems. We offer <strong className="text-foreground font-medium">new, used, and reconditioned parts</strong>, ensuring flexibility and affordability without compromising on quality.
+                  </p>
+                </div>
+              </FadeInOnScroll>
+
+              <FadeInOnScroll delay={0.15}>
+                <div className="space-y-4">
+                  <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Industrial Division</p>
+                  <h3 className="font-display text-2xl font-medium text-foreground">Heavy Industrial Solutions.</h3>
+                  <p className="text-lg md:text-xl leading-relaxed font-sans text-muted-foreground">
+                    Our <strong className="text-foreground font-medium border-b border-primary/20">industrial division</strong> supports land-based industries with machinery, generator sets, spare parts, and essential equipment. We cater to factories, plants, and infrastructure projects with dependable products tailored to operational requirements.
+                  </p>
+                </div>
+              </FadeInOnScroll>
+
+              <FadeInOnScroll delay={0.2}>
+                <div className="space-y-4">
+                  <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">RO Water Treatment</p>
+                  <h3 className="font-display text-2xl font-medium text-foreground">Advanced Desalination.</h3>
+                  <p className="text-lg md:text-xl leading-relaxed font-sans text-muted-foreground">
+                    Alongside this, we provide advanced <strong className="text-foreground font-medium border-b border-primary/20">RO water treatment and desalination solutions</strong> for both marine and industrial use. From reverse osmosis plants to complete water purification systems and maintenance support, we help convert seawater and raw water into clean, usable resources.
+                  </p>
+                </div>
+              </FadeInOnScroll>
+
+              <FadeInOnScroll delay={0.25}>
+                <div className="pt-12 border-t border-border space-y-8">
+                  <p className="text-lg md:text-xl leading-relaxed font-sans text-muted-foreground italic">
+                    With strong sourcing capabilities, industry expertise, and a commitment to timely delivery, Delta Impex ensures high performance, reliability, and customer satisfaction in every project.
+                  </p>
+                  <p className="text-lg md:text-xl leading-relaxed font-sans text-foreground font-medium">
+                    We are dedicated to building long-term relationships by delivering <span className="text-primary underline underline-offset-8 decoration-solid">quality products, competitive pricing, and trusted service</span> across all our business segments.
+                  </p>
+                </div>
+              </FadeInOnScroll>
+            </div>
+
+          </div>
         </div>
       </section>
 
-      {/* Why Choose Us (Editorial) */}
-      <EditorialSection />
-
-      {/* Parallax Break */}
-      <section className="px-6 md:px-12 lg:px-20">
-        <ParallaxImage src="/images/mood/hero-industrial-scale.png" alt="Industrial scale operations" />
+      {/* Vision Statement Section */}
+      <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-foreground text-background">
+        <div className="mx-auto max-w-5xl text-center">
+          <FadeInOnScroll>
+            <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-background/50 mb-8">
+              Our Vision
+            </p>
+            <p className="font-display text-3xl leading-snug md:text-5xl font-medium text-background">
+              "To become a trusted global supplier in marine, industrial, and water treatment sectors by delivering reliable, efficient, and cost-effective solutions."
+            </p>
+          </FadeInOnScroll>
+        </div>
       </section>
 
-      {/* Testimonials / Integrity */}
-      <TestimonialsSection />
+      {/* Why Choose Us - Nexterra Split Layout */}
+      <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background border-t border-border">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+            
+            {/* Sticky Left Column */}
+            <div className="lg:col-span-4">
+              <div className="sticky top-32">
+                <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-primary mb-4">
+                  Our Advantage
+                </p>
+                <h2 className="font-display text-4xl leading-tight md:text-5xl font-medium text-foreground">
+                  Why Choose<br/>Delta Impex.
+                </h2>
+              </div>
+            </div>
 
-      {/* Values Section */}
-      <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background">
+            {/* Scrolling Right Column - Value Props */}
+            <div className="lg:col-span-8 space-y-24">
+              
+              {/* Category 1: Marine & Industrial */}
+              <div className="space-y-12">
+                <FadeInOnScroll>
+                  <h3 className="font-tech text-xs font-bold uppercase tracking-widest text-primary border-b border-border pb-4">
+                    Marine & Industrial Solutions
+                  </h3>
+                </FadeInOnScroll>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                  {[
+                    {
+                      title: "Complete Range of Products",
+                      desc: "We supply a wide variety of marine spare parts and industrial equipment, covering engines, machinery, and essential components."
+                    },
+                    {
+                      title: "New, Used & Reconditioned Options",
+                      desc: "Flexible sourcing options help reduce costs while maintaining performance and reliability."
+                    },
+                    {
+                      title: "Strong Global Sourcing Network",
+                      desc: "Our network enables us to quickly source and deliver even hard-to-find spare parts."
+                    },
+                    {
+                      title: "Fast Response & Timely Delivery",
+                      desc: "We understand the urgency of operations and ensure quick turnaround to minimize downtime."
+                    },
+                    {
+                      title: "Quality & Reliability",
+                      desc: "All products are carefully selected to meet industry standards and ensure long-term performance."
+                    },
+                    {
+                      title: "Cost-Effective Solutions",
+                      desc: "We provide competitive pricing without compromising on quality."
+                    }
+                  ].map((item, idx) => (
+                    <FadeInOnScroll key={idx} delay={idx * 0.05}>
+                      <div className="group">
+                        <div className="flex items-center gap-4 mb-4">
+                          <span className="font-tech text-xs text-muted-foreground font-bold italic">M{idx + 1}</span>
+                          <div className="h-px flex-1 bg-border group-hover:bg-primary/30 transition-colors" />
+                        </div>
+                        <h4 className="font-display text-xl font-medium mb-3 text-foreground">{item.title}</h4>
+                        <p className="font-sans text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                      </div>
+                    </FadeInOnScroll>
+                  ))}
+                </div>
+              </div>
+
+              {/* Category 2: RO Water Treatment */}
+              <div className="space-y-12">
+                <FadeInOnScroll>
+                  <h3 className="font-tech text-xs font-bold uppercase tracking-widest text-primary border-b border-border pb-4">
+                    RO Water Treatment Solutions
+                  </h3>
+                </FadeInOnScroll>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                  {[
+                    {
+                      title: "Advanced Water Treatment Technology",
+                      desc: "We offer modern reverse osmosis systems designed for efficient and reliable water purification."
+                    },
+                    {
+                      title: "Marine & Industrial Applications",
+                      desc: "Our RO solutions are suitable for ships, coastal areas, and industrial plants."
+                    },
+                    {
+                      title: "Complete System Supply",
+                      desc: "From RO plants to filtration systems and spare parts, we provide end-to-end solutions."
+                    },
+                    {
+                      title: "High Efficiency & Performance",
+                      desc: "Our systems ensure effective removal of salts, impurities, and contaminants."
+                    },
+                    {
+                      title: "Maintenance & Support",
+                      desc: "We provide ongoing support and spare parts to ensure smooth operation."
+                    },
+                    {
+                      title: "Sustainable & Reliable Solutions",
+                      desc: "Our water treatment systems help convert seawater into clean, usable water efficiently."
+                    }
+                  ].map((item, idx) => (
+                    <FadeInOnScroll key={idx} delay={idx * 0.05}>
+                      <div className="group">
+                        <div className="flex items-center gap-4 mb-4">
+                          <span className="font-tech text-xs text-muted-foreground font-bold italic">W{idx + 1}</span>
+                          <div className="h-px flex-1 bg-border group-hover:bg-primary/30 transition-colors" />
+                        </div>
+                        <h4 className="font-display text-xl font-medium mb-3 text-foreground">{item.title}</h4>
+                        <p className="font-sans text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                      </div>
+                    </FadeInOnScroll>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Unique Visual Break */}
+      <section className="px-6 md:px-12 lg:px-20">
+        <ParallaxImage src="/images/mood/hero-industrial-detail.png" alt="Precision machinery detail" />
+      </section>
+
+      {/* Values Grid - Perfectly Balanced Length */}
+      <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background border-t border-border">
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((v, i) => (
               <FadeInOnScroll key={i} delay={i * 0.1}>
-                <div className="p-8 border border-border rounded-3xl hover:bg-muted transition-colors duration-500">
-                  <h3 className="font-display text-2xl font-medium mb-4">{v.title}</h3>
+                <div className="p-8 border border-border rounded-[2rem] hover:bg-muted/50 transition-all duration-500 h-full flex flex-col">
+                  <h3 className="font-display text-xl font-medium mb-4">{v.title}</h3>
                   <p className="text-muted-foreground text-sm font-sans leading-relaxed">
                     {v.description}
                   </p>
@@ -207,9 +404,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Bottom Visual */}
+      {/* Final Unique Bottom Visual - RO Focus */}
       <section className="px-6 py-24 md:px-12 lg:px-20">
-        <ParallaxImage src="/images/mood/vision-abstract.png" alt="Vision for the future" />
+        <ParallaxImage src="/images/mood/ro-water-flow.png" alt="Industrial Water Treatment Flow" />
       </section>
 
       <FooterSection />

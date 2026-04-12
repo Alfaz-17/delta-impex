@@ -1,96 +1,64 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FadeImage } from "@/components/fade-image";
+import { Loader2 } from "lucide-react";
 
-type Category = "marine" | "ro";
-
-const products: Record<Category, any[]> = {
-  marine: [
-    {
-      title: "Main & Auxiliary Engines",
-      description: "New and reconditioned main engines and auxiliary machinery.",
-      image: "/images/marine-parts-clean.png",
-    },
-    {
-      title: "Turbochargers & Pumps",
-      description: "High Performance Components",
-      image: "/images/categories/turbo-pump.png",
-    },
-    {
-      title: "Purifiers & Separators",
-      description: "Oil and Fuel Treatment",
-      image: "/images/categories/purifier.png",
-    },
-    {
-      title: "Heat Exchangers & Coolers",
-      description: "Industrial Cooling Systems",
-      image: "/images/categories/heat-exchanger.png",
-    },
-    {
-      title: "Electrical & Navigation",
-      description: "Precision Electronics",
-      image: "/images/categories/electrical.png",
-    },
-    {
-      title: "Marine Consumables",
-      description: "General Supplies & Hardware",
-      image: "/images/categories/consumables.png",
-    },
-  ],
-  ro: [
-    {
-      title: "Pre-Treatment Skids",
-      description: "Multi-media & Carbon Filtration",
-      image: "/ro/ro-plant-clean.png",
-    },
-    {
-      title: "High-Pressure Pumps",
-      description: "CNP & Vertical Multistage Units",
-      image: "/ro/ro-pump-clean.png",
-    },
-    {
-      title: "Membrane Vessels",
-      description: "Advanced Semi-permeable Systems",
-      image: "/ro/ro-membrane-clean.png",
-    },
-    {
-      title: "Controls & PLC",
-      description: "Automated System Management",
-      image: "/images/categories/electrical.png",
-    },
-    {
-      title: "CIP Systems",
-      description: "Clean-in-Place Maintenance Units",
-      image: "/ro/ro-plant-framed.png",
-    },
-    {
-      title: "Instrumentation",
-      description: "Monitoring & Measurement Tools",
-      image: "/images/mood/ro-water-flow.png",
-    },
-  ],
-};
+type CategoryType = "marine" | "ro";
 
 interface FeaturedProductsSectionProps {
-  initialCategory?: Category;
+  initialCategory?: CategoryType;
+  divisionSlug?: string;
   hideTabs?: boolean;
+  featuredOnly?: boolean; // New prop
   title?: string;
   subtitle?: string;
 }
 
 export function FeaturedProductsSection({ 
-  initialCategory = "marine", 
+  initialCategory = "marine",
+  divisionSlug,
   hideTabs = false,
+  featuredOnly = false,
   title = "Detailed Inventory.",
   subtitle = "Dual-Sector Expertise."
 }: FeaturedProductsSectionProps) {
-  const [activeTab, setActiveTab] = useState<Category>(initialCategory);
+  const [activeTab, setActiveTab] = useState<CategoryType>(initialCategory);
+  const [products, setProducts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      setIsLoading(true);
+      try {
+        const targetSlug = divisionSlug || (activeTab === "marine" ? "marine-industrial" : "ro-water-treatment");
+        
+        const divRes = await fetch("/api/divisions");
+        const divisions = await divRes.json();
+        const division = divisions.find((d: any) => d.slug === targetSlug);
+        
+        if (division) {
+          let url = `/api/products?divisionId=${division._id}`;
+          if (featuredOnly) {
+            url += "&isFeatured=true";
+          }
+          const res = await fetch(url);
+          const data = await res.json();
+          setProducts(data);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchProducts();
+  }, [activeTab, divisionSlug, featuredOnly]);
 
   return (
-    <section id="parts-grid" className="bg-background">
+    <section id="parts-grid" className="bg-background min-h-screen">
       {/* Section Title & Tabs */}
       <div className="px-6 py-20 text-center md:px-12 md:py-28 lg:px-20 lg:py-32 lg:pb-20">
-        <h2 className="text-3xl font-medium tracking-tight text-foreground md:text-4xl lg:text-5xl font-display uppercase italic">
+        <h2 className="text-3xl tracking-tight text-foreground md:text-4xl lg:text-5xl heading-display uppercase">
           {title}
           <br />
           {subtitle}
@@ -127,37 +95,64 @@ export function FeaturedProductsSection({
         </p>
       </div>
 
-      {/* Features Grid - Zig Zag Asymmetric Layout */}
-      <div className="grid grid-cols-1 gap-8 px-6 pb-40 md:grid-cols-2 lg:grid-cols-3 md:px-12 lg:px-20">
-        {products[activeTab].map((product, index) => (
-          <div 
-            key={`${activeTab}-${product.title}`} 
-            className={`group transition-all duration-700 ${
-              index % 2 === 1 ? "md:translate-y-20" : ""
-            }`}
-          >
-            {/* Image */}
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-muted">
-              <FadeImage
-                src={product.image || "/placeholder.svg"}
-                alt={product.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-foreground/5 group-hover:bg-transparent transition-colors" />
-            </div>
-
-            {/* Content */}
-            <div className="py-6">
-              <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">
-                {product.description}
-              </p>
-              <h3 className="text-foreground text-xl font-semibold">
-                {product.title}
-              </h3>
-            </div>
+      {/* Features Grid */}
+      <div className="px-6 pb-40 md:px-12 lg:px-20">
+        {isLoading ? (
+          <div className="flex justify-center items-center py-40">
+            <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
           </div>
-        ))}
+        ) : products.length === 0 ? (
+          <div className="text-center py-40 border border-dashed border-border rounded-[3rem] opacity-30">
+            <p className="font-tech text-xs uppercase tracking-[0.4em]">No Live Inventory Available</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {products.map((product, index) => (
+              <div 
+                key={product._id} 
+                className={`group transition-all duration-700 ${
+                  index % 2 === 1 ? "md:translate-y-20" : ""
+                }`}
+              >
+                {/* Image */}
+                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-muted">
+                  <FadeImage
+                    src={product.imageUrl || "/placeholder.svg"}
+                    alt={product.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  {product.isFeatured && (
+                    <div className="absolute top-4 right-4 bg-yellow-500 text-black px-3 py-1 rounded-full text-[10px] font-tech font-bold uppercase tracking-widest">
+                      Featured
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-foreground/5 group-hover:bg-transparent transition-colors" />
+                </div>
+
+                {/* Content */}
+                <div className="py-6">
+                  <div className="flex justify-between items-start mb-2">
+                    <p className="text-xs uppercase tracking-widest text-primary font-tech">
+                      {product.category?.name}
+                    </p>
+                    {product.price && (
+                      <p className="text-xs font-tech text-muted-foreground">{product.price}</p>
+                    )}
+                  </div>
+                  <h3 className="text-foreground text-xl font-semibold">
+                    {product.name}
+                  </h3>
+                  {product.description && (
+                    <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+                      {product.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

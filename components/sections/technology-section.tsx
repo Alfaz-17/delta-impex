@@ -46,7 +46,7 @@ function ScrollRevealText({ text }: { text: string }) {
   return (
     <p
       ref={containerRef}
-      className="text-3xl font-semibold leading-snug md:text-4xl lg:text-5xl"
+      className="text-3xl lg:text-5xl heading-display leading-tight"
     >
       {words.map((word, index) => (
         <span
@@ -198,7 +198,7 @@ export function TechnologySection() {
               <div 
                 className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
               >
-                <h2 className="max-w-3xl font-medium leading-tight tracking-tight text-white md:text-5xl lg:text-7xl text-5xl font-display">
+                <h2 className="max-w-3xl leading-tight tracking-tight text-white md:text-5xl lg:text-7xl text-5xl heading-display">
                   {["RO", "Desalination", "Water Systems."].map((word, index) => (
                     <span
                       key={index}

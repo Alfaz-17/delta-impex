@@ -38,7 +38,7 @@ export function PhilosophySection() {
               className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
               style={{ opacity: titleOpacity }}
             >
-              <h2 className="text-[12vw] font-medium leading-[0.95] tracking-tighter text-foreground md:text-[10vw] lg:text-[8vw] text-center px-6 font-display">
+              <h2 className="text-[12vw] leading-[0.95] tracking-tighter text-foreground md:text-[10vw] lg:text-[8vw] text-center px-6 heading-display">
                 Our Core Divisions.
               </h2>
             </motion.div>
@@ -64,7 +64,7 @@ export function PhilosophySection() {
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
                   <div className="absolute bottom-10 left-10">
-                    <span className="backdrop-blur-xl px-6 py-3 text-sm font-medium rounded-full bg-primary/80 text-white font-tech border border-white/20 shadow-lg">
+                    <span className="backdrop-blur-xl px-6 py-3 text-xs font-bold rounded-full bg-primary/80 text-white label-tech mb-0 border border-white/20 shadow-lg">
                       Marine & Industrial Parts
                     </span>
                   </div>
@@ -89,7 +89,7 @@ export function PhilosophySection() {
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
                   <div className="absolute bottom-10 left-10">
-                    <span className="backdrop-blur-xl px-6 py-3 text-sm font-medium rounded-full bg-primary/80 text-white font-tech border border-white/20 shadow-lg">
+                    <span className="backdrop-blur-xl px-6 py-3 text-xs font-bold rounded-full bg-primary/80 text-white label-tech mb-0 border border-white/20 shadow-lg">
                       RO Water Treatment
                     </span>
                   </div>
@@ -102,12 +102,12 @@ export function PhilosophySection() {
       </div>
 
       {/* Description */}
-      <div className="px-6 py-20 md:px-12 md:py-28 lg:px-20 lg:py-36 lg:pb-14">
-        <div className="text-center">
-          <p className="text-xs uppercase tracking-widest text-muted-foreground">
+      <div className="px-6 py-20 md:px-12 md:py-28 lg:px-20 lg:py-36 lg:pb-14 underline-offset-8">
+        <div className="text-center max-w-5xl mx-auto">
+          <p className="label-tech uppercase">
             Trusted Partner Since Inception
           </p>
-          <p className="mt-8 leading-relaxed text-muted-foreground text-3xl text-center">
+          <p className="mt-8 leading-relaxed text-muted-foreground text-2xl md:text-3xl lg:text-4xl heading-display text-center">
             Delta Impex operates two specialized divisions: the supply of high-quality Marine & Industrial machinery spare parts, 
             and the provision of advanced RO Water Treatment Plants for both land and sea applications.
           </p>

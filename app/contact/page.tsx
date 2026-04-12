@@ -3,8 +3,10 @@
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import { Mail, Phone, MapPin, Globe } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import type { Metadata } from 'next'
 
 function FadeInOnScroll({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);

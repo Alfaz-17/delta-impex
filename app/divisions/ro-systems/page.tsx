@@ -3,9 +3,10 @@
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 import { ROProcessSection } from "@/components/sections/ro-process-section";
-import { FeaturedProductsSection } from "@/components/sections/featured-products-section";
+import { ProductCatalog } from "@/components/product-catalog";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import type { Metadata } from 'next'
 
 export default function ROSystemsPage() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -57,30 +58,29 @@ export default function ROSystemsPage() {
         </div>
       </section>
 
+      {/* E-Commerce Catalog Section */}
+      <ProductCatalog divisionSlug="ro-water-treatment" divisionName="RO Water Treatment" />
+
       {/* Introduction Section */}
-      <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background text-center">
+      <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background text-center border-t border-border/50">
         <div className="max-w-4xl mx-auto">
           <h2 className="font-display text-4xl md:text-5xl font-medium tracking-tighter mb-8 transform skew-x-[-4deg]">
-            Pure Water for Every Enterprise.
+            RO Water Treatment Plants
           </h2>
-          <p className="font-sans text-xl text-muted-foreground leading-relaxed">
-            Delta Impex provides end-to-end RO desalination and water treatment solutions. 
-            From compact marine-grade units to massive industrial plants, we engineer 
-            and supply systems that deliver safety, purity, and operational reliability.
+          <p className="font-sans text-xl text-muted-foreground leading-relaxed mb-6">
+            We supply RO systems for both marine and industrial use, including:
           </p>
+          <ul className="list-none space-y-4 font-sans text-lg text-foreground mb-6 inline-block text-left">
+            <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-primary" /> Reverse osmosis plants</li>
+            <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-primary" /> Water treatment equipment</li>
+            <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-primary" /> Spare parts & maintenance support</li>
+          </ul>
         </div>
       </section>
 
-      {/* The Core Process (REUSING THE COMPONENT) */}
+      {/* The Core Process */}
       <ROProcessSection />
 
-      {/* Featured Products Grid */}
-      <FeaturedProductsSection 
-        initialCategory="ro" 
-        hideTabs={true} 
-        title="Technical Inventory." 
-        subtitle="Reverse Osmosis Components."
-      />
 
       {/* Case Study / Gallery Placeholder */}
       <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background border-t border-border">

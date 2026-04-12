@@ -7,38 +7,66 @@ import { Droplets, Settings, Zap, Filter, Beaker, Database } from "lucide-react"
 const steps = [
   {
     image: "/images/mood/hero-marine-sunset.png",
-    title: "Seawater Intake",
+    title: "1. Seawater Intake",
     description: "Seawater is drawn from the ocean through specially designed intake systems equipped with screens to remove large particles such as sand, debris, and marine life.",
     icon: Droplets,
   },
   {
     image: "/images/ro-generated/pretreatment.png",
-    title: "Pre-Treatment",
-    description: "Before entering the RO system, the water undergoes multi-stage filtration: removal of suspended solids, turbidity, and chemical dosing to prevent scaling.",
+    title: "2. Pre-Treatment",
+    description: (
+      <>
+        Before entering the RO system, the water undergoes multi-stage filtration:
+        <ul className="list-disc pl-5 mt-2 space-y-1">
+          <li>Removal of suspended solids and turbidity</li>
+          <li>Chemical dosing to prevent scaling and biological growth</li>
+        </ul>
+        <p className="mt-2">This step ensures long life and efficiency of the membranes.</p>
+      </>
+    ),
     icon: Settings,
   },
   {
     image: "/ro/ro-pump-clean.png",
-    title: "High-Pressure Pumping",
+    title: "3. High-Pressure Pumping",
     description: "The pre-treated seawater is pressurized using high-pressure pumps. This pressure is essential to overcome natural osmotic pressure and push water through the RO membranes.",
     icon: Zap,
   },
   {
     image: "/ro/ro-membrane-clean.png",
-    title: "Reverse Osmosis Filtration",
-    description: "At the core of the system are semi-permeable membranes that remove dissolved salts (TDS), eliminate bacteria, viruses, and heavy metals to produce high-quality freshwater.",
+    title: "4. Reverse Osmosis Filtration",
+    description: (
+      <>
+        At the core of the system are semi-permeable membranes that:
+        <ul className="list-disc pl-5 mt-2 space-y-1">
+          <li>Remove dissolved salts (TDS)</li>
+          <li>Eliminate bacteria, viruses, and heavy metals</li>
+          <li>Produce high-quality freshwater (permeate)</li>
+        </ul>
+        <p className="mt-2">The remaining concentrated brine is safely discharged or managed.</p>
+      </>
+    ),
     icon: Filter,
   },
   {
     image: "/images/mood/ro-water-flow.png",
-    title: "Post-Treatment",
-    description: "The purified water is conditioned with mineral balancing, pH adjustment, and final disinfection using UV or chlorination to make it suitable for consumption.",
+    title: "5. Post-Treatment",
+    description: (
+      <>
+        The purified water is conditioned to make it suitable for consumption:
+        <ul className="list-disc pl-5 mt-2 space-y-1">
+          <li>Mineral balancing (calcium, magnesium)</li>
+          <li>pH adjustment</li>
+          <li>Final disinfection using UV or chlorination</li>
+        </ul>
+      </>
+    ),
     icon: Beaker,
   },
   {
     image: "/images/mood/hero-industrial-scale.png",
-    title: "Storage & Distribution",
-    description: "The treated water is stored in tanks and distributed for domestic, industrial, or commercial use, ensuring a reliable supply of clean water.",
+    title: "6. Storage & Distribution",
+    description: "The treated water is stored in tanks and distributed for domestic, industrial, or commercial use.",
     icon: Database,
   },
 ];

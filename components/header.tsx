@@ -32,6 +32,18 @@ export function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-10 md:flex">
+           <Link
+            href="/"
+            className={`text-sm transition-colors ${isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white/70 hover:text-white"}`}
+          >
+            Home
+          </Link>
+           <Link
+            href="/about"
+            className={`text-sm transition-colors ${isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white/70 hover:text-white"}`}
+          >
+            About
+          </Link>
           <Link
             href="/divisions/marine-parts"
             className={`text-sm transition-colors ${isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white/70 hover:text-white"}`}
@@ -44,12 +56,7 @@ export function Header() {
           >
             RO Systems
           </Link>
-          <Link
-            href="/about"
-            className={`text-sm transition-colors ${isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white/70 hover:text-white"}`}
-          >
-            About
-          </Link>
+         
           <Link
             href="/contact"
             className={`text-sm transition-colors ${isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white/70 hover:text-white"}`}
@@ -83,6 +90,20 @@ export function Header() {
       {isMenuOpen && (
         <div className="border-t border-border bg-background px-6 py-8 md:hidden rounded-b-2xl">
           <nav className="flex flex-col gap-6">
+             <Link
+              href="/"
+              className="text-lg text-foreground"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+             <Link
+              href="/about"
+              className="text-lg text-foreground"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              About
+            </Link>
             <Link
               href="/divisions/marine-parts"
               className="text-lg text-foreground"
@@ -97,13 +118,7 @@ export function Header() {
             >
               RO Systems
             </Link>
-            <Link
-              href="/about"
-              className="text-lg text-foreground"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About
-            </Link>
+           
             <Link
               href="/contact"
               className="text-lg text-foreground"

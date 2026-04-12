@@ -11,12 +11,12 @@ export function GallerySection() {
 
   const images = [
     { src: "/images/mood/hero-marine-sunset.png", alt: "Global Marine Logistics and Shipping" },
-    { src: "/images/mood/hero-marine-detail.png", alt: "Precision Marine Machinery Detail" },
-    { src: "/images/mood/hero-industrial-scale.png", alt: "Heavy Industrial Spare Parts Supply" },
+    { src: "/images/marine-parts-clean.png", alt: "Precision Marine Machinery and Engines" },
+    { src: "/images/industrial-parts-clean.png", alt: "Heavy Industrial Spare Parts Supply" },
+    { src: "/ro/ro-plant-clean.png", alt: "High-Performance RO Desalination Plant" },
     { src: "/images/mood/hero-industrial-detail.png", alt: "Advanced Industrial Inspection and Systems" },
     { src: "/images/mood/ro-water-flow.png", alt: "Advanced RO Water Treatment Flow" },
-    { src: "/images/mood/vision-abstract.png", alt: "Industrial Vision and Performance" },
-    { src: "/ro/ro-plant-clean.png", alt: "High-Performance RO Desalination Plant" },
+    { src: "/images/mood/hero-industrial-scale.png", alt: "Industrial Performance and Engineering" },
   ];
 
   // Calculate section height based on content width
