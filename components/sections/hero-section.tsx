@@ -17,8 +17,8 @@ export function HeroSection() {
 
   // Apply a gentle spring for buttery smooth interpolation
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 70,
-    damping: 20,
+    stiffness: 100, // Faster response to scroll
+    damping: 30,   // More controlled smoothing
     restDelta: 0.001,
   });
 
@@ -49,7 +49,9 @@ export function HeroSection() {
           className="absolute inset-0 z-10 pointer-events-auto"
           style={{ 
             clipPath: videoClipPath,
-            WebkitClipPath: videoClipPath // Safari support
+            WebkitClipPath: videoClipPath, // Safari support
+            willChange: "clip-path",
+            transform: "translateZ(0)" // Force composite layer
           }}
         >
           <video
@@ -105,7 +107,10 @@ export function HeroSection() {
             bottom: "12%", 
             width: "23%",
             x: leftColumnX,
-            opacity: columnOpacity
+            opacity: columnOpacity,
+            willChange: "transform, opacity",
+            transform: "translateZ(0)",
+            backfaceVisibility: "hidden"
           }}
         >
           <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
@@ -146,7 +151,10 @@ export function HeroSection() {
             bottom: "12%", 
             width: "23%",
             x: rightColumnX,
-            opacity: columnOpacity
+            opacity: columnOpacity,
+            willChange: "transform, opacity",
+            transform: "translateZ(0)",
+            backfaceVisibility: "hidden"
           }}
         >
           <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
