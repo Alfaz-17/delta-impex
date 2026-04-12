@@ -42,7 +42,7 @@ export function HeroSection() {
   return (
     <section ref={containerRef} className="relative bg-background h-[250vh]">
       {/* Sticky boundary locking the layout to viewport during scroll */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-background">
+      <div className="sticky top-0 h-dvh w-full overflow-hidden bg-background">
         
         {/* The Full-Screen to Shrunken-Center Video */}
         <motion.div 
@@ -75,7 +75,7 @@ export function HeroSection() {
             <p className="label-tech pl-4 border-l-2 border-white/50 text-white/80 mb-3">
               Your Trusted Partner for Marine & Industrial Solutions
             </p>
-            <h1 className="max-w-5xl text-[12vw] sm:text-[7vw] md:text-[10vw] lg:text-[6vw] heading-display text-white uppercase mb-4 drop-shadow-lg">
+            <h1 className="max-w-5xl heading-display text-white italic uppercase mb-2">
               DELTA IMPEX
             </h1>
             <p className="max-w-xl text-white/80 text-xs sm:text-sm md:text-base font-light leading-relaxed mb-8 drop-shadow">
@@ -100,12 +100,12 @@ export function HeroSection() {
 
         {/* Left Column (2 Images) */}
         <motion.div 
-          className="absolute flex flex-col gap-4 z-20"
+          className="absolute flex flex-col gap-3 z-20"
           style={{ 
-            left: "2.5%", 
+            left: "2%", 
             top: "12%", 
             bottom: "12%", 
-            width: "23%",
+            width: "24%",
             x: leftColumnX,
             opacity: columnOpacity,
             willChange: "transform, opacity",
@@ -122,9 +122,9 @@ export function HeroSection() {
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
             {/* Global dark opacity base + heavy gradient */}
-            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-6 md:p-8">
-              <h3 className="heading-sub text-white text-xl md:text-2xl mb-2 !mb-2 drop-shadow-lg">Marine Operations</h3>
-              <p className="font-sans text-xs md:text-sm text-white/90 leading-relaxed drop-shadow">Delivering critical spare parts to vessels worldwide, ensuring zero downtime at sea.</p>
+            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-3 md:p-8">
+              <h3 className="heading-sub text-white text-[clamp(0.8rem,1.5vw,1.5rem)] mb-1 !mb-1 drop-shadow-lg">Marine Parts</h3>
+              <p className="font-sans text-[clamp(0.6rem,1vw,0.85rem)] text-white/90 leading-tight drop-shadow">Delivering critical spare parts to vessels worldwide.</p>
             </div>
           </div>
           <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
@@ -135,21 +135,21 @@ export function HeroSection() {
               priority
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-6 md:p-8">
-              <h3 className="font-display font-medium text-white text-xl md:text-2xl mb-2 leading-tight drop-shadow-lg">Precision Spares</h3>
-              <p className="font-sans text-xs md:text-sm text-white/90 leading-relaxed drop-shadow">Sourcing rigorously tested new, used, and reconditioned mechanical components.</p>
+            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-3 md:p-8">
+              <h3 className="heading-sub text-white text-[clamp(0.8rem,1.5vw,1.5rem)] mb-1 !mb-1 drop-shadow-lg">Precision Spares</h3>
+              <p className="font-sans text-[clamp(0.6rem,1vw,0.85rem)] text-white/90 leading-tight drop-shadow">Sourcing rigorously tested mechanical components.</p>
             </div>
           </div>
         </motion.div>
 
         {/* Right Column (2 Images) */}
         <motion.div 
-          className="absolute flex flex-col gap-4 z-20"
+          className="absolute flex flex-col gap-3 z-20"
           style={{ 
-            right: "2.5%", 
+            right: "2%", 
             top: "12%", 
             bottom: "12%", 
-            width: "23%",
+            width: "24%",
             x: rightColumnX,
             opacity: columnOpacity,
             willChange: "transform, opacity",
@@ -165,9 +165,9 @@ export function HeroSection() {
               priority
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-6 md:p-8">
-              <h3 className="font-display font-medium text-white text-xl md:text-2xl mb-2 leading-tight drop-shadow-lg">Industrial Supply</h3>
-              <p className="font-sans text-xs md:text-sm text-white/90 leading-relaxed drop-shadow">Equipping land-based factories and power plants with heavy-duty machinery.</p>
+            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-3 md:p-8">
+              <h3 className="heading-sub text-white text-[clamp(0.8rem,1.5vw,1.5rem)] mb-1 !mb-1 drop-shadow-lg">Industrial Supply</h3>
+              <p className="font-sans text-[clamp(0.6rem,1vw,0.85rem)] text-white/90 leading-tight drop-shadow">Equipping land-based factories and power plants.</p>
             </div>
           </div>
           <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
@@ -178,9 +178,9 @@ export function HeroSection() {
               priority
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-6 md:p-8">
-              <h3 className="font-display font-medium text-white text-xl md:text-2xl mb-2 leading-tight drop-shadow-lg">RO Water Systems</h3>
-              <p className="font-sans text-xs md:text-sm text-white/90 leading-relaxed drop-shadow">Purifying seawater with industrial-scale Reverse Osmosis desalination plants.</p>
+            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-3 md:p-8">
+              <h3 className="heading-sub text-white text-[clamp(0.8rem,1.5vw,1.5rem)] mb-1 !mb-1 drop-shadow-lg">RO Water Systems</h3>
+              <p className="font-sans text-[clamp(0.6rem,1vw,0.85rem)] text-white/90 leading-tight drop-shadow">Industrial-scale Reverse Osmosis desalination.</p>
             </div>
           </div>
         </motion.div>

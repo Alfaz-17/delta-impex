@@ -90,6 +90,7 @@ export const metadata: Metadata = {
 }
 
 import { Providers } from "@/components/providers"
+import { SmoothScroll } from "@/components/smooth-scroll"
 
 export default function RootLayout({
   children,
@@ -118,9 +119,11 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <Providers>
-          {children}
-        </Providers>
+        <SmoothScroll>
+          <Providers>
+            {children}
+          </Providers>
+        </SmoothScroll>
         <Analytics />
       </body>
     </html>
