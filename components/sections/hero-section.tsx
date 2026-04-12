@@ -82,13 +82,13 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
               <Link 
                 href="/contact"
-                className="bg-primary text-primary-foreground px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(7,65,115,0.3)]"
+                className="bg-primary text-primary-foreground px-6 py-3 rounded-full btn-text hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(7,65,115,0.3)]"
               >
                 Request a Quote
               </Link>
               <Link 
                 href="/about"
-                className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-xl"
+                className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full btn-text hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-xl"
               >
                 Explore Divisions
               </Link>
@@ -118,7 +118,7 @@ export function HeroSection() {
             />
             {/* Global dark opacity base + heavy gradient */}
             <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-6 md:p-8">
-              <h3 className="font-display font-medium text-white text-xl md:text-2xl mb-2 leading-tight drop-shadow-lg">Marine Operations</h3>
+              <h3 className="heading-sub text-white text-xl md:text-2xl mb-2 !mb-2 drop-shadow-lg">Marine Operations</h3>
               <p className="font-sans text-xs md:text-sm text-white/90 leading-relaxed drop-shadow">Delivering critical spare parts to vessels worldwide, ensuring zero downtime at sea.</p>
             </div>
           </div>

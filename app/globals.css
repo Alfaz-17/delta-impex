@@ -115,12 +115,20 @@
     @apply font-display text-2xl font-medium italic mb-6;
   }
 
+  .heading-section {
+    @apply font-display text-4xl font-medium tracking-tighter italic;
+  }
+
   .label-tech {
-    @apply font-tech text-xs uppercase tracking-[0.3em] text-muted-foreground italic mb-2;
+    @apply font-tech text-[10px] uppercase tracking-[0.4em] text-muted-foreground italic mb-2;
   }
   
   .body-premium {
-    @apply text-lg leading-relaxed text-muted-foreground;
+    @apply text-lg leading-relaxed text-muted-foreground font-sans;
+  }
+
+  .btn-text {
+    @apply font-sans font-bold uppercase tracking-[0.2em] text-[10px];
   }
 }
 

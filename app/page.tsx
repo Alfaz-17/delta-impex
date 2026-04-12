@@ -1,15 +1,18 @@
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/sections/hero-section";
-import { PhilosophySection } from "@/components/sections/philosophy-section";
-import { BrandsMarquee } from "@/components/sections/brands-marquee";
-import { TechnologySection } from "@/components/sections/technology-section";
-import { GallerySection } from "@/components/sections/gallery-section";
-import { AboutPreviewSection } from "@/components/sections/about-preview-section";
-import { TestimonialsSection } from "@/components/sections/testimonials-section";
-import { FooterSection } from "@/components/sections/footer-section";
-import { FeaturedProductsSection } from "@/components/sections/featured-products-section";
-import { CategoriesShowcaseSection } from "@/components/sections/categories-showcase-section";
+import dynamic from "next/dynamic";
 import type { Metadata } from 'next'
+
+// Dynamic imports for heavy or off-screen sections to optimize initial load
+const PhilosophySection = dynamic(() => import("@/components/sections/philosophy-section").then(mod => mod.PhilosophySection));
+const AboutPreviewSection = dynamic(() => import("@/components/sections/about-preview-section").then(mod => mod.AboutPreviewSection));
+const CategoriesShowcaseSection = dynamic(() => import("@/components/sections/categories-showcase-section").then(mod => mod.CategoriesShowcaseSection));
+const BrandsMarquee = dynamic(() => import("@/components/sections/brands-marquee").then(mod => mod.BrandsMarquee));
+const TechnologySection = dynamic(() => import("@/components/sections/technology-section").then(mod => mod.TechnologySection));
+const GallerySection = dynamic(() => import("@/components/sections/gallery-section").then(mod => mod.GallerySection));
+const TestimonialsSection = dynamic(() => import("@/components/sections/testimonials-section").then(mod => mod.TestimonialsSection));
+const FooterSection = dynamic(() => import("@/components/sections/footer-section").then(mod => mod.FooterSection));
+const FeaturedProductsSection = dynamic(() => import("@/components/sections/featured-products-section").then(mod => mod.FeaturedProductsSection));
 
 export const metadata: Metadata = {
   title: "Delta Impex | Premium Marine & Industrial Spares",

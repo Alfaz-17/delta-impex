@@ -109,6 +109,10 @@ export default function ContactPage() {
             priority
           />
         </div>
+
+        {/* Dark overlay for text legibility */}
+        <div className="absolute inset-0 bg-black/40 z-0" />
+
         <div
           className="relative z-10 text-center px-6"
           style={{
@@ -116,10 +120,10 @@ export default function ContactPage() {
             transform: `translateY(${heroScrollProgress * 80}px)`,
           }}
         >
-          <p className="font-tech text-sm uppercase tracking-[0.3em] text-white/70 mb-6">
+          <p className="label-tech text-white/70 mb-6">
             Get in Touch
           </p>
-          <h1 className="font-display text-5xl md:text-7xl lg:text-[8vw] font-medium leading-[0.95] tracking-tighter text-white">
+          <h1 className="heading-display text-white text-5xl md:text-7xl lg:text-[8vw] !leading-[0.95] tracking-tighter">
             Contact Us.
           </h1>
         </div>
@@ -132,8 +136,8 @@ export default function ContactPage() {
             <FadeInOnScroll key={method.title} delay={index * 0.1}>
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-border last:border-r-0 last:border-b-0 group hover:bg-muted transition-colors duration-500">
                 <method.icon className="w-6 h-6 text-muted-foreground group-hover:text-foreground transition-colors mb-6" />
-                <h3 className="font-tech text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">{method.title}</h3>
-                <p className="font-display text-lg font-bold tracking-tight mb-1">{method.primary}</p>
+                <h3 className="label-tech mb-4">{method.title}</h3>
+                <p className="heading-sub !mb-1 !text-lg !font-bold tracking-tight">{method.primary}</p>
                 <p className="font-sans text-sm text-muted-foreground">{method.secondary}</p>
               </div>
             </FadeInOnScroll>
@@ -146,8 +150,8 @@ export default function ContactPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
           <FadeInOnScroll>
             <div>
-              <p className="font-tech text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4">Send a Message</p>
-              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-medium tracking-tighter leading-[0.95] mb-8">
+              <p className="label-tech mb-4">Send a Message</p>
+              <h2 className="heading-section text-5xl lg:text-6xl mb-8">
                 Let&apos;s Work Together.
               </h2>
               <p className="font-sans text-lg text-muted-foreground leading-relaxed mb-8">
@@ -175,7 +179,7 @@ export default function ContactPage() {
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label htmlFor="name" className={`font-tech text-xs uppercase tracking-[0.15em] transition-colors duration-300 ${focusedField === "name" ? "text-foreground" : "text-muted-foreground"}`}>
+                  <label htmlFor="name" className={`label-tech !tracking-[0.15em] transition-colors duration-300 ${focusedField === "name" ? "text-foreground" : "text-muted-foreground"}`}>
                     Name
                   </label>
                   <input
@@ -250,7 +254,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={submitStatus === "loading"}
-                className="group flex items-center gap-4 bg-foreground text-background font-bold px-8 py-4 rounded-full text-lg hover:scale-105 transition-transform mt-4 disabled:opacity-50"
+                className="group flex items-center gap-4 bg-foreground text-background px-8 py-4 rounded-full btn-text !text-lg hover:scale-105 transition-transform mt-4 disabled:opacity-50"
               >
                 {submitStatus === "loading" ? "Sending..." : "Send Message"}
                 <span className="inline-block transition-transform group-hover:translate-x-1">→</span>

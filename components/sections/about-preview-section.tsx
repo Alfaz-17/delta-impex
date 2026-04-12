@@ -91,7 +91,7 @@ export function AboutPreviewSection() {
             <div className="lg:col-span-6">
               <FadeInOnScroll>
                 <div>
-                  <p className="font-tech text-xs uppercase tracking-[0.3em] text-primary mb-6 font-bold">
+                  <p className="label-tech text-primary mb-6">
                     The Delta Impex Legacy
                   </p>
                   <h2 className="font-display text-4xl font-medium tracking-tight text-foreground md:text-5xl lg:text-7xl leading-[1.05] mb-8">
@@ -107,7 +107,7 @@ export function AboutPreviewSection() {
                   </p>
                   <Link
                     href="/about"
-                    className="group inline-flex items-center gap-2 font-tech text-xs uppercase tracking-[0.2em] text-foreground border-b border-primary/40 pb-2 hover:text-primary hover:border-primary transition-all duration-300"
+                    className="group inline-flex items-center gap-2 btn-text text-foreground border-b border-primary/40 pb-2 hover:text-primary hover:border-primary transition-all duration-300"
                   >
                     Explore Our Core Story
                     <svg
@@ -150,7 +150,7 @@ export function AboutPreviewSection() {
                           <p className="font-display text-3xl font-semibold text-white">
                             3
                           </p>
-                          <p className="font-tech text-[10px] uppercase tracking-widest text-white/50 mt-1">
+                          <p className="label-tech !text-white/50 mt-1 !mb-0">
                             Divisions
                           </p>
                         </div>
@@ -189,7 +189,7 @@ export function AboutPreviewSection() {
       <div className="px-6 py-24 md:px-12 lg:px-20">
         <div className="mx-auto max-w-7xl">
           <FadeInOnScroll>
-            <p className="font-tech text-[10px] uppercase tracking-[0.4em] text-primary mb-16 font-bold">
+            <p className="label-tech text-primary mb-16">
               Core Technical Capabilities
             </p>
           </FadeInOnScroll>
@@ -203,7 +203,7 @@ export function AboutPreviewSection() {
                     <cap.icon size={26} strokeWidth={1.5} />
                   </div>
                   {/* Title */}
-                  <h3 className="font-display text-2xl font-medium text-foreground mb-4">
+                  <h3 className="heading-sub text-foreground mb-4">
                     {cap.title}
                   </h3>
                   {/* Description */}

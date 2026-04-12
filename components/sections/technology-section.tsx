@@ -111,29 +111,33 @@ export function TechnologySection() {
     // Image transforms start after title fades (0.2 to 1)
     const imageProgress = Math.max(0, Math.min(1, (scrollProgress - 0.2) / 0.8));
     
-    // Smooth interpolations using GPU-accelerated values
-    const insetTopParams = imageProgress * 15; // 0% to 15%
-    const insetSideParams = imageProgress * 29; // 0% to 29%
-    const borderRadius = imageProgress * 24; // 0px to 24px
-    
-    // Side columns slide in
-    const sideTranslateLeft = -150 + (imageProgress * 150); // -150% to 0%
-    const sideTranslateRight = 150 - (imageProgress * 150); // 150% to 0%
-    const sideOpacity = imageProgress;
+    const isMobile = window.innerWidth < 1024;
 
+    // Smooth interpolations using GPU-accelerated values
+    const insetTopParams = isMobile ? (imageProgress * 10) : (imageProgress * 15); 
+    const insetSideParams = isMobile ? (imageProgress * 4) : (imageProgress * 29);
+    const borderRadius = imageProgress * 24; 
+    
     if (centerRef.current) {
       centerRef.current.style.clipPath = `inset(${insetTopParams}% ${insetSideParams}% ${insetTopParams}% ${insetSideParams}% round ${borderRadius}px)`;
       centerRef.current.style.WebkitClipPath = `inset(${insetTopParams}% ${insetSideParams}% ${insetTopParams}% ${insetSideParams}% round ${borderRadius}px)`;
     }
 
-    if (leftColRef.current) {
-      leftColRef.current.style.transform = `translate3d(${sideTranslateLeft}%, 0, 0)`;
-      leftColRef.current.style.opacity = `${sideOpacity}`;
-    }
+    if (!isMobile) {
+      // Side columns slide in only on desktop
+      const sideTranslateLeft = -150 + (imageProgress * 150);
+      const sideTranslateRight = 150 - (imageProgress * 150);
+      const sideOpacity = imageProgress;
 
-    if (rightColRef.current) {
-      rightColRef.current.style.transform = `translate3d(${sideTranslateRight}%, 0, 0)`;
-      rightColRef.current.style.opacity = `${sideOpacity}`;
+      if (leftColRef.current) {
+        leftColRef.current.style.transform = `translate3d(${sideTranslateLeft}%, 0, 0)`;
+        leftColRef.current.style.opacity = `${sideOpacity}`;
+      }
+
+      if (rightColRef.current) {
+        rightColRef.current.style.transform = `translate3d(${sideTranslateRight}%, 0, 0)`;
+        rightColRef.current.style.opacity = `${sideOpacity}`;
+      }
     }
 
     titleWordsRef.current.forEach((span, index) => {
@@ -198,7 +202,7 @@ export function TechnologySection() {
               <div 
                 className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
               >
-                <h2 className="max-w-3xl leading-tight tracking-tight text-white md:text-5xl lg:text-7xl text-5xl heading-display">
+                <h2 className="max-w-3xl leading-tight tracking-tight text-white md:text-5xl lg:text-7xl text-4xl heading-display">
                   {["RO", "Desalination", "Water Systems."].map((word, index) => (
                     <span
                       key={index}
@@ -209,71 +213,74 @@ export function TechnologySection() {
                       }}
                     >
                       {word}
-                      {index === 1 && <br />}
+                      {index === 1 && <br className="hidden md:block" />}
                     </span>
                   ))}
                 </h2>
               </div>
             </div>
 
-            {/* Left Column */}
-            <div 
-              ref={leftColRef}
-              className="absolute flex flex-col will-change-transform z-20"
-              style={{
-                top: '15%',
-                bottom: '15%',
-                left: '2%',
-                width: '25%',
-                gap: '16px',
-                transform: 'translate3d(-150%, 0, 0)',
-                opacity: 0,
-              }}
-            >
-              {sideImages.filter(img => img.position === "left").map((img, idx) => (
-                <div 
-                  key={idx} 
-                  className="relative flex-1 overflow-hidden"
-                  style={{ borderRadius: '24px' }}
-                >
-                  <Image
-                    src={img.src || "/placeholder.svg"}
-                    alt={img.alt}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
+            {/* Side Columns - Desktop Only for Performance */}
+            <div className="hidden lg:block">
+              {/* Left Column */}
+              <div 
+                ref={leftColRef}
+                className="absolute flex flex-col will-change-transform z-20"
+                style={{
+                  top: '15%',
+                  bottom: '15%',
+                  left: '2%',
+                  width: '25%',
+                  gap: '16px',
+                  transform: 'translate3d(-150%, 0, 0)',
+                  opacity: 0,
+                }}
+              >
+                {sideImages.filter(img => img.position === "left").map((img, idx) => (
+                  <div 
+                    key={idx} 
+                    className="relative flex-1 overflow-hidden"
+                    style={{ borderRadius: '24px' }}
+                  >
+                    <Image
+                      src={img.src || "/placeholder.svg"}
+                      alt={img.alt}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
 
-            {/* Right Column */}
-            <div 
-              ref={rightColRef}
-              className="absolute flex flex-col will-change-transform z-20"
-              style={{
-                top: '15%',
-                bottom: '15%',
-                right: '2%',
-                width: '25%',
-                gap: '16px',
-                transform: 'translate3d(150%, 0, 0)',
-                opacity: 0,
-              }}
-            >
-              {sideImages.filter(img => img.position === "right").map((img, idx) => (
-                <div 
-                  key={idx} 
-                  className="relative flex-1 overflow-hidden"
-                  style={{ borderRadius: '24px' }}
-                >
-                  <Image
-                    src={img.src || "/placeholder.svg"}
-                    alt={img.alt}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ))}
+              {/* Right Column */}
+              <div 
+                ref={rightColRef}
+                className="absolute flex flex-col will-change-transform z-20"
+                style={{
+                  top: '15%',
+                  bottom: '15%',
+                  right: '2%',
+                  width: '25%',
+                  gap: '16px',
+                  transform: 'translate3d(150%, 0, 0)',
+                  opacity: 0,
+                }}
+              >
+                {sideImages.filter(img => img.position === "right").map((img, idx) => (
+                  <div 
+                    key={idx} 
+                    className="relative flex-1 overflow-hidden"
+                    style={{ borderRadius: '24px' }}
+                  >
+                    <Image
+                      src={img.src || "/placeholder.svg"}
+                      alt={img.alt}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
 
           </div>

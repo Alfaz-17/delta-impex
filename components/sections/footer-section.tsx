@@ -31,7 +31,7 @@ export function FooterSection() {
         <div className="grid grid-cols-2 gap-12 md:grid-cols-4 lg:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1 lg:col-span-2">
-            <Link href="/" className="text-xl font-semibold tracking-tight text-foreground">
+            <Link href="/" className="heading-sub !text-xl !mb-0 text-foreground">
               Delta Impex
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
@@ -49,7 +49,7 @@ export function FooterSection() {
 
           {/* Explore */}
           <div>
-            <h4 className="mb-4 text-sm font-medium text-foreground">Explore</h4>
+            <h4 className="label-tech mb-4 !text-foreground !font-bold">Explore</h4>
             <ul className="space-y-3">
               {footerLinks.explore.map((link) => (
                 <li key={link.label}>

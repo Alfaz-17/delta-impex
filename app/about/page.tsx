@@ -6,38 +6,29 @@ import { TestimonialsSection } from "@/components/sections/testimonials-section"
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Check } from "lucide-react";
-import type { Metadata } from 'next'
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+
 function ScrollRevealText({ text }: { text: string }) {
   const containerRef = useRef<HTMLParagraphElement>(null);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const startOffset = windowHeight * 0.9;
-      const endOffset = windowHeight * 0.1;
-      const totalDistance = startOffset - endOffset;
-      const currentPosition = startOffset - rect.top;
-      const newProgress = Math.max(0, Math.min(1, currentPosition / totalDistance));
-      setProgress(newProgress);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 0.9", "end 0.1"]
+  });
+  
   const words = text.split(" ");
+  
   return (
     <p ref={containerRef} className="text-3xl font-semibold leading-snug md:text-4xl lg:text-5xl font-sans">
       {words.map((word, index) => {
-        const wordProgress = index / words.length;
-        const isRevealed = progress > wordProgress;
+        const start = index / words.length;
+        const end = (index + 1) / words.length;
+        const opacity = useTransform(scrollYProgress, [start, end], [0.2, 1]);
+        const color = useTransform(scrollYProgress, [start, end], ["#e4e4e7", "var(--foreground)"]);
+        
         return (
-          <span key={index} className="transition-colors duration-150" style={{ color: isRevealed ? "var(--foreground)" : "#e4e4e7" }}>
+          <motion.span key={index} style={{ color }}>
             {word}{index < words.length - 1 ? " " : ""}
-          </span>
+          </motion.span>
         );
       })}
     </p>
@@ -45,59 +36,42 @@ function ScrollRevealText({ text }: { text: string }) {
 }
 
 function FadeInOnScroll({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
-      { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? "translateY(0px)" : "translateY(60px)",
-        transition: `opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ 
+        duration: 0.8, 
+        delay, 
+        ease: [0.16, 1, 0.3, 1] 
       }}
+      className={className}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 
 function ParallaxImage({ src, alt }: { src: string; alt: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
-      setOffset(scrollProgress * 80 - 40);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
 
   return (
     <div ref={ref} className="relative w-full aspect-[16/9] overflow-hidden rounded-3xl md:rounded-[3rem]">
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className="object-cover will-change-transform"
-        style={{ transform: `translateY(${offset}px) scale(1.1)` }}
-      />
+      <motion.div style={{ y, height: "120%", top: "-10%", position: "absolute", width: "100%" }}>
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover"
+        />
+      </motion.div>
     </div>
   );
 }
@@ -123,19 +97,14 @@ const values = [
 
 export default function AboutPage() {
   const heroRef = useRef<HTMLDivElement>(null);
-  const [heroScrollProgress, setHeroScrollProgress] = useState(0);
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!heroRef.current) return;
-      const rect = heroRef.current.getBoundingClientRect();
-      const progress = Math.max(0, Math.min(1, -rect.top / (rect.height * 0.6)));
-      setHeroScrollProgress(progress);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const heroScale = useTransform(heroProgress, [0, 1], [1, 1.15]);
+  const heroOpacity = useTransform(heroProgress, [0, 0.6], [1, 0]);
+  const heroY = useTransform(heroProgress, [0, 1], [0, 100]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -143,32 +112,30 @@ export default function AboutPage() {
 
       {/* Hero Section */}
       <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-foreground">
-        <div className="absolute inset-0">
+        <motion.div className="absolute inset-0" style={{ scale: heroScale }}>
           <Image
             src="/images/hero-clean.png"
             alt="Marine and Industrial engineering legacy"
             fill
             className="object-cover contrast-[1.1] saturate-[1.1] opacity-60"
-            style={{
-              transform: `scale(${1 + heroScrollProgress * 0.15})`,
-            }}
             priority
           />
-        </div>
-        <div
+        </motion.div>
+        
+        {/* Dark overlay for text legibility */}
+        <div className="absolute inset-0 bg-black/40 z-0" />
+        
+        <motion.div
           className="relative z-10 text-center px-6"
-          style={{
-            opacity: 1 - heroScrollProgress * 1.5,
-            transform: `translateY(${heroScrollProgress * 80}px)`,
-          }}
+          style={{ opacity: heroOpacity, y: heroY }}
         >
-          <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-white/70 mb-6">
+          <p className="label-tech text-white/70 mb-6">
             Global Industrial Expertise
           </p>
-          <h1 className="font-display text-5xl md:text-7xl lg:text-[8vw] font-bold leading-[0.95] tracking-tighter text-white">
+          <h1 className="heading-display text-white text-5xl md:text-7xl lg:text-[8vw] !leading-[0.95] tracking-tighter">
             Our Legacy.
           </h1>
-        </div>
+        </motion.div>
       </section>
 
       {/* About Section - Split Layout */}
@@ -179,10 +146,10 @@ export default function AboutPage() {
             {/* Sticky Left Column */}
             <div className="lg:col-span-4">
               <div className="sticky top-32">
-                <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-muted-foreground mb-4">
+                <p className="label-tech text-muted-foreground mb-4">
                   Company Overview
                 </p>
-                <h2 className="font-display text-4xl leading-tight md:text-5xl font-medium text-foreground">
+                <h2 className="heading-section text-foreground md:text-5xl">
                   About Delta Impex.
                 </h2>
               </div>
@@ -202,7 +169,7 @@ export default function AboutPage() {
               <FadeInOnScroll delay={0.1}>
                 <div className="space-y-4">
                   <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Marine Division</p>
-                  <h3 className="font-display text-2xl font-medium text-foreground">Global Marine Engineering.</h3>
+                  <h3 className="heading-sub text-foreground !mb-4">Global Marine Engineering.</h3>
                   <p className="text-lg md:text-xl leading-relaxed font-sans text-muted-foreground">
                     In the <strong className="text-foreground font-medium border-b border-primary/20">marine sector</strong>, we supply a complete range of ship spare parts and machinery, including main and auxiliary engine components, turbochargers, pumps, compressors, navigation equipment, and engine room systems. We offer <strong className="text-foreground font-medium">new, used, and reconditioned parts</strong>, ensuring flexibility and affordability without compromising on quality.
                   </p>

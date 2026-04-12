@@ -143,23 +143,34 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                          </div>
                       )}
                       
-                      {/* Interaction Overlay */}
-                      <div className="absolute inset-0 bg-background/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 backdrop-blur-[2px]">
+                      {/* Interaction Overlay: Visible on hover for desktop, always visible buttons for mobile inside the card or similar */}
+                      <div className="absolute inset-0 bg-background/60 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 backdrop-blur-[2px]">
                         <a 
                           href={getWhatsAppLink(product.name)}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-6 py-3 bg-[#25D366] text-black font-bold uppercase tracking-widest text-[10px] rounded-full hover:bg-white hover:text-black transition-colors flex items-center gap-2 shadow-xl translate-y-4 group-hover:translate-y-0 duration-300"
+                          className="px-6 py-3 bg-[#25D366] text-black btn-text rounded-full hover:bg-white hover:text-black transition-colors flex items-center gap-2 shadow-xl translate-y-4 lg:group-hover:translate-y-0 duration-300"
                         >
                           <MessageCircle className="w-3.5 h-3.5" />
                           Inquire
                         </a>
                         <a 
                           href={`/contact?product=${encodeURIComponent(product.name)}`}
-                          className="px-6 py-3 bg-white text-black font-bold uppercase tracking-widest text-[10px] rounded-full hover:bg-white/80 transition-colors flex items-center gap-2 shadow-xl translate-y-4 group-hover:translate-y-0 duration-300 delay-75"
+                          className="px-6 py-3 bg-white text-black btn-text rounded-full hover:bg-white/80 transition-colors flex items-center gap-2 shadow-xl translate-y-4 lg:group-hover:translate-y-0 duration-300 delay-75"
                         >
                           <FileText className="w-3.5 h-3.5" />
                           Request Quote
+                        </a>
+                      </div>
+                      
+                      {/* Mobile Quick Action Buttons (Visible only on small screens) */}
+                      <div className="absolute bottom-4 right-4 flex lg:hidden gap-2">
+                        <a 
+                          href={getWhatsAppLink(product.name)}
+                          className="p-3 bg-[#25D366] text-black rounded-full shadow-lg"
+                          aria-label="WhatsApp Inquiry"
+                        >
+                          <MessageCircle className="w-4 h-4" />
                         </a>
                       </div>
                     </div>
