@@ -8,12 +8,13 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { Plus, Trash2, Layers, Edit, X, CheckSquare } from "lucide-react";
+import { Plus, Trash2, Layers, Edit, X, CheckSquare, Loader2 } from "lucide-react";
 
 import { DivisionSwitcher } from "@/components/admin/division-switcher";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function AdminCategoriesPage() {
+function CategoriesContent() {
   const searchParams = useSearchParams();
   const activeDivisionId = searchParams.get("divisionId");
   
@@ -266,5 +267,17 @@ export default function AdminCategoriesPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function AdminCategoriesPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-screen bg-background">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    }>
+      <CategoriesContent />
+    </Suspense>
   );
 }

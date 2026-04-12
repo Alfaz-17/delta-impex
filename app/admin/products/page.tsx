@@ -14,8 +14,9 @@ import { toast } from "sonner";
 import { Plus, Trash2, Package, Upload, Loader2, Star, Edit, X, CheckSquare } from "lucide-react";
 import { DivisionSwitcher } from "@/components/admin/division-switcher";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function AdminProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const activeDivisionId = searchParams.get("divisionId");
   
@@ -439,5 +440,17 @@ export default function AdminProductsPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function AdminProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-screen bg-background">
+        <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   );
 }

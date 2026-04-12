@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import AdminSidebar from "@/components/admin/sidebar";
@@ -41,7 +42,9 @@ export default async function AdminDashboardPage({
       <AdminSidebar active="dashboard" />
       
       <main className="flex-1 overflow-y-auto p-8 lg:p-12 bg-background">
-        <DivisionSwitcher />
+        <Suspense fallback={<div className="h-20 animate-pulse bg-muted rounded-xl mb-8" />}>
+          <DivisionSwitcher />
+        </Suspense>
         <header className="mb-8">
           <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-1">Overview</p>
           <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
