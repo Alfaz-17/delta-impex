@@ -31,26 +31,26 @@ export function PhilosophySection() {
     <section id="parts" className="bg-background">
       {/* Scroll-Animated Product Grid */}
       <div ref={containerRef} className="relative h-[250vh]">
-        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+        <div className="sticky top-0 h-dvh flex items-center justify-center overflow-hidden">
           <div className="relative w-full">
             {/* Title - positioned behind the blocks */}
             <motion.div 
               className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
               style={{ opacity: titleOpacity }}
             >
-              <h2 className="text-[12vw] leading-[0.95] tracking-tighter text-foreground md:text-[10vw] lg:text-[8vw] text-center px-6 heading-display">
+              <h2 className="heading-display text-center px-6 leading-[0.9] italic">
                 Our Core Divisions.
               </h2>
             </motion.div>
 
-            {/* Product Grid with 32px gap */}
-            <div className="relative z-10 grid grid-cols-1 gap-8 px-6 md:grid-cols-2 md:px-12 lg:px-20 max-w-[100rem] mx-auto">
+            {/* Product Grid with responsive gap and dynamic fit */}
+            <div className="relative z-10 grid grid-cols-1 gap-4 px-6 md:grid-cols-2 md:gap-8 md:px-12 lg:px-20 max-w-[100rem] mx-auto">
               
               {/* Left Image */}
               <motion.div style={{ x: leftX }}>
                 <Link 
                   href="/divisions/marine-parts"
-                  className="relative block aspect-[4/3] overflow-hidden rounded-[3rem] group cursor-pointer shadow-2xl"
+                  className="relative block aspect-[4/3] overflow-hidden rounded-[2rem] md:rounded-[3rem] group cursor-pointer shadow-2xl"
                   style={{
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
@@ -63,8 +63,8 @@ export function PhilosophySection() {
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
-                  <div className="absolute bottom-10 left-10">
-                    <span className="backdrop-blur-xl px-6 py-3 text-xs font-bold rounded-full bg-primary/80 text-white label-tech mb-0 border border-white/20 shadow-lg">
+                  <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
+                    <span className="backdrop-blur-xl px-4 py-2 md:px-6 md:py-3 text-[10px] md:text-xs font-bold rounded-full bg-primary/80 text-white label-tech mb-0 border border-white/20 shadow-lg whitespace-nowrap">
                       Marine & Industrial Parts
                     </span>
                   </div>
@@ -75,7 +75,7 @@ export function PhilosophySection() {
               <motion.div style={{ x: rightX }}>
                 <Link 
                   href="/divisions/ro-systems"
-                  className="relative block aspect-[4/3] overflow-hidden rounded-[3rem] group cursor-pointer shadow-2xl"
+                  className="relative block aspect-[4/3] overflow-hidden rounded-[2rem] md:rounded-[3rem] group cursor-pointer shadow-2xl"
                   style={{
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
@@ -88,8 +88,8 @@ export function PhilosophySection() {
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
-                  <div className="absolute bottom-10 left-10">
-                    <span className="backdrop-blur-xl px-6 py-3 text-xs font-bold rounded-full bg-primary/80 text-white label-tech mb-0 border border-white/20 shadow-lg">
+                  <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
+                    <span className="backdrop-blur-xl px-4 py-2 md:px-6 md:py-3 text-[10px] md:text-xs font-bold rounded-full bg-primary/80 text-white label-tech mb-0 border border-white/20 shadow-lg whitespace-nowrap">
                       RO Water Treatment
                     </span>
                   </div>
@@ -107,7 +107,7 @@ export function PhilosophySection() {
           <p className="label-tech uppercase">
             Trusted Partner Since Inception
           </p>
-          <p className="mt-8 leading-relaxed text-muted-foreground text-2xl md:text-3xl lg:text-4xl heading-display text-center">
+          <p className="mt-8 heading-section text-muted-foreground text-center">
             Delta Impex operates two specialized divisions: the supply of high-quality Marine & Industrial machinery spare parts, 
             and the provision of advanced RO Water Treatment Plants for both land and sea applications.
           </p>
