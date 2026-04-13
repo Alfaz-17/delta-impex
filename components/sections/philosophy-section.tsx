@@ -13,87 +13,71 @@ export function PhilosophySection() {
     offset: ["start start", "end end"],
   });
 
-  // Apply a gentle spring so the effect is ultra smooth and not jerky
-  const smoothProgress = useSpring(scrollYProgress, {
+  const smooth = useSpring(scrollYProgress, {
     stiffness: 70,
     damping: 20,
     restDelta: 0.001,
   });
 
-  // Translate left box from -150% to 0%
-  const leftX = useTransform(smoothProgress, [0, 1], ["-150%", "0%"]);
-  // Translate right box from 150% to 0%
-  const rightX = useTransform(smoothProgress, [0, 1], ["150%", "0%"]);
-  // Title fades out as cards collapse
-  const titleOpacity = useTransform(smoothProgress, [0, 0.8], [1, 0]);
+  // 🔥 RESPONSIVE ENTRY (fix mobile overflow)
+  const leftX = useTransform(
+    smooth,
+    [0, 1],
+    ["-100%", "0%"] // reduced from -150%
+  );
+
+  const rightX = useTransform(
+    smooth,
+    [0, 1],
+    ["100%", "0%"] // reduced from 150%
+  );
+
+  const titleOpacity = useTransform(smooth, [0, 0.6], [1, 0]);
 
   return (
     <section id="parts" className="bg-background">
-      {/* Scroll-Animated Product Grid */}
-      <div ref={containerRef} className="relative h-[250vh]">
-        <div className="sticky top-0 h-dvh flex items-center justify-center overflow-hidden">
+
+      {/* 🔥 SCROLL AREA (reduced for mobile feel) */}
+      <div
+        ref={containerRef}
+        className="relative h-[180vh] md:h-[220vh] lg:h-[250vh]"
+      >        
+        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+          
           <div className="relative w-full">
-            {/* Title - positioned behind the blocks */}
-            <motion.div 
+
+            {/* TITLE */}
+            <motion.div
               className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
               style={{ opacity: titleOpacity }}
             >
-              <h2 className="heading-display text-center px-6 leading-[0.9] italic">
+              <h2 className="heading-display text-center px-4 md:px-6 italic leading-[0.9] text-4xl md:text-5xl lg:text-6xl">
                 Our Core Divisions.
               </h2>
             </motion.div>
 
-            {/* Product Grid with responsive gap and dynamic fit */}
-            <div className="relative z-10 grid grid-cols-1 gap-4 px-6 md:grid-cols-2 md:gap-8 md:px-12 lg:px-20 max-w-[100rem] mx-auto">
-              
-              {/* Left Image */}
+            {/* GRID */}
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 
+                            gap-6 md:gap-8 lg:gap-12 
+                            px-4 md:px-12 lg:px-20 
+                            w-full max-w-7xl mx-auto">
+
+              {/* LEFT */}
               <motion.div style={{ x: leftX }}>
-                <Link 
+                <Card
                   href="/divisions/marine-parts"
-                  className="relative block aspect-[4/3] overflow-hidden rounded-[2rem] md:rounded-[3rem] group cursor-pointer shadow-2xl"
-                  style={{
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden',
-                  }}
-                >
-                  <Image
-                    src="/images/marine-parts-clean.png"
-                    alt="Marine and Industrial spare parts"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
-                  <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
-                    <span className="backdrop-blur-xl px-4 py-2 md:px-6 md:py-3 text-[10px] md:text-xs font-bold rounded-full bg-primary/80 text-white label-tech mb-0 border border-white/20 shadow-lg whitespace-nowrap">
-                      Marine & Industrial Parts
-                    </span>
-                  </div>
-                </Link>
+                  src="/images/marine-parts-clean.png"
+                  label="Marine & Industrial Parts"
+                />
               </motion.div>
 
-              {/* Right Image */}
+              {/* RIGHT */}
               <motion.div style={{ x: rightX }}>
-                <Link 
+                <Card
                   href="/divisions/ro-systems"
-                  className="relative block aspect-[4/3] overflow-hidden rounded-[2rem] md:rounded-[3rem] group cursor-pointer shadow-2xl"
-                  style={{
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden',
-                  }}
-                >
-                  <Image
-                    src="/ro/ro-plant-clean.png"
-                    alt="RO Water Treatment Plants and systems"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
-                  <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
-                    <span className="backdrop-blur-xl px-4 py-2 md:px-6 md:py-3 text-[10px] md:text-xs font-bold rounded-full bg-primary/80 text-white label-tech mb-0 border border-white/20 shadow-lg whitespace-nowrap">
-                      RO Water Treatment
-                    </span>
-                  </div>
-                </Link>
+                  src="/ro/ro-plant-clean.png"
+                  label="RO Water Treatment"
+                />
               </motion.div>
 
             </div>
@@ -101,18 +85,54 @@ export function PhilosophySection() {
         </div>
       </div>
 
-      {/* Description */}
-      <div className="px-6 py-20 md:px-12 md:py-28 lg:px-20 lg:py-36 lg:pb-14 underline-offset-8">
-        <div className="text-center max-w-5xl mx-auto">
-          <p className="label-tech uppercase">
+      {/* DESCRIPTION */}
+      <div className="px-6 py-16 md:px-12 md:py-24 lg:px-20">
+        <div className="text-center max-w-4xl mx-auto">
+          <p className="font-tech text-xs md:text-sm tracking-widest uppercase text-primary mb-4 md:mb-6">
             Trusted Partner Since Inception
           </p>
-          <p className="mt-8 heading-section text-muted-foreground text-center">
-            Delta Impex operates two specialized divisions: the supply of high-quality Marine & Industrial machinery spare parts, 
+
+          <p className="text-muted-foreground text-sm md:text-base lg:text-lg leading-relaxed">
+            Delta Impex operates two specialized divisions: the supply of high-quality Marine & Industrial machinery spare parts,
             and the provision of advanced RO Water Treatment Plants for both land and sea applications.
           </p>
         </div>
       </div>
     </section>
+  );
+}
+
+function Card({ href, src, label }: any) {
+  return (
+    <Link
+      href={href}
+      className="relative block 
+                 aspect-[4/3] 
+                 rounded-2xl md:rounded-3xl lg:rounded-[2.5rem] 
+                 overflow-hidden 
+                 group shadow-xl md:shadow-2xl"
+    >
+      <Image
+        src={src}
+        alt={label}
+        fill
+        className="object-cover group-hover:scale-105 transition-transform duration-700"
+      />
+
+      <div className="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition" />
+
+      <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8">
+        <span className="backdrop-blur-md px-4 py-2 md:px-6 md:py-3 
+                         text-xs md:text-sm lg:text-base
+                         font-semibold 
+                         rounded-full 
+                         bg-primary/90 text-white 
+                         border border-white/20 
+                         shadow-lg
+                         whitespace-nowrap">
+          {label}
+        </span>
+      </div>
+    </Link>
   );
 }

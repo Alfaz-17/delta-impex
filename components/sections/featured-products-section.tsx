@@ -106,7 +106,7 @@ export function FeaturedProductsSection({
             <p className="font-tech text-xs uppercase tracking-[0.4em]">No Live Inventory Available</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {products.map((product, index) => (
               <div 
                 key={product._id} 

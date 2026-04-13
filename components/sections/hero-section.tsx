@@ -3,9 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring, useMotionTemplate } from "framer-motion";
-
-const word = "DELTA";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+} from "framer-motion";
 
 export function HeroSection() {
   const containerRef = useRef<HTMLElement>(null);
@@ -15,177 +18,124 @@ export function HeroSection() {
     offset: ["start start", "end end"],
   });
 
-  // Apply a gentle spring for buttery smooth interpolation
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100, // Faster response to scroll
-    damping: 30,   // More controlled smoothing
-    restDelta: 0.001,
+  const smooth = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
   });
 
-  // Text fades out quickly as scroll begins
-  const textOpacity = useTransform(smoothProgress, [0, 0.2], [1, 0]);
-  const textPointerEvents = useTransform(smoothProgress, [0, 0.1], ["auto", "none"]);
+  // TEXT
+  const textOpacity = useTransform(smooth, [0, 0.2], [1, 0]);
 
-  // Video shrinks into a Bento Grid center card via clip-path
-  // Insets: top/bottom 12%, left/right 26.5%, rounded 32px corners
-  const videoClipPath = useTransform(
-    smoothProgress,
-    [0.1, 1], // Start shrinking slightly after text starts fading
-    ["inset(0% 0% 0% 0% round 0px)", "inset(12% 26.5% 12% 26.5% round 32px)"]
+  // VIDEO
+  const clip = useTransform(
+    smooth,
+    [0.1, 0.6],
+    [
+      "inset(0% 0% 0% 0% round 0px)",
+      "inset(20% 20% 20% 20% round 28px)",
+    ]
   );
 
-  // Side columns slide into place from off-screen
-  const leftColumnX = useTransform(smoothProgress, [0.2, 1], ["-150%", "0%"]);
-  const rightColumnX = useTransform(smoothProgress, [0.2, 1], ["150%", "0%"]);
-  const columnOpacity = useTransform(smoothProgress, [0.4, 1], [0, 1]);
+  const videoOpacity = useTransform(smooth, [0.5, 0.8], [1, 0]);
+
+  // 🔥 GRID CONTAINER SCALE (important)
+  const gridScale = useTransform(smooth, [0.3, 1], [0.8, 1]);
+  const gridOpacity = useTransform(smooth, [0.3, 1], [0, 1]);
+
+  // 🔥 SIDE ENTRY (keep your flow)
+  const leftX = useTransform(smooth, [0.2, 1], ["-120%", "0%"]);
+  const rightX = useTransform(smooth, [0.2, 1], ["120%", "0%"]);
 
   return (
-    <section ref={containerRef} className="relative bg-background h-[250vh]">
-      {/* Sticky boundary locking the layout to viewport during scroll */}
-      <div className="sticky top-0 h-dvh w-full overflow-hidden bg-background">
-        
-        {/* The Full-Screen to Shrunken-Center Video */}
-        <motion.div 
-          className="absolute inset-0 z-10 pointer-events-auto"
-          style={{ 
-            clipPath: videoClipPath,
-            WebkitClipPath: videoClipPath, // Safari support
-            willChange: "clip-path",
-            transform: "translateZ(0)" // Force composite layer
+    <section ref={containerRef} className="relative h-[250vh] bg-background">
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+
+        {/* 🎬 VIDEO */}
+        <motion.div
+          className="absolute inset-0 z-10"
+          style={{
+            clipPath: clip,
+            WebkitClipPath: clip,
+            opacity: videoOpacity,
           }}
         >
           <video
             src="/hero.mp4"
             autoPlay
-            loop
             muted
+            loop
             playsInline
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/75 to-black/20" />
-          
-          {/* Main Hero Content - Fades out on scroll */}
-          <motion.div 
-            className="absolute inset-0 flex flex-col justify-end items-start px-6 pb-20 md:px-16 md:pb-24 lg:px-24 lg:pb-28 text-left"
-            style={{ 
-              opacity: textOpacity,
-              pointerEvents: textPointerEvents as any
-            }}
+
+          <motion.div
+            className="absolute inset-0 flex flex-col justify-end px-6 pb-20 md:px-16"
+            style={{ opacity: textOpacity }}
           >
-            <p className="label-tech pl-4 border-l-2 border-white/50 text-white/80 mb-3">
-              Your Trusted Partner for Marine & Industrial Solutions
-            </p>
-            <h1 className="max-w-5xl heading-display text-white italic uppercase mb-2">
+            <h1 className="text-white text-4xl md:text-6xl font-bold mb-3">
               DELTA IMPEX
             </h1>
-            <p className="max-w-xl text-white/80 text-xs sm:text-sm md:text-base font-light leading-relaxed mb-8 drop-shadow">
-              Delta Impex is a reliable supplier of all types of ship spare parts and industrial equipment, serving clients across marine and land-based industries. We specialize in providing new, used, and reconditioned spare parts, ensuring cost-effective and high-quality solutions. From vessels at sea to industrial plants on land, we deliver dependable products tailored to your requirements.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-              <Link 
-                href="/contact"
-                className="bg-primary text-primary-foreground px-6 py-3 rounded-full btn-text hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(7,65,115,0.3)]"
-              >
-                Request a Quote
-              </Link>
-              <Link 
-                href="/about"
-                className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full btn-text hover:bg-white/20 hover:scale-105 transition-all duration-300 shadow-xl"
-              >
-                Explore Divisions
-              </Link>
-            </div>
           </motion.div>
         </motion.div>
 
-        {/* Left Column (2 Images) */}
-        <motion.div 
-          className="absolute flex flex-col gap-3 z-20"
-          style={{ 
-            left: "2%", 
-            top: "12%", 
-            bottom: "12%", 
-            width: "24%",
-            x: leftColumnX,
-            opacity: columnOpacity,
-            willChange: "transform, opacity",
-            transform: "translateZ(0)",
-            backfaceVisibility: "hidden"
-          }}
-        >
-          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
-            <Image
-              src="/images/mood/hero-marine-sunset.png"
-              alt="Marine engineering solutions at sea"
-              fill
-              priority
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            {/* Global dark opacity base + heavy gradient */}
-            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-3 md:p-8">
-              <h3 className="heading-sub text-white text-[clamp(0.8rem,1.5vw,1.5rem)] mb-1 !mb-1 drop-shadow-lg">Marine Parts</h3>
-              <p className="font-sans text-[clamp(0.6rem,1vw,0.85rem)] text-white/90 leading-tight drop-shadow">Delivering critical spare parts to vessels worldwide.</p>
-            </div>
-          </div>
-          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
-            <Image
-              src="/images/mood/hero-marine-detail.png"
-              alt="Precision marine machinery detail"
-              fill
-              priority
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-3 md:p-8">
-              <h3 className="heading-sub text-white text-[clamp(0.8rem,1.5vw,1.5rem)] mb-1 !mb-1 drop-shadow-lg">Precision Spares</h3>
-              <p className="font-sans text-[clamp(0.6rem,1vw,0.85rem)] text-white/90 leading-tight drop-shadow">Sourcing rigorously tested mechanical components.</p>
-            </div>
-          </div>
-        </motion.div>
+        {/* 🔥 PERFECT GRID CENTER */}
+<motion.div
+  className="absolute z-20 left-1/2 top-1/2 
+             w-[92vw] 
+             md:w-[85vw] 
+             lg:w-[80vw] 
+             xl:w-[70vw]"
+  style={{
+    translateX: "-50%",
+    translateY: "-50%",
+    scale: gridScale,
+    opacity: gridOpacity,
+  }}
+>
+<div className="grid grid-cols-2 gap-3 h-[70vh] max-h-[700px]">
+    {/* LEFT */}
+<motion.div className="flex flex-col gap-3 h-full" style={{ x: leftX }}>      <Card
+        src="/images/mood/hero-marine-sunset.png"
+        title="Marine Parts"
+        desc="Ship spare parts"
+      />
+      <Card
+        src="/images/mood/hero-marine-detail.png"
+        title="Precision Spares"
+        desc="High-quality components"
+      />
+    </motion.div>
 
-        {/* Right Column (2 Images) */}
-        <motion.div 
-          className="absolute flex flex-col gap-3 z-20"
-          style={{ 
-            right: "2%", 
-            top: "12%", 
-            bottom: "12%", 
-            width: "24%",
-            x: rightColumnX,
-            opacity: columnOpacity,
-            willChange: "transform, opacity",
-            transform: "translateZ(0)",
-            backfaceVisibility: "hidden"
-          }}
-        >
-          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
-            <Image
-              src="/images/mood/hero-industrial-scale.png"
-              alt="Industrial spare parts supply and power plants"
-              fill
-              priority
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-3 md:p-8">
-              <h3 className="heading-sub text-white text-[clamp(0.8rem,1.5vw,1.5rem)] mb-1 !mb-1 drop-shadow-lg">Industrial Supply</h3>
-              <p className="font-sans text-[clamp(0.6rem,1vw,0.85rem)] text-white/90 leading-tight drop-shadow">Equipping land-based factories and power plants.</p>
-            </div>
-          </div>
-          <div className="relative flex-1 w-full overflow-hidden rounded-[32px] shadow-2xl group border border-white/10">
-            <Image
-              src="/ro/ro-plant-clean.png"
-              alt="Industrial RO Water Treatment Plant"
-              fill
-              priority
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-black/30 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col justify-end p-3 md:p-8">
-              <h3 className="heading-sub text-white text-[clamp(0.8rem,1.5vw,1.5rem)] mb-1 !mb-1 drop-shadow-lg">RO Water Systems</h3>
-              <p className="font-sans text-[clamp(0.6rem,1vw,0.85rem)] text-white/90 leading-tight drop-shadow">Industrial-scale Reverse Osmosis desalination.</p>
-            </div>
-          </div>
-        </motion.div>
+    {/* RIGHT */}
+<motion.div className="flex flex-col gap-3 h-full" style={{ x: rightX }}>      <Card
+        src="/images/mood/hero-industrial-scale.png"
+        title="Industrial Supply"
+        desc="Factory solutions"
+      />
+      <Card
+        src="/ro/ro-plant-clean.png"
+        title="RO Systems"
+        desc="Water treatment"
+      />
+    </motion.div>
 
+  </div>
+</motion.div>
       </div>
     </section>
+  );
+}
+
+// 🔥 CARD COMPONENT (clean + reusable)
+function Card({ src, title, desc }: any) {
+  return (
+    <div className="relative flex-1 rounded-2xl overflow-hidden border border-white/10">
+      <Image src={src} alt={title} fill className="object-cover" />
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col justify-end p-3">
+        <h3 className="text-white text-sm font-semibold">{title}</h3>
+        <p className="text-white/80 text-xs">{desc}</p>
+      </div>
+    </div>
   );
 }
