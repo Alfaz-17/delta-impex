@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import AdminSidebar from "@/components/admin/sidebar";
+import { AdminMobileHeader } from "@/components/admin/mobile-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +23,7 @@ function CategoriesContent() {
   const [divisions, setDivisions] = useState<any[]>([]);
   const [formData, setFormData] = useState({ name: "", division: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   // Selection and Edit State
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -137,10 +139,15 @@ function CategoriesContent() {
   };
 
   return (
-    <div className="flex h-screen bg-background text-foreground">
-      <AdminSidebar active="categories" />
+    <div className="flex flex-col lg:flex-row min-h-screen bg-background text-foreground">
+      <AdminMobileHeader 
+        isMenuOpen={isSidebarOpen} 
+        onToggleMenu={() => setIsSidebarOpen(!isSidebarOpen)} 
+      />
       
-      <main className="flex-1 overflow-y-auto p-8 lg:p-12 bg-background">
+      <AdminSidebar active="categories" isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      
+      <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 bg-background">
         <DivisionSwitcher />
         <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>

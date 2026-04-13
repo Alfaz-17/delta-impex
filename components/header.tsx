@@ -14,7 +14,11 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      if (!isHome) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(window.scrollY > 50);
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
