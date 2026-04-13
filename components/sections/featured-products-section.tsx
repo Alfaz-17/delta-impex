@@ -58,7 +58,7 @@ export function FeaturedProductsSection({
     <section id="parts-grid" className="bg-background min-h-screen">
       {/* Section Title & Tabs */}
       <div className="px-6 py-20 text-center md:px-12 md:py-28 lg:px-20 lg:py-32 lg:pb-20">
-        <h2 className="text-3xl tracking-tight text-foreground md:text-4xl lg:text-5xl heading-display uppercase">
+        <h2 className="heading-display text-foreground uppercase">
           {title}
           <br />
           {subtitle}
@@ -88,7 +88,7 @@ export function FeaturedProductsSection({
           </div>
         )}
 
-        <p className="mx-auto mt-8 max-w-md text-sm text-muted-foreground font-sans">
+        <p className="mx-auto mt-8 max-w-md body-text">
           {activeTab === "marine" 
             ? "A comprehensive selection of main engine, auxiliary machinery, and industrial equipment components."
             : "Precision-engineered RO desalination components for specialized water treatment plants."}

@@ -89,11 +89,11 @@ export function ROProcessSection() {
     <section ref={containerRef} className="relative bg-background">
       {/* Introduction Header */}
       <div className="px-6 py-24 text-center md:px-12 md:py-32 lg:px-20 lg:py-40">
-        <h2 className="mb-6 font-display text-4xl font-medium tracking-tight text-foreground md:text-5xl lg:text-6xl italic">
+        <h2 className="heading-display mb-6 text-foreground">
           Turning Seawater into <br />
           <span className="text-muted-foreground">Pure Drinking Water.</span>
         </h2>
-        <p className="mx-auto max-w-2xl text-lg text-muted-foreground font-sans leading-relaxed">
+        <p className="mx-auto max-w-2xl body-text leading-relaxed">
           A Reverse Osmosis (RO) Seawater Desalination Plant is an advanced water treatment system 
           designed to convert saline seawater into clean, safe, and potable freshwater.
         </p>
@@ -187,11 +187,11 @@ export function ROProcessSection() {
                       </span>
                     </div>
                     
-                    <h3 className="mb-6 heading-sub !mb-6 !text-3xl md:!text-4xl lg:!text-5xl">
+                    <h3 className="heading-section mb-6">
                       {step.title}
                     </h3>
                     
-                    <div className="text-lg leading-relaxed text-muted-foreground font-sans">
+                    <div className="body-text !leading-relaxed">
                       {step.description}
                     </div>
                     
@@ -215,7 +215,7 @@ export function ROProcessSection() {
         <p className="label-tech mb-8">
           Reliable Supply Globally
         </p>
-        <h4 className="mx-auto max-w-4xl heading-section leading-snug not-italic tracking-normal">
+        <h4 className="mx-auto max-w-4xl heading-section !not-italic !tracking-normal leading-snug">
           From vessels at sea to industrial plants on land, providing high-quality spare parts and RO systems.
         </h4>
       </div>

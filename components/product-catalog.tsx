@@ -73,10 +73,10 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
         {/* Header & Controls */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
           <div className="max-w-2xl">
-            <h2 className="heading-display text-4xl md:text-5xl lg:text-6xl mb-4">
+            <h2 className="heading-display mb-4">
               Inventory Catalog.
             </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed">
+            <p className="body-text leading-relaxed">
               Explore our comprehensive range of high-quality {divisionName.toLowerCase()} solutions.
             </p>
           </div>

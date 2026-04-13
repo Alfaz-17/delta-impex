@@ -40,7 +40,7 @@ export function Header() {
   return (
     <>
       <header 
-        className={`fixed top-4 left-1/2 -translate-x-1/2 z-[100] w-[95%] max-w-6xl transition-all duration-500 ${
+        className={`fixed top-4 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] md:w-[95%] max-w-6xl transition-all duration-500 ${
           isScrolled 
             ? "bg-background/90 backdrop-blur-2xl rounded-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] py-3" 
             : "bg-transparent py-4"
@@ -157,7 +157,7 @@ export function Header() {
                       <p className={`font-tech text-[10px] uppercase tracking-widest font-bold ${pathname === link.href ? "text-primary" : "text-muted-foreground"}`}>
                         0{i + 1}
                       </p>
-                      <h2 className={`font-display text-4xl font-medium group-hover:translate-x-2 transition-transform duration-300 ${
+                      <h2 className={`heading-section !italic-0 group-hover:translate-x-2 transition-transform duration-300 ${
                         pathname === link.href ? "text-primary" : "text-foreground"
                       }`}>
                         {link.label}

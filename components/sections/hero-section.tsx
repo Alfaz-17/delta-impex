@@ -69,12 +69,39 @@ export function HeroSection() {
           />
 
           <motion.div
-            className="absolute inset-0 flex flex-col justify-end px-6 pb-20 md:px-16"
+            className="absolute inset-0 z-10 flex flex-col justify-end px-6 pb-16 md:px-16 md:pb-24 lg:pb-28"
             style={{ opacity: textOpacity }}
           >
-            <h1 className="text-white text-4xl md:text-6xl font-bold mb-3">
-              DELTA IMPEX
-            </h1>
+            {/* Dark overlay for text legibility over video */}
+            <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/10 pointer-events-none" />
+
+            <div className="relative z-10 max-w-3xl" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.4)' }}>
+              <p className="label-tech !text-white/70 mb-4 md:mb-5 drop-shadow-lg">
+                Marine &amp; Industrial Specialists
+              </p>
+              <h1 className="heading-display text-white !font-bold mb-4 md:mb-6 drop-shadow-2xl">
+                DELTA IMPEX
+              </h1>
+              <p className="body-text !text-white/85 max-w-xl mb-6 md:mb-8 drop-shadow-lg" style={{ textShadow: '0 1px 12px rgba(0,0,0,0.5)' }}>
+                Your trusted global supplier of specialized marine engine spare parts, 
+                industrial machinery, and advanced RO water treatment systems.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  href="/divisions/marine-parts"
+                  className="btn-text bg-white text-foreground px-6 py-3 md:px-8 md:py-3.5 rounded-full hover:bg-white/90 transition-colors shadow-xl"
+                >
+                  Explore Catalog
+                </Link>
+                <Link
+                  href="/contact"
+                  className="btn-text text-white border border-white/40 px-6 py-3 md:px-8 md:py-3.5 rounded-full hover:bg-white/10 transition-colors backdrop-blur-md shadow-lg"
+                >
+                  Get a Quote
+                </Link>
+              </div>
+            </div>
           </motion.div>
         </motion.div>
 
@@ -130,7 +157,7 @@ export function HeroSection() {
 function Card({ src, title, desc }: any) {
   return (
     <div className="relative flex-1 rounded-2xl overflow-hidden border border-white/10">
-      <Image src={src} alt={title} fill className="object-cover" />
+      <Image src={src} alt={title} fill className="object-cover" sizes="(max-width: 768px) 50vw, 25vw" />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col justify-end p-3">
         <h3 className="text-white text-sm font-semibold">{title}</h3>

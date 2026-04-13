@@ -72,7 +72,7 @@ export function BrandsMarquee() {
           transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
-        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-tech mb-4">
+        <p className="label-tech !text-muted-foreground mb-4">
           Trusted By Industry Leaders
         </p>
         <div className="mx-auto h-px w-12 bg-gradient-to-r from-transparent via-muted-foreground/40 to-transparent" />
@@ -87,8 +87,8 @@ export function BrandsMarquee() {
         }}
       >
         {/* Edge fade masks */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 lg:w-48 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 md:w-32 lg:w-48 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 md:w-32 lg:w-48 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
         <div className="marquee-track-left flex">
           {duplicatedBrands.map((brand, i) => (

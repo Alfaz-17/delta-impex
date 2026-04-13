@@ -109,7 +109,7 @@ export function GallerySection() {
             {images.map((image, index) => (
               <div
                 key={index}
-                className="relative h-[70vh] w-[85vw] flex-shrink-0 overflow-hidden rounded-2xl md:w-[60vw] lg:w-[45vw]"
+                className="relative h-[50vh] md:h-[70vh] w-[85vw] flex-shrink-0 overflow-hidden rounded-2xl md:w-[60vw] lg:w-[45vw]"
                 style={{
                   transform: 'translateZ(0)',
                   WebkitTransform: 'translateZ(0)',
@@ -120,6 +120,7 @@ export function GallerySection() {
                   alt={image.alt}
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 85vw, (max-width: 1024px) 60vw, 45vw"
                   priority={index < 3}
                 />
               </div>

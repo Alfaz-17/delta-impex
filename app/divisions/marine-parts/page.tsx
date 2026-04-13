@@ -46,7 +46,7 @@ export default function MarinePartsPage() {
           <p className="label-tech text-white/70 mb-6">
             Division 01
           </p>
-          <h1 className="heading-display text-white text-5xl md:text-7xl lg:text-[8vw] !leading-[0.95] tracking-tighter uppercase">
+          <h1 className="heading-display text-white !leading-[0.95] uppercase">
             Marine & <br /> Industrial Parts.
           </h1>
         </motion.div>
@@ -64,7 +64,7 @@ export default function MarinePartsPage() {
                 <h2 className="heading-section mb-4">
                   Marine & Ship Spare Parts
                 </h2>
-                <p className="font-sans text-lg text-muted-foreground leading-relaxed mb-6">
+                <p className="body-text !leading-relaxed mb-6">
                   We supply all types of ship spare parts for main and auxiliary machinery, including:
                 </p>
                 <ul className="list-disc pl-5 space-y-2 font-sans text-muted-foreground mb-6">
@@ -85,10 +85,10 @@ export default function MarinePartsPage() {
               </div>
 
               <div>
-                <h2 className="font-display text-4xl font-medium tracking-tighter mb-4 italic">
+                <h2 className="heading-section mb-4">
                   Industrial Solutions
                 </h2>
-                <p className="font-sans text-lg text-muted-foreground leading-relaxed mb-6">
+                <p className="body-text !leading-relaxed mb-6">
                   We provide similar solutions for land-based industries, including:
                 </p>
                 <ul className="list-disc pl-5 space-y-2 font-sans text-muted-foreground">
@@ -100,7 +100,7 @@ export default function MarinePartsPage() {
               </div>
 
               <div>
-                <h2 className="font-display text-4xl font-medium tracking-tighter mb-4 italic">
+                <h2 className="heading-section mb-4">
                   Power Plant Supply
                 </h2>
                 <ul className="list-disc pl-5 space-y-2 font-sans text-muted-foreground">
@@ -126,7 +126,7 @@ export default function MarinePartsPage() {
       {/* Call to Action Bar */}
       <section className="bg-foreground text-background py-20">
         <div className="px-6 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between gap-8 max-w-7xl mx-auto">
-          <h2 className="heading-section text-border !italic text-3xl md:text-4xl text-center md:text-left">
+          <h2 className="heading-section text-border text-center md:text-left">
             Need a specific part? <br />
             <span className="text-white/60">Our sourcing team is ready.</span>
           </h2>

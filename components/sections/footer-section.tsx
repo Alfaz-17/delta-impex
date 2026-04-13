@@ -28,13 +28,13 @@ export function FooterSection() {
     <footer id="contact" className="bg-background">
       {/* Main Footer Content */}
       <div className="border-t border-border px-6 py-16 md:px-12 md:py-20 lg:px-20">
-        <div className="grid grid-cols-2 gap-12 md:grid-cols-4 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1 lg:col-span-2">
-            <Link href="/" className="heading-sub !text-xl !mb-0 text-foreground">
+            <Link href="/" className="heading-sub !mb-0 text-foreground">
               Delta Impex
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-4 max-w-xs body-text">
               Your Trusted Partner for Marine & Industrial Spare Parts and Advanced RO Water Treatment Systems worldwide.
             </p>
             <div className="mt-6 text-sm text-muted-foreground">
@@ -49,7 +49,7 @@ export function FooterSection() {
 
           {/* Explore */}
           <div>
-            <h4 className="label-tech mb-4 !text-foreground !font-bold">Explore</h4>
+            <h4 className="label-tech mb-4" style={{ color: 'var(--foreground)', fontWeight: 700 }}>Explore</h4>
             <ul className="space-y-3">
               {footerLinks.explore.map((link) => (
                 <li key={link.label}>

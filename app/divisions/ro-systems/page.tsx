@@ -47,7 +47,7 @@ export default function ROSystemsPage() {
           <p className="label-tech text-white/70 mb-6">
             Division 02
           </p>
-          <h1 className="heading-display text-white text-5xl md:text-7xl lg:text-[8vw] !leading-[0.95] tracking-tighter uppercase">
+          <h1 className="heading-display text-white !leading-[0.95] uppercase">
             Water Treatment <br /> & RO Systems.
           </h1>
         </motion.div>
@@ -59,10 +59,10 @@ export default function ROSystemsPage() {
       {/* Introduction Section */}
       <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background text-center border-t border-border/50">
         <div className="max-w-4xl mx-auto">
-          <h2 className="heading-section mb-8 !transform-none">
+          <h2 className="heading-section mb-8">
             RO Water Treatment Plants
           </h2>
-          <p className="font-sans text-xl text-muted-foreground leading-relaxed mb-6">
+          <p className="body-text !leading-relaxed mb-6">
             We supply RO systems for both marine and industrial use, including:
           </p>
           <ul className="list-none space-y-4 font-sans text-lg text-foreground mb-6 inline-block text-left">
@@ -86,6 +86,7 @@ export default function ROSystemsPage() {
               alt="Industrial RO Installation"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-background/20" />
             <div className="absolute bottom-8 left-8">
@@ -99,11 +100,12 @@ export default function ROSystemsPage() {
               alt="RO Membrane Replacement"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-background/20" />
             <div className="absolute bottom-8 left-8">
               <span className="font-tech text-xs uppercase tracking-widest text-white/70 block mb-2">Service 01</span>
-              <h3 className="font-display text-2xl text-white">Advanced Membrane Sourcing</h3>
+              <h3 className="heading-sub text-white !mb-0">Advanced Membrane Sourcing</h3>
             </div>
           </div>
         </div>

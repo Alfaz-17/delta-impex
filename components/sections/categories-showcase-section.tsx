@@ -39,10 +39,10 @@ export function CategoriesShowcaseSection() {
     <section className="bg-background py-24 md:py-32 border-t border-border/50">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
         <div className="text-center mb-16">
-          <p className="font-tech text-xs uppercase tracking-[0.3em] text-primary mb-4">
+          <p className="label-tech !text-primary mb-4">
             Our Expertise
           </p>
-          <h2 className="heading-display text-4xl md:text-5xl">
+          <h2 className="heading-display">
             Industry Sectors.
           </h2>
         </div>
@@ -61,7 +61,7 @@ export function CategoriesShowcaseSection() {
                     <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                       {division.slug === "marine-industrial" ? <Anchor className="w-5 h-5" /> : <Droplet className="w-5 h-5" />}
                     </div>
-                    <h3 className="heading-sub text-2xl mb-0">{division.name}</h3>
+                    <h3 className="heading-sub !mb-0">{division.name}</h3>
                   </div>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

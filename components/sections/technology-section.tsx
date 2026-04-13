@@ -36,7 +36,7 @@ function ScrollRevealText({ text }: { text: string }) {
   return (
     <p
       ref={containerRef}
-      className="text-3xl font-semibold leading-snug md:text-4xl lg:text-5xl"
+      className="heading-section !not-italic !font-semibold"
     >
       {words.map((word, index) => {
         const wordProgress = index / words.length;
@@ -181,6 +181,7 @@ export function TechnologySection() {
                     src={img.src || "/placeholder.svg"}
                     alt={img.alt}
                     fill
+                    sizes="22vw"
                     className="object-cover"
                   />
                 </div>
@@ -201,6 +202,7 @@ export function TechnologySection() {
                 src="/ro/ro-plant-framed.png"
                 alt="Reverse Osmosis plant and desalination technology"
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-foreground/40" />
@@ -209,7 +211,7 @@ export function TechnologySection() {
               <div 
                 className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
               >
-                <h2 className="max-w-3xl font-medium leading-tight tracking-tight text-white md:text-5xl lg:text-7xl text-5xl">
+                <h2 className="heading-display max-w-3xl text-white">
                   {["RO", "Desalination", "Water Systems."].map((word, index) => {
                     // Each word fades out sequentially based on scrollProgress
                     const wordFadeStart = index * 0.07; // Technology: 0, Meets: 0.07, Wilderness: 0.14
@@ -261,6 +263,7 @@ export function TechnologySection() {
                     src={img.src || "/placeholder.svg"}
                     alt={img.alt}
                     fill
+                    sizes="22vw"
                     className="object-cover"
                   />
                 </div>

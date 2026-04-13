@@ -18,7 +18,7 @@ function ScrollRevealText({ text }: { text: string }) {
   const words = text.split(" ");
   
   return (
-    <p ref={containerRef} className="text-3xl font-semibold leading-snug md:text-4xl lg:text-5xl font-sans">
+    <p ref={containerRef} className="heading-section !not-italic !font-semibold font-sans">
       {words.map((word, index) => {
         const start = index / words.length;
         const end = (index + 1) / words.length;
@@ -132,7 +132,7 @@ export default function AboutPage() {
           <p className="label-tech text-white/70 mb-6">
             Global Industrial Expertise
           </p>
-          <h1 className="heading-display text-white text-5xl md:text-7xl lg:text-[8vw] !leading-[0.95] tracking-tighter">
+          <h1 className="heading-display text-white !leading-[0.95]">
             Our Legacy.
           </h1>
         </motion.div>
@@ -149,7 +149,7 @@ export default function AboutPage() {
                 <p className="label-tech text-muted-foreground mb-4">
                   Company Overview
                 </p>
-                <h2 className="heading-section text-foreground md:text-5xl">
+                <h2 className="heading-section text-foreground">
                   About Delta Impex.
                 </h2>
               </div>
@@ -160,7 +160,7 @@ export default function AboutPage() {
               <FadeInOnScroll>
                 <div className="space-y-2">
                   <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Introduction</p>
-                  <p className="text-xl md:text-3xl leading-relaxed font-sans text-foreground font-medium">
+                  <p className="heading-section !not-italic !font-medium text-foreground">
                     Delta Impex is a Bhavnagar-based company specializing in <span className="text-primary">marine spare parts, industrial solutions, and RO water treatment systems</span>, delivering reliable and cost-effective solutions to clients across both maritime and land-based industries.
                   </p>
                 </div>
@@ -170,7 +170,7 @@ export default function AboutPage() {
                 <div className="space-y-4">
                   <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Marine Division</p>
                   <h3 className="heading-sub text-foreground !mb-4">Global Marine Engineering.</h3>
-                  <p className="text-lg md:text-xl leading-relaxed font-sans text-muted-foreground">
+                  <p className="body-text !leading-relaxed">
                     In the <strong className="text-foreground font-medium border-b border-primary/20">marine sector</strong>, we supply a complete range of ship spare parts and machinery, including main and auxiliary engine components, turbochargers, pumps, compressors, navigation equipment, and engine room systems. We offer <strong className="text-foreground font-medium">new, used, and reconditioned parts</strong>, ensuring flexibility and affordability without compromising on quality.
                   </p>
                 </div>
@@ -179,8 +179,8 @@ export default function AboutPage() {
               <FadeInOnScroll delay={0.15}>
                 <div className="space-y-4">
                   <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Industrial Division</p>
-                  <h3 className="font-display text-2xl font-medium text-foreground">Heavy Industrial Solutions.</h3>
-                  <p className="text-lg md:text-xl leading-relaxed font-sans text-muted-foreground">
+                  <h3 className="heading-sub text-foreground">Heavy Industrial Solutions.</h3>
+                  <p className="body-text !leading-relaxed">
                     Our <strong className="text-foreground font-medium border-b border-primary/20">industrial division</strong> supports land-based industries with machinery, generator sets, spare parts, and essential equipment. We cater to factories, plants, and infrastructure projects with dependable products tailored to operational requirements.
                   </p>
                 </div>
@@ -189,8 +189,8 @@ export default function AboutPage() {
               <FadeInOnScroll delay={0.2}>
                 <div className="space-y-4">
                   <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">RO Water Treatment</p>
-                  <h3 className="font-display text-2xl font-medium text-foreground">Advanced Desalination.</h3>
-                  <p className="text-lg md:text-xl leading-relaxed font-sans text-muted-foreground">
+                  <h3 className="heading-sub text-foreground">Advanced Desalination.</h3>
+                  <p className="body-text !leading-relaxed">
                     Alongside this, we provide advanced <strong className="text-foreground font-medium border-b border-primary/20">RO water treatment and desalination solutions</strong> for both marine and industrial use. From reverse osmosis plants to complete water purification systems and maintenance support, we help convert seawater and raw water into clean, usable resources.
                   </p>
                 </div>
@@ -198,10 +198,10 @@ export default function AboutPage() {
 
               <FadeInOnScroll delay={0.25}>
                 <div className="pt-12 border-t border-border space-y-8">
-                  <p className="text-lg md:text-xl leading-relaxed font-sans text-muted-foreground italic">
+                  <p className="body-text !leading-relaxed !italic">
                     With strong sourcing capabilities, industry expertise, and a commitment to timely delivery, Delta Impex ensures high performance, reliability, and customer satisfaction in every project.
                   </p>
-                  <p className="text-lg md:text-xl leading-relaxed font-sans text-foreground font-medium">
+                  <p className="body-text !leading-relaxed !text-foreground !font-medium">
                     We are dedicated to building long-term relationships by delivering <span className="text-primary underline underline-offset-8 decoration-solid">quality products, competitive pricing, and trusted service</span> across all our business segments.
                   </p>
                 </div>
@@ -219,7 +219,7 @@ export default function AboutPage() {
             <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-background/50 mb-8">
               Our Vision
             </p>
-            <p className="font-display text-3xl leading-snug md:text-5xl font-medium text-background">
+            <p className="heading-section !not-italic !font-medium text-background">
               "To become a trusted global supplier in marine, industrial, and water treatment sectors by delivering reliable, efficient, and cost-effective solutions."
             </p>
           </FadeInOnScroll>
@@ -237,7 +237,7 @@ export default function AboutPage() {
                 <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-primary mb-4">
                   Our Advantage
                 </p>
-                <h2 className="font-display text-4xl leading-tight md:text-5xl font-medium text-foreground">
+                <h2 className="heading-display text-foreground">
                   Why Choose<br/>Delta Impex.
                 </h2>
               </div>
@@ -286,8 +286,8 @@ export default function AboutPage() {
                           <span className="font-tech text-xs text-muted-foreground font-bold italic">M{idx + 1}</span>
                           <div className="h-px flex-1 bg-border group-hover:bg-primary/30 transition-colors" />
                         </div>
-                        <h4 className="font-display text-xl font-medium mb-3 text-foreground">{item.title}</h4>
-                        <p className="font-sans text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                        <h4 className="heading-sub text-foreground !mb-3">{item.title}</h4>
+                        <p className="body-text">{item.desc}</p>
                       </div>
                     </FadeInOnScroll>
                   ))}
@@ -334,8 +334,8 @@ export default function AboutPage() {
                           <span className="font-tech text-xs text-muted-foreground font-bold italic">W{idx + 1}</span>
                           <div className="h-px flex-1 bg-border group-hover:bg-primary/30 transition-colors" />
                         </div>
-                        <h4 className="font-display text-xl font-medium mb-3 text-foreground">{item.title}</h4>
-                        <p className="font-sans text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                        <h4 className="heading-sub text-foreground !mb-3">{item.title}</h4>
+                        <p className="body-text">{item.desc}</p>
                       </div>
                     </FadeInOnScroll>
                   ))}
@@ -359,9 +359,9 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((v, i) => (
               <FadeInOnScroll key={i} delay={i * 0.1}>
-                <div className="p-8 border border-border rounded-[2rem] hover:bg-muted/50 transition-all duration-500 h-full flex flex-col">
-                  <h3 className="font-display text-xl font-medium mb-4">{v.title}</h3>
-                  <p className="text-muted-foreground text-sm font-sans leading-relaxed">
+                <div className="p-6 md:p-8 border border-border rounded-2xl md:rounded-[2rem] hover:bg-muted/50 transition-all duration-500 h-full flex flex-col">
+                  <h3 className="heading-sub text-foreground !mb-4">{v.title}</h3>
+                  <p className="body-text">
                     {v.description}
                   </p>
                 </div>

@@ -122,7 +122,7 @@ export default function ContactPage() {
           <p className="label-tech text-white/70 mb-6">
             Get in Touch
           </p>
-          <h1 className="heading-display text-white text-5xl md:text-7xl lg:text-[8vw] !leading-[0.95] tracking-tighter">
+          <h1 className="heading-display text-white !leading-[0.95]">
             Contact Us.
           </h1>
         </div>
@@ -136,8 +136,8 @@ export default function ContactPage() {
               <div className="p-8 md:p-10 border-b md:border-b-0 md:border-r border-border last:border-r-0 last:border-b-0 group hover:bg-muted transition-colors duration-500">
                 <method.icon className="w-6 h-6 text-muted-foreground group-hover:text-foreground transition-colors mb-6" />
                 <h3 className="label-tech mb-4">{method.title}</h3>
-                <p className="heading-sub !mb-1 !text-lg !font-bold tracking-tight">{method.primary}</p>
-                <p className="font-sans text-sm text-muted-foreground">{method.secondary}</p>
+                <p className="heading-sub !mb-1 !font-bold" style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1.15rem)' }}>{method.primary}</p>
+                <p className="body-text">{method.secondary}</p>
               </div>
             </FadeInOnScroll>
           ))}
@@ -150,10 +150,10 @@ export default function ContactPage() {
           <FadeInOnScroll>
             <div>
               <p className="label-tech mb-4">Send a Message</p>
-              <h2 className="heading-section text-5xl lg:text-6xl mb-8">
+              <h2 className="heading-section mb-8">
                 Let&apos;s Work Together.
               </h2>
-              <p className="font-sans text-lg text-muted-foreground leading-relaxed mb-8">
+              <p className="body-text !leading-relaxed mb-8">
                 Whether you need a single spare part or a complete machinery system, our team is ready to help.
                 Fill out the form and we&apos;ll respond within 24 hours.
               </p>
@@ -176,7 +176,7 @@ export default function ContactPage() {
 
           <FadeInOnScroll delay={0.15}>
             <form className="space-y-6" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label htmlFor="name" className={`label-tech !tracking-[0.15em] transition-colors duration-300 ${focusedField === "name" ? "text-foreground" : "text-muted-foreground"}`}>
                     Name

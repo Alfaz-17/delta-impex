@@ -94,15 +94,15 @@ export function AboutPreviewSection() {
                   <p className="label-tech text-primary mb-6">
                     The Delta Impex Legacy
                   </p>
-                  <h2 className="font-display text-4xl font-medium tracking-tight text-foreground md:text-5xl lg:text-7xl leading-[1.05] mb-8">
+                  <h2 className="heading-display text-foreground mb-8">
                     Industrial Mastery.
                     <br />
                     <span className="text-muted-foreground/60">Global Scale.</span>
                   </h2>
-                  <p className="text-xl leading-relaxed text-foreground font-medium mb-6">
+                  <p className="body-text !text-foreground !font-medium mb-6">
                     Bhavnagar-based specialists in <span className="text-primary italic">marine spare parts, industrial machinery, and advanced RO systems.</span>
                   </p>
-                  <p className="text-lg leading-relaxed text-muted-foreground mb-10">
+                  <p className="body-text mb-10">
                     We deliver reliable, cost-effective solutions across both maritime and land-based industries, ensuring operational continuity through a massive global sourcing network.
                   </p>
                   <Link
@@ -133,11 +133,12 @@ export function AboutPreviewSection() {
             {/* Right — Image & Stats */}
             <div className="lg:col-span-6">
               <FadeInOnScroll delay={0.2}>
-                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[3rem] shadow-2xl">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl md:rounded-[3rem] shadow-2xl">
                   <Image
                     src="/images/marine-parts-clean.png"
                     alt="Precision marine engineering — Delta Impex global operations"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover contrast-[1.05]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
@@ -147,7 +148,7 @@ export function AboutPreviewSection() {
                     <div className="backdrop-blur-2xl bg-white/5 border border-white/10 rounded-[2rem] p-8">
                       <div className="grid grid-cols-3 gap-6 text-center">
                         <div>
-                          <p className="font-display text-3xl font-semibold text-white">
+                          <p className="heading-sub !mb-0 !font-semibold text-white">
                             3
                           </p>
                           <p className="label-tech !text-white/50 mt-1 !mb-0">
@@ -155,7 +156,7 @@ export function AboutPreviewSection() {
                           </p>
                         </div>
                         <div className="border-x border-white/10">
-                          <p className="font-display text-3xl font-semibold text-white">
+                          <p className="heading-sub !mb-0 !font-semibold text-white">
                             50+
                           </p>
                           <p className="font-tech text-[10px] uppercase tracking-widest text-white/50 mt-1">
@@ -163,7 +164,7 @@ export function AboutPreviewSection() {
                           </p>
                         </div>
                         <div>
-                          <p className="font-display text-3xl font-semibold text-white">
+                          <p className="heading-sub !mb-0 !font-semibold text-white">
                             24/7
                           </p>
                           <p className="font-tech text-[10px] uppercase tracking-widest text-white/50 mt-1">
@@ -197,7 +198,7 @@ export function AboutPreviewSection() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {capabilities.map((cap, i) => (
               <FadeInOnScroll key={i} delay={i * 0.1}>
-                <div className="group relative p-10 border border-border rounded-[2.5rem] hover:bg-muted/50 transition-all duration-500 h-full flex flex-col">
+                <div className="group relative p-6 md:p-10 border border-border rounded-2xl md:rounded-[2.5rem] hover:bg-muted/50 transition-all duration-500 h-full flex flex-col">
                   {/* Icon */}
                   <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-foreground text-background transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-xl group-hover:shadow-primary/20">
                     <cap.icon size={26} strokeWidth={1.5} />
@@ -207,7 +208,7 @@ export function AboutPreviewSection() {
                     {cap.title}
                   </h3>
                   {/* Description */}
-                  <p className="text-base leading-relaxed text-muted-foreground font-sans">
+                  <p className="body-text">
                     {cap.description}
                   </p>
                 </div>

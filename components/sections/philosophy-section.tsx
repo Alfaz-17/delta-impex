@@ -51,7 +51,7 @@ export function PhilosophySection() {
               className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
               style={{ opacity: titleOpacity }}
             >
-              <h2 className="heading-display text-center px-4 md:px-6 italic leading-[0.9] text-4xl md:text-5xl lg:text-6xl">
+              <h2 className="heading-display text-center px-4 md:px-6">
                 Our Core Divisions.
               </h2>
             </motion.div>
@@ -88,11 +88,11 @@ export function PhilosophySection() {
       {/* DESCRIPTION */}
       <div className="px-6 py-16 md:px-12 md:py-24 lg:px-20">
         <div className="text-center max-w-4xl mx-auto">
-          <p className="font-tech text-xs md:text-sm tracking-widest uppercase text-primary mb-4 md:mb-6">
+          <p className="label-tech !text-primary mb-4 md:mb-6">
             Trusted Partner Since Inception
           </p>
 
-          <p className="text-muted-foreground text-sm md:text-base lg:text-lg leading-relaxed">
+          <p className="body-text leading-relaxed">
             Delta Impex operates two specialized divisions: the supply of high-quality Marine & Industrial machinery spare parts,
             and the provision of advanced RO Water Treatment Plants for both land and sea applications.
           </p>
@@ -116,6 +116,7 @@ function Card({ href, src, label }: any) {
         src={src}
         alt={label}
         fill
+        sizes="(max-width: 768px) 100vw, 50vw"
         className="object-cover group-hover:scale-105 transition-transform duration-700"
       />
 
