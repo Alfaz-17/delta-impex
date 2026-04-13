@@ -2,10 +2,17 @@
 
 import Image from "next/image";
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { Droplets, Settings, Zap, Filter, Beaker, Database } from "lucide-react";
+import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
+import { Droplets, Settings, Zap, Filter, Beaker, Database, LucideIcon } from "lucide-react";
 
-const steps = [
+interface Step {
+  image: string;
+  title: string;
+  description: string | React.ReactNode;
+  icon: LucideIcon;
+}
+
+const steps: Step[] = [
   {
     image: "/images/mood/hero-marine-sunset.png",
     title: "1. Seawater Intake",
@@ -72,6 +79,84 @@ const steps = [
   },
 ];
 
+function StepImage({ step, idx, total, progress }: { step: Step; idx: number; total: number; progress: MotionValue<number> }) {
+  const start = idx / total;
+  const end = (idx + 1) / total;
+  
+  const opacity = useTransform(progress, 
+    [start - 0.05, start, end, end + 0.05], 
+    [0, 1, 1, 0]
+  );
+  const scale = useTransform(progress, 
+    [start, end], 
+    [1.1, 1]
+  );
+
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="absolute inset-0"
+    >
+      <div className="absolute inset-0 z-10 bg-foreground/20" />
+      <motion.div style={{ scale }} className="absolute inset-0">
+        <Image
+          src={step.image}
+          alt={step.title}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function StepContent({ step, idx, total, progress }: { step: Step; idx: number; total: number; progress: MotionValue<number> }) {
+  const start = idx / total;
+  const end = (idx + 1) / total;
+  
+  const opacity = useTransform(progress, 
+    [start - 0.02, start, end - 0.02, end], 
+    [0, 1, 1, 0]
+  );
+  const y = useTransform(progress, 
+    [start - 0.02, start, end], 
+    [20, 0, 0]
+  );
+
+  return (
+    <motion.div
+      style={{ opacity, y }}
+      className="absolute inset-0 flex flex-col justify-center pointer-events-none md:pointer-events-auto"
+    >
+      <div className="mb-6 flex items-center gap-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-foreground text-background shadow-lg">
+          <step.icon size={24} />
+        </div>
+        <span className="label-tech mb-0 text-primary">
+          Step 0{idx + 1}
+        </span>
+      </div>
+      
+      <h3 className="heading-section mb-6">
+        {step.title}
+      </h3>
+      
+      <div className="body-text !leading-relaxed text-muted-foreground">
+        {step.description}
+      </div>
+      
+      {/* Progress Line */}
+      <div className="mt-12 h-[1px] w-full bg-border/40">
+        <motion.div 
+          className="h-full bg-primary" 
+          style={{ width: `${((idx + 1) / total) * 100}%` }}
+        />
+      </div>
+    </motion.div>
+  );
+}
+
 export function ROProcessSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -88,12 +173,12 @@ export function ROProcessSection() {
   return (
     <section ref={containerRef} className="relative bg-background">
       {/* Introduction Header */}
-      <div className="px-6 py-24 text-center md:px-12 md:py-32 lg:px-20 lg:py-40">
+      <div className="px-6 py-24 text-center md:px-12 md:py-32 lg:px-20 lg:py-40 border-b border-border/10">
         <h2 className="heading-display mb-6 text-foreground">
           Turning Seawater into <br />
           <span className="text-muted-foreground">Pure Drinking Water.</span>
         </h2>
-        <p className="mx-auto max-w-2xl body-text leading-relaxed">
+        <p className="mx-auto max-w-2xl body-text !leading-relaxed">
           A Reverse Osmosis (RO) Seawater Desalination Plant is an advanced water treatment system 
           designed to convert saline seawater into clean, safe, and potable freshwater.
         </p>
@@ -104,107 +189,37 @@ export function ROProcessSection() {
         <div className="sticky top-0 flex h-screen w-full flex-col overflow-hidden md:flex-row">
           
           {/* Left: Images */}
-          <div className="relative h-1/2 w-full overflow-hidden md:h-full md:w-1/2">
-            {steps.map((step, idx) => {
-              const start = idx / steps.length;
-              const end = (idx + 1) / steps.length;
-              
-              // We want the image to fade in and scale slightly
-              const opacity = useTransform(smoothProgress, 
-                [start - 0.05, start, end, end + 0.05], 
-                [0, 1, 1, 0]
-              );
-              const scale = useTransform(smoothProgress, 
-                [start, end], 
-                [1.1, 1]
-              );
-
-              return (
-                <motion.div
-                  key={idx}
-                  style={{ opacity }}
-                  className="absolute inset-0"
-                >
-                  <div className="absolute inset-0 z-10 bg-foreground/20" />
-                  <motion.div style={{ scale }} className="absolute inset-0">
-                    <Image
-                      src={step.image}
-                      alt={step.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </motion.div>
-                </motion.div>
-              );
-            })}
+          <div className="relative h-1/2 w-full overflow-hidden md:h-full md:w-1/2 bg-muted">
+            {steps.map((step, idx) => (
+              <StepImage 
+                key={idx} 
+                step={step} 
+                idx={idx} 
+                total={steps.length} 
+                progress={smoothProgress} 
+              />
+            ))}
             
             {/* Number Overlay */}
             <div className="absolute bottom-6 left-6 z-20 md:bottom-12 md:left-12">
-              <motion.span className="font-tech text-6xl font-bold text-white/20 md:text-9xl">
-                {steps.map((_, i) => {
-                  const opacity = useTransform(smoothProgress, 
-                    [i / steps.length, (i + 1) / steps.length], 
-                    [1, 1]
-                  );
-                  // This is a bit tricky for plain text, simpler to just use progress
-                  const stepNum = useTransform(smoothProgress, [0, 1], [1, steps.length]);
-                  return null; // Logic below instead
-                })}
-                {/* Simplified step counter */}
+              <div className="font-tech text-6xl font-bold text-white/10 md:text-9xl tracking-tighter">
                 <StepCounter progress={smoothProgress} total={steps.length} />
-              </motion.span>
+              </div>
             </div>
           </div>
 
           {/* Right: Content */}
           <div className="relative flex h-1/2 w-full items-center justify-center bg-background px-6 md:h-full md:w-1/2 md:px-12 lg:px-20">
-            <div className="relative w-full max-w-lg">
-              {steps.map((step, idx) => {
-                const start = idx / steps.length;
-                const end = (idx + 1) / steps.length;
-                
-                const opacity = useTransform(smoothProgress, 
-                  [start - 0.02, start, end - 0.02, end], 
-                  [0, 1, 1, 0]
-                );
-                const y = useTransform(smoothProgress, 
-                  [start - 0.02, start, end], 
-                  [20, 0, 0]
-                );
-
-                return (
-                  <motion.div
-                    key={idx}
-                    style={{ opacity, y, pointerEvents: "none" }} // Logic for pointerEvents handled by opacity
-                    className="absolute inset-0 flex flex-col justify-center"
-                  >
-                    <div className="mb-6 flex items-center gap-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-foreground text-background">
-                        <step.icon size={24} />
-                      </div>
-                      <span className="label-tech mb-0">
-                        Step 0{idx + 1}
-                      </span>
-                    </div>
-                    
-                    <h3 className="heading-section mb-6">
-                      {step.title}
-                    </h3>
-                    
-                    <div className="body-text !leading-relaxed">
-                      {step.description}
-                    </div>
-                    
-                    {/* Progress Line */}
-                    <div className="mt-12 h-[1px] w-full bg-border">
-                      <motion.div 
-                        className="h-full bg-foreground" 
-                        style={{ width: `${((idx + 1) / steps.length) * 100}%` }}
-                      />
-                    </div>
-                  </motion.div>
-                );
-              })}
+            <div className="relative w-full max-w-lg h-full">
+              {steps.map((step, idx) => (
+                <StepContent 
+                  key={idx} 
+                  step={step} 
+                  idx={idx} 
+                  total={steps.length} 
+                  progress={smoothProgress} 
+                />
+              ))}
             </div>
           </div>
         </div>
@@ -215,7 +230,7 @@ export function ROProcessSection() {
         <p className="label-tech mb-8">
           Reliable Supply Globally
         </p>
-        <h4 className="mx-auto max-w-4xl heading-section !not-italic !tracking-normal leading-snug">
+        <h4 className="mx-auto max-w-4xl heading-section !not-italic !tracking-normal">
           From vessels at sea to industrial plants on land, providing high-quality spare parts and RO systems.
         </h4>
       </div>
@@ -223,9 +238,10 @@ export function ROProcessSection() {
   );
 }
 
-function StepCounter({ progress, total }: { progress: any, total: number }) {
+function StepCounter({ progress, total }: { progress: MotionValue<number>, total: number }) {
   const step = useTransform(progress, (v) => Math.min(total, Math.floor(v * total) + 1));
-  const displayStep = useTransform(step, (s) => `0${s}`);
   
-  return <motion.span>{displayStep}</motion.span>;
+  // Create a sub-component or just use a hook to get the value safely if possible
+  // Actually, MotionValue inside a motion.span is best
+  return <motion.span>{useTransform(step, (s) => `0${s}`)}</motion.span>;
 }

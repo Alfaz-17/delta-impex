@@ -1,7 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { FadeImage } from "@/components/fade-image";
-import { Loader2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Loader2, ArrowRight } from "lucide-react";
+import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
 
 type CategoryType = "marine" | "ro";
 
@@ -9,7 +11,7 @@ interface FeaturedProductsSectionProps {
   initialCategory?: CategoryType;
   divisionSlug?: string;
   hideTabs?: boolean;
-  featuredOnly?: boolean; // New prop
+  featuredOnly?: boolean;
   title?: string;
   subtitle?: string;
 }
@@ -55,104 +57,133 @@ export function FeaturedProductsSection({
   }, [activeTab, divisionSlug, featuredOnly]);
 
   return (
-    <section id="parts-grid" className="bg-background min-h-screen">
+    <section id="parts-grid" className="bg-background py-16 md:py-24 lg:py-32">
       {/* Section Title & Tabs */}
-      <div className="px-6 py-20 text-center md:px-12 md:py-28 lg:px-20 lg:py-32 lg:pb-20">
-        <h2 className="heading-display text-foreground uppercase">
-          {title}
-          <br />
-          {subtitle}
-        </h2>
-        
-        {/* Tab Switcher */}
-        {!hideTabs && (
-          <div className="mt-12 flex justify-center">
-            <div className="inline-flex items-center rounded-full bg-muted p-1 border border-border">
-              <button
-                onClick={() => setActiveTab("marine")}
-                className={`px-8 py-2 text-sm font-medium rounded-full transition-all ${
-                  activeTab === "marine" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                Marine Parts
-              </button>
-              <button
-                onClick={() => setActiveTab("ro")}
-                className={`px-8 py-2 text-sm font-medium rounded-full transition-all ${
-                  activeTab === "ro" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                RO Systems
-              </button>
-            </div>
-          </div>
-        )}
+      <div className="px-6 text-center md:px-12 lg:px-20 mb-12 md:mb-20">
+        <FadeInOnScroll>
+          <div className="max-w-3xl mx-auto">
+            <h2 className="heading-display text-foreground uppercase mb-6">
+              {title}
+              <br />
+              <span className="text-muted-foreground">{subtitle}</span>
+            </h2>
+            
+            {/* Tab Switcher */}
+            {!hideTabs && (
+              <div className="mt-10 flex justify-center">
+                <div className="inline-flex items-center rounded-full bg-muted/30 p-1.5 border border-border/50 backdrop-blur-sm">
+                  <button
+                    onClick={() => setActiveTab("marine")}
+                    className={`px-6 py-2.5 text-xs font-semibold uppercase tracking-widest rounded-full transition-all duration-300 ${
+                      activeTab === "marine" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Marine Industrial
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("ro")}
+                    className={`px-6 py-2.5 text-xs font-semibold uppercase tracking-widest rounded-full transition-all duration-300 ${
+                      activeTab === "ro" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Water Systems
+                  </button>
+                </div>
+              </div>
+            )}
 
-        <p className="mx-auto mt-8 max-w-md body-text">
-          {activeTab === "marine" 
-            ? "A comprehensive selection of main engine, auxiliary machinery, and industrial equipment components."
-            : "Precision-engineered RO desalination components for specialized water treatment plants."}
-        </p>
+            <p className="mx-auto mt-8 max-w-xl body-text !leading-relaxed">
+              {activeTab === "marine" 
+                ? "Expertly sourced main engine components, auxiliary machinery, and essential industrial equipment for global operations."
+                : "Advanced desalination and purification components designed for high-performance RO water treatment environments."}
+            </p>
+          </div>
+        </FadeInOnScroll>
       </div>
 
       {/* Features Grid */}
-      <div className="px-6 pb-40 md:px-12 lg:px-20">
-        {isLoading ? (
-          <div className="flex justify-center items-center py-40">
-            <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
-          </div>
-        ) : products.length === 0 ? (
-          <div className="text-center py-40 border border-dashed border-border rounded-[3rem] opacity-30">
-            <p className="font-tech text-xs uppercase tracking-[0.4em]">No Live Inventory Available</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            {products.map((product, index) => (
-              <div 
-                key={product._id} 
-                className={`group transition-all duration-700 ${
-                  index % 2 === 1 ? "md:translate-y-20" : ""
-                }`}
-              >
-                {/* Image */}
-                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-muted">
-                  <FadeImage
-                    src={product.imageUrl || "/placeholder.svg"}
-                    alt={product.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  {product.isFeatured && (
-                    <div className="absolute top-4 right-4 bg-yellow-500 text-black px-3 py-1 rounded-full text-[10px] font-tech font-bold uppercase tracking-widest">
-                      Featured
+      <div className="px-6 md:px-12 lg:px-20">
+        <div className="mx-auto max-w-7xl">
+          {isLoading ? (
+            <div className="flex justify-center items-center py-40">
+              <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
+            </div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-24 border border-dashed border-border/50 rounded-3xl opacity-40">
+              <p className="font-tech text-[10px] uppercase tracking-[0.4em]">Inventory Synchronizing...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-16 lg:gap-24">
+              {products.map((product, index) => (
+                <FadeInOnScroll 
+                  key={product._id} 
+                  delay={index * 0.1}
+                >
+                  <div 
+                    className={`group relative flex flex-col transition-all duration-700 ${
+                      index % 2 === 1 ? "md:mt-24" : ""
+                    }`}
+                  >
+                    {/* Image Container */}
+                    <div className="relative aspect-[4/5] overflow-hidden rounded-2xl md:rounded-3xl bg-muted/20 border border-border/10">
+                      <Image
+                        src={product.imageUrl || "/placeholder.svg"}
+                        alt={product.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 45vw, 600px"
+                      />
+                      
+                      {/* Gradient overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                      
+                      {/* Featured Badge */}
+                      {product.isFeatured && (
+                        <div className="absolute top-5 right-5 z-20 overflow-hidden rounded-full">
+                          <div className="absolute inset-0 bg-primary/95 backdrop-blur-md" />
+                          <p className="relative px-4 py-1.5 text-[9px] font-bold text-white uppercase tracking-[0.2em]">
+                            Featured
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  )}
-                  <div className="absolute inset-0 bg-foreground/5 group-hover:bg-transparent transition-colors" />
-                </div>
 
-                {/* Content */}
-                <div className="py-6">
-                  <div className="flex justify-between items-start mb-2">
-                    <p className="text-xs uppercase tracking-widest text-primary font-tech">
-                      {product.category?.name}
-                    </p>
-                    {product.price && (
-                      <p className="text-xs font-tech text-muted-foreground">{product.price}</p>
-                    )}
+                    {/* Content */}
+                    <div className="pt-8 md:pt-10">
+                      <div className="flex justify-between items-center mb-4">
+                        <span className="label-tech !text-primary !mb-0">
+                          {product.category?.name || 'Technical Solutions'}
+                        </span>
+                        {product.price && (
+                          <span className="font-tech text-[10px] text-muted-foreground/60">
+                            REF: {product._id?.substring(0, 8).toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                      
+                      <h3 className="heading-sub !mb-3 transition-colors group-hover:text-primary">
+                        {product.name}
+                      </h3>
+                      
+                      {product.description && (
+                        <p className="body-text line-clamp-2 md:line-clamp-3 mb-6">
+                          {product.description}
+                        </p>
+                      )}
+
+                      <Link 
+                        href={`/divisions/${product.division?.slug || (activeTab === 'marine' ? 'marine-industrial' : 'ro-water-treatment')}`}
+                        className="inline-flex items-center gap-2 font-tech text-[10px] uppercase tracking-[0.25em] text-foreground/40 font-bold group-hover:text-primary transition-colors"
+                      >
+                        Technical Specs <ArrowRight className="w-3 h-3 translate-y-[-1px] group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
                   </div>
-                  <h3 className="text-foreground text-xl font-semibold">
-                    {product.name}
-                  </h3>
-                  {product.description && (
-                    <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
-                      {product.description}
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+                </FadeInOnScroll>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

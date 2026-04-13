@@ -13,12 +13,6 @@ export function Header() {
   const isHome = pathname === "/";
 
   useEffect(() => {
-    // If not home page, header is always "scrolled" (high contrast)
-    if (!isHome) {
-      setIsScrolled(true);
-      return;
-    }
-
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };

@@ -14,7 +14,6 @@ function ScrollRevealText({ text }: { text: string }) {
       const rect = containerRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       
-      // Slower animation - more viewport range
       const startOffset = windowHeight * 0.9;
       const endOffset = windowHeight * 0.1;
       
@@ -26,7 +25,7 @@ function ScrollRevealText({ text }: { text: string }) {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    handleScroll();
     
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -36,7 +35,7 @@ function ScrollRevealText({ text }: { text: string }) {
   return (
     <p
       ref={containerRef}
-      className="heading-section !not-italic !font-semibold"
+      className="heading-section !not-italic !font-medium !leading-relaxed text-foreground/15"
     >
       {words.map((word, index) => {
         const wordProgress = index / words.length;
@@ -45,9 +44,10 @@ function ScrollRevealText({ text }: { text: string }) {
         return (
           <span
             key={index}
-            className="transition-colors duration-150"
+            className="transition-colors duration-200"
             style={{
-              color: isRevealed ? "var(--foreground)" : "#e4e4e7",
+              color: isRevealed ? "var(--foreground)" : "inherit",
+              opacity: isRevealed ? 1 : 1,
             }}
           >
             {word}{index < words.length - 1 ? " " : ""}
@@ -91,7 +91,8 @@ export function TechnologySection() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [textProgress, setTextProgress] = useState(0);
   
-  const descriptionText = "Specializing in high-performance RO Water Treatment Plants, Delta Impex provides custom-engineered solutions for desalination and purification. Our systems serve both marine vessels and land-based industrial sectors, ensuring a reliable supply of clean water through advanced membrane technology and efficient filtration systems.";
+  const descriptionPart1 = "Specializing in high-performance RO Water Treatment Plants, Delta Impex provides custom-engineered solutions for desalination and purification.";
+  const descriptionPart2 = "Our systems serve both marine vessels and land-based industrial sectors, ensuring a reliable supply of clean water through advanced membrane technology and efficient filtration systems.";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -287,7 +288,11 @@ export function TechnologySection() {
 
         {/* Text Content */}
         <div className="relative z-10 mx-auto max-w-4xl">
-          <ScrollRevealText text={descriptionText} />
+          <div className="mb-8 h-1 w-12 bg-primary md:mb-12" />
+          <div className="space-y-10 md:space-y-16">
+            <ScrollRevealText text={descriptionPart1} />
+            <ScrollRevealText text={descriptionPart2} />
+          </div>
         </div>
       </div>
     </section>

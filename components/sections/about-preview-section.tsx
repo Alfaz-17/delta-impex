@@ -3,214 +3,204 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Anchor, Globe, Zap, ShieldCheck } from "lucide-react";
-
-function FadeInOnScroll({
-  children,
-  delay = 0,
-  className = "",
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && ref.current) {
-          ref.current.style.opacity = "1";
-          ref.current.style.transform = "translateY(0px)";
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }
-    );
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: 0,
-        transform: "translateY(50px)",
-        transition: `opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
-        willChange: "opacity, transform",
-      }}
-    >
-      {children}
-    </div>
-  );
-}
+import { 
+  Building2, 
+  Users2, 
+  Settings, 
+  Trophy, 
+  ChevronRight,
+  ShieldCheck,
+  Zap,
+  Clock,
+  Globe,
+  Anchor
+} from "lucide-react";
+import { 
+  motion, 
+  useScroll, 
+  useTransform, 
+  useSpring,
+  AnimatePresence 
+} from "framer-motion";
+import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
 
 const capabilities = [
   {
-    icon: Anchor,
-    title: "Marine Engineering",
-    description:
-      "A complete range of ship spare parts and machinery, from engine components to navigation systems. New, used, and reconditioned solutions.",
-  },
-  {
-    icon: Zap,
-    title: "Industrial Solutions",
-    description:
-      "Supporting land-based industries with machinery, generator sets, and infrastructure equipment tailored to operational requirements.",
+    icon: ShieldCheck,
+    title: "Unmatched Reliability",
+    description: "Every spare part and system undergoes rigorous inspection to ensure maximum uptime in demanding marine and industrial environments."
   },
   {
     icon: Globe,
-    title: "RO Water Treatment",
-    description:
-      "Advanced reverse osmosis desalination plants for marine and industrial use, converting raw water into clean, usable resources.",
+    title: "Global Supply Chain",
+    description: "Our extensive international network enables us to source and deliver critical components anywhere in the world, on time."
   },
   {
-    icon: ShieldCheck,
-    title: "Trusted Service",
-    description:
-      "Building long-term partnerships through quality products, competitive pricing, and reliable global sourcing expertise.",
+    icon: Zap,
+    title: "Technical Excellence",
+    description: "Deep domain expertise in main engines, auxiliary machinery, and advanced RO systems ensures precise technical matching."
   },
+  {
+    icon: Clock,
+    title: "Operational Speed",
+    description: "We understand that every hour counts. Specialized logistics designed for 24/7 industrial and maritime operations."
+  }
 ];
 
 export function AboutPreviewSection() {
+  const containerRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+
   return (
-    <section id="about-preview" className="relative bg-background overflow-hidden border-t border-border">
-      {/* Grain texture */}
-      <div className="grain-overlay absolute inset-0 pointer-events-none opacity-50" />
-
-      {/* Top — Large statement + image */}
-      <div className="relative px-6 pt-24 pb-16 md:px-12 md:pt-32 md:pb-20 lg:px-20 lg:pt-40 lg:pb-28">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-20 items-start">
-            
-            {/* Left — Text (Split-style) */}
-            <div className="lg:col-span-6">
-              <FadeInOnScroll>
+    <section 
+      id="about-preview"
+      ref={containerRef}
+      className="relative bg-background overflow-hidden"
+    >
+      {/* Top — Main Story */}
+      <div className="section-container relative z-10 py-24 md:py-32 lg:py-40">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          
+          {/* Left — Image Side */}
+          <FadeInOnScroll direction="right">
+            <div className="relative aspect-square md:aspect-[4/5] rounded-[2.5rem] md:rounded-[4rem] overflow-hidden group">
+              <motion.div style={{ y }} className="absolute inset-0">
+                <Image
+                  src="/images/about-hero.png"
+                  alt="Delta Impex Industrial Legacy"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </motion.div>
+              {/* Decorative border */}
+              <div className="absolute inset-x-8 bottom-8 h-24 bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 flex items-center justify-between px-8 text-white">
                 <div>
-                  <p className="label-tech text-primary mb-6">
-                    The Delta Impex Legacy
+                  <p className="text-[10px] font-tech uppercase tracking-[0.3em] opacity-60">Established</p>
+                  <p className="text-xl font-display font-bold">LEGACY SOURCING</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] font-tech uppercase tracking-[0.3em] opacity-60">Operations</p>
+                  <p className="text-xl font-display font-bold">GLOBAL REACH</p>
+                </div>
+              </div>
+            </div>
+          </FadeInOnScroll>
+
+          {/* Right — Content Side */}
+          <div className="space-y-10 md:space-y-12">
+            <FadeInOnScroll>
+              <div>
+                <p className="label-tech text-primary mb-5">
+                  The Delta Advantage
+                </p>
+                <h2 className="heading-display text-foreground mb-8">
+                  Excellence in <br /> 
+                  <span className="text-primary italic">Precision Engineering.</span>
+                </h2>
+                <div className="space-y-6">
+                  <p className="body-text !leading-relaxed text-muted-foreground">
+                    At Delta Impex, we don&apos;t just supply parts; we provide operational continuity. 
+                    Specializing in high-end marine machinery and industrial solutions, 
+                    our legacy is built on a foundation of technical precision and global reliability.
                   </p>
-                  <h2 className="heading-display text-foreground mb-8">
-                    Industrial Mastery.
-                    <br />
-                    <span className="text-muted-foreground/60">Global Scale.</span>
-                  </h2>
-                  <p className="body-text !text-foreground !font-medium mb-6">
-                    Bhavnagar-based specialists in <span className="text-primary italic">marine spare parts, industrial machinery, and advanced RO systems.</span>
+                  <p className="body-text !leading-relaxed text-muted-foreground">
+                    From vessels in the mid-ocean to heavy industrial plants, we ensure that your 
+                    critical systems keep running with zero compromise on quality or performance.
                   </p>
-                  <p className="body-text mb-10">
-                    We deliver reliable, cost-effective solutions across both maritime and land-based industries, ensuring operational continuity through a massive global sourcing network.
-                  </p>
-                  <Link
-                    href="/about"
-                    className="group inline-flex items-center gap-2 btn-text text-foreground border-b border-primary/40 pb-2 hover:text-primary hover:border-primary transition-all duration-300"
-                  >
-                    Explore Our Core Story
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 14 14"
-                      fill="none"
-                      className="transition-transform duration-300 group-hover:translate-x-1"
-                    >
-                      <path
-                        d="M1 7h12M8 2l5 5-5 5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </Link>
+                </div>
+              </div>
+            </FadeInOnScroll>
+
+            {/* Stats grid */}
+            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-border">
+              <FadeInOnScroll delay={0.1}>
+                <div>
+                  <h3 className="heading-sub text-foreground mb-2">3500+</h3>
+                  <p className="label-tech !text-muted-foreground !mb-0 lowercase">SKUs inventoried</p>
+                </div>
+              </FadeInOnScroll>
+              <FadeInOnScroll delay={0.2}>
+                <div>
+                  <h3 className="heading-sub text-foreground mb-2">24h</h3>
+                  <p className="label-tech !text-muted-foreground !mb-0 lowercase">Response Guarantee</p>
                 </div>
               </FadeInOnScroll>
             </div>
 
-            {/* Right — Image & Stats */}
-            <div className="lg:col-span-6">
-              <FadeInOnScroll delay={0.2}>
-                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl md:rounded-[3rem] shadow-2xl">
-                  <Image
-                    src="/images/marine-parts-clean.png"
-                    alt="Precision marine engineering — Delta Impex global operations"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover contrast-[1.05]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                  
-                  {/* Floating stat badge - Fixed to 3 divisions */}
-                  <div className="absolute bottom-8 left-8 right-8">
-                    <div className="backdrop-blur-2xl bg-white/5 border border-white/10 rounded-[2rem] p-8">
-                      <div className="grid grid-cols-3 gap-6 text-center">
-                        <div>
-                          <p className="heading-sub !mb-0 !font-semibold text-white">
-                            3
-                          </p>
-                          <p className="label-tech !text-white/50 mt-1 !mb-0">
-                            Divisions
-                          </p>
-                        </div>
-                        <div className="border-x border-white/10">
-                          <p className="heading-sub !mb-0 !font-semibold text-white">
-                            50+
-                          </p>
-                          <p className="font-tech text-[10px] uppercase tracking-widest text-white/50 mt-1">
-                            Countries
-                          </p>
-                        </div>
-                        <div>
-                          <p className="heading-sub !mb-0 !font-semibold text-white">
-                            24/7
-                          </p>
-                          <p className="font-tech text-[10px] uppercase tracking-widest text-white/50 mt-1">
-                            Precision
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            <FadeInOnScroll delay={0.3}>
+              <Link
+                href="/about"
+                className="group inline-flex items-center gap-4 py-4 pr-6 rounded-full bg-foreground text-background font-tech text-[11px] uppercase tracking-[0.3em] font-bold hover:bg-primary transition-all duration-500 shadow-xl"
+              >
+                <div className="ml-2 flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
+                  <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </div>
-              </FadeInOnScroll>
-            </div>
+                Explore Our Legacy
+              </Link>
+            </FadeInOnScroll>
           </div>
         </div>
+
+        {/* Decorative background accent */}
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
       </div>
 
-      {/* Section Divider */}
-      <div className="px-6 md:px-12 lg:px-20 mx-auto max-w-7xl">
+      <div className="section-container">
         <div className="h-px bg-border/60" />
       </div>
 
       {/* Bottom — Capabilities Grid */}
-      <div className="px-6 py-24 md:px-12 lg:px-20">
+      <div className="px-6 py-20 md:py-24 md:px-12 lg:px-20">
         <div className="mx-auto max-w-7xl">
           <FadeInOnScroll>
-            <p className="label-tech text-primary mb-16">
-              Core Technical Capabilities
-            </p>
+            <div className="flex items-end justify-between mb-10 md:mb-16">
+              <div>
+                <p className="label-tech text-primary mb-3">
+                  What We Do
+                </p>
+                <h2 className="heading-section text-foreground">
+                  Core Capabilities.
+                </h2>
+              </div>
+            </div>
           </FadeInOnScroll>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Mobile: Compact horizontal cards | Desktop: Grid */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-6">
             {capabilities.map((cap, i) => (
               <FadeInOnScroll key={i} delay={i * 0.1}>
-                <div className="group relative p-6 md:p-10 border border-border rounded-2xl md:rounded-[2.5rem] hover:bg-muted/50 transition-all duration-500 h-full flex flex-col">
-                  {/* Icon */}
-                  <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-foreground text-background transition-all duration-500 group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-xl group-hover:shadow-primary/20">
-                    <cap.icon size={26} strokeWidth={1.5} />
+                <div className="group relative overflow-hidden rounded-2xl md:rounded-[2rem] border border-border bg-background hover:bg-muted/40 transition-all duration-500 h-full">
+                  {/* Number badge */}
+                  <div className="absolute top-4 right-4 md:top-6 md:right-6">
+                    <span className="font-tech text-[10px] font-bold text-muted-foreground/30 tracking-widest">
+                      0{i + 1}
+                    </span>
                   </div>
-                  {/* Title */}
-                  <h3 className="heading-sub text-foreground mb-4">
-                    {cap.title}
-                  </h3>
-                  {/* Description */}
-                  <p className="body-text">
-                    {cap.description}
-                  </p>
+                  
+                  {/* Mobile: Horizontal | Desktop: Vertical */}
+                  <div className="flex items-start gap-4 p-5 md:flex-col md:p-8">
+                    {/* Icon */}
+                    <div className="shrink-0 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl md:rounded-2xl bg-primary/10 text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:shadow-lg group-hover:shadow-primary/20">
+                      <cap.icon size={22} strokeWidth={1.5} />
+                    </div>
+                    
+                    {/* Text */}
+                    <div className="flex-1 min-w-0 md:mt-4">
+                      <h3 className="font-display font-medium text-foreground mb-1.5 md:mb-3" style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)' }}>
+                        {cap.title}
+                      </h3>
+                      <p className="body-text !leading-relaxed line-clamp-3 md:line-clamp-none">
+                        {cap.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </FadeInOnScroll>
             ))}

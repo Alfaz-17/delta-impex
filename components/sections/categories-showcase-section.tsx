@@ -1,7 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Loader2, Layers, Anchor, Droplet } from "lucide-react";
+import { Loader2, Anchor, Droplet, ArrowRight } from "lucide-react";
 import Link from "next/link";
+
+const divisionMeta: Record<string, { description: string; color: string }> = {
+  "marine-industrial": {
+    description: "Ship spare parts, engine components, turbochargers, pumps & industrial machinery.",
+    color: "bg-blue-500/10 text-blue-600 border-blue-500/20",
+  },
+  "ro-water-treatment": {
+    description: "Reverse osmosis plants, membranes, high-pressure pumps & water purification systems.",
+    color: "bg-cyan-500/10 text-cyan-600 border-cyan-500/20",
+  },
+};
 
 export function CategoriesShowcaseSection() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -11,15 +22,12 @@ export function CategoriesShowcaseSection() {
     async function fetchAllCategories() {
       setIsLoading(true);
       try {
-        // Fetch all divisions
         const divRes = await fetch("/api/divisions");
         const divisions = await divRes.json();
         
-        // Fetch categories for all divisions
         const catRes = await fetch("/api/categories");
         const allCategories = await catRes.json();
         
-        // Group by division
         const grouped = divisions.map((div: any) => ({
           ...div,
           categories: allCategories.filter((c: any) => c.division?._id === div._id || c.division === div._id)
@@ -36,15 +44,19 @@ export function CategoriesShowcaseSection() {
   }, []);
 
   return (
-    <section className="bg-background py-24 md:py-32 border-t border-border/50">
+    <section className="bg-background py-20 md:py-32 border-t border-border/50">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
-        <div className="text-center mb-16">
-          <p className="label-tech !text-primary mb-4">
-            Our Expertise
+        {/* Section Header */}
+        <div className="mb-12 md:mb-16">
+          <p className="label-tech !text-primary mb-3">
+            Our Divisions
           </p>
-          <h2 className="heading-display">
-            Industry Sectors.
+          <h2 className="heading-display text-foreground mb-4">
+            What We Supply.
           </h2>
+          <p className="body-text max-w-xl">
+            Two specialized divisions delivering comprehensive solutions across maritime and industrial sectors.
+          </p>
         </div>
 
         {isLoading ? (
@@ -52,43 +64,69 @@ export function CategoriesShowcaseSection() {
             <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
-            {categories.map((division) => (
-              <div key={division._id} className="relative group">
-                <div className="absolute inset-0 bg-muted/20 rounded-3xl -z-10 group-hover:bg-muted/40 transition-colors duration-500" />
-                <div className="p-8 md:p-10">
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                      {division.slug === "marine-industrial" ? <Anchor className="w-5 h-5" /> : <Droplet className="w-5 h-5" />}
-                    </div>
-                    <h3 className="heading-sub !mb-0">{division.name}</h3>
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {categories.map((division) => {
+              const meta = divisionMeta[division.slug] || { description: "", color: "" };
+              const isMarineDivision = division.slug === "marine-industrial";
+              
+              return (
+                <div key={division._id} className="group relative rounded-2xl md:rounded-3xl border border-border overflow-hidden bg-background hover:border-primary/20 transition-all duration-500">
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {division.categories.map((cat: any) => (
-                      <Link 
-                        href={`/divisions/${division.slug}?category=${cat._id}`}
-                        key={cat._id}
-                        className="flex items-center justify-between p-4 rounded-xl border border-border/50 bg-background/50 hover:border-primary/30 hover:bg-primary/5 transition-all group/item"
-                      >
-                        <span className="text-sm font-medium text-foreground group-hover/item:text-primary transition-colors">
-                          {cat.name}
-                        </span>
-                      </Link>
-                    ))}
+                  {/* Top: Division Header */}
+                  <div className="p-6 md:p-8 pb-4 md:pb-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center ${isMarineDivision ? 'bg-primary/10 text-primary' : 'bg-cyan-500/10 text-cyan-600'}`}>
+                        {isMarineDivision ? <Anchor className="w-5 h-5" /> : <Droplet className="w-5 h-5" />}
+                      </div>
+                      <div>
+                        <h3 className="font-display font-medium text-foreground" style={{ fontSize: 'clamp(1.1rem, 2vw, 1.4rem)' }}>
+                          {division.name}
+                        </h3>
+                        <p className="text-xs text-muted-foreground font-tech uppercase tracking-wider">
+                          {division.categories.length} categories
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <p className="body-text !leading-relaxed mb-5">
+                      {meta.description}
+                    </p>
                   </div>
 
-                  <div className="mt-8">
+                  {/* Categories as pill tags */}
+                  <div className="px-6 md:px-8 pb-4">
+                    <div className="flex flex-wrap gap-2">
+                      {division.categories.map((cat: any) => (
+                        <Link 
+                          href={`/divisions/${division.slug}?category=${cat._id}`}
+                          key={cat._id}
+                          className={`inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all hover:scale-[1.03] active:scale-[0.97] ${
+                            isMarineDivision 
+                              ? 'bg-primary/5 text-primary border-primary/15 hover:bg-primary/10' 
+                              : 'bg-cyan-500/5 text-cyan-700 border-cyan-500/15 hover:bg-cyan-500/10'
+                          }`}
+                        >
+                          {cat.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTA Footer */}
+                  <div className="p-6 md:p-8 pt-4 md:pt-5 border-t border-border/30">
                     <Link 
                       href={`/divisions/${division.slug}`}
-                      className="inline-flex items-center text-sm font-semibold uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-foreground group-hover:text-primary transition-colors"
                     >
-                      Explore Catalog &rarr;
+                      <span className="uppercase tracking-widest font-tech text-[11px]">
+                        Explore Full Catalog
+                      </span>
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

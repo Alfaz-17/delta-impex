@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Metadata } from 'next'
 
 import { motion, useScroll, useTransform } from "framer-motion";
+import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
 
 export default function ROSystemsPage() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -17,9 +18,9 @@ export default function ROSystemsPage() {
     offset: ["start start", "end start"]
   });
 
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1.1, 1.2]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 200]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -40,17 +41,16 @@ export default function ROSystemsPage() {
         {/* Dark overlay for text legibility */}
         <div className="absolute inset-0 bg-black/40 z-0" />
 
-        <motion.div
-          className="relative z-10 text-center px-6"
-          style={{ opacity: heroOpacity, y: heroY }}
-        >
-          <p className="label-tech text-white/70 mb-6">
-            Division 02
-          </p>
-          <h1 className="heading-display text-white !leading-[0.95] uppercase">
-            Water Treatment <br /> & RO Systems.
-          </h1>
-        </motion.div>
+        <div className="relative z-10 text-center px-6" style={{ textShadow: '0 2px 30px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.5)' }}>
+          <FadeInOnScroll>
+            <p className="label-tech text-white/80 mb-6 drop-shadow-xl uppercase tracking-[0.4em]">
+              Division 02
+            </p>
+            <h1 className="heading-display text-white !leading-[0.95] uppercase drop-shadow-2xl">
+              Water Treatment <br /> & RO Systems.
+            </h1>
+          </FadeInOnScroll>
+        </div>
       </section>
 
       {/* E-Commerce Catalog Section */}
