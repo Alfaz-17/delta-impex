@@ -64,8 +64,11 @@ export default function MarinePartsPage() {
         </div>
       </section>
 
+      {/* Product Catalog */}
+      <ProductCatalog divisionSlug="marine-industrial" divisionName="Marine & Industrial" />
+
       {/* Section 1: Introduction & Capabilities */}
-      <section className="section-container pt-24 md:pt-32">
+      <section className="section-container pt-16 md:pt-24 border-t border-border/50">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
           <div className="lg:col-span-7">
             <FadeInOnScroll>
@@ -114,11 +117,6 @@ export default function MarinePartsPage() {
             </FadeInOnScroll>
           </div>
         </div>
-      </section>
-
-      {/* Product Catalog */}
-      <section id="catalog" className="pt-24 md:pt-32">
-        <ProductCatalog divisionSlug="marine-industrial" divisionName="Marine & Industrial" />
       </section>
 
       {/* Secondary Image/Content Block */}

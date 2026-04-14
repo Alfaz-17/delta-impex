@@ -181,10 +181,15 @@ export default function AboutPage() {
         </div>
 
         {/* Feature Image */}
-        <div className="mt-24 md:mt-32">
-          <ParallaxImage 
-            src="/images/mood/hero-industrial-scale.png" 
+        <div className="mt-24 md:mt-32 rounded-3xl md:rounded-[3rem] overflow-hidden bg-muted/10 border border-border/50">
+          <Image 
+            src="/about-delta.jpeg" 
             alt="Delta Impex Industrial Scale" 
+            width={1920}
+            height={1080}
+            className="w-full h-auto"
+            sizes="(max-width: 768px) 100vw, 90vw"
+            priority
           />
         </div>
 

@@ -10,13 +10,9 @@ export function GallerySection() {
   const rafRef = useRef<number | null>(null);
 
   const images = [
-    { src: "/images/mood/hero-marine-sunset.png", alt: "Global Marine Logistics and Shipping" },
-    { src: "/images/marine-parts-clean.png", alt: "Precision Marine Machinery and Engines" },
-    { src: "/images/industrial-parts-clean.png", alt: "Heavy Industrial Spare Parts Supply" },
-    { src: "/ro/ro-plant-clean.png", alt: "High-Performance RO Desalination Plant" },
-    { src: "/images/mood/hero-industrial-detail.png", alt: "Advanced Industrial Inspection and Systems" },
-    { src: "/images/mood/ro-water-flow.png", alt: "Advanced RO Water Treatment Flow" },
-    { src: "/images/mood/hero-industrial-scale.png", alt: "Industrial Performance and Engineering" },
+    { src: "/Gallery/Whisk_ac43c800066de9990a94519f045935d5dr (1).jpeg", alt: "Product Manufacturing" },
+    { src: "/Gallery/Whisk_c448308d3c4966fbdce4d4131d8f69f2dr (1).jpeg", alt: "Inventory Stock" },
+    { src: "/Gallery/Whisk_d6ccd92cb71c6548bd64856634f3075fdr.jpeg", alt: "Part Components" },
   ];
 
   // Calculate section height based on content width
@@ -109,7 +105,7 @@ export function GallerySection() {
             {images.map((image, index) => (
               <div
                 key={index}
-                className="relative h-[50vh] md:h-[70vh] w-[85vw] flex-shrink-0 overflow-hidden rounded-2xl md:w-[60vw] lg:w-[45vw]"
+                className="relative h-[50vh] md:h-[70vh] w-[85vw] flex-shrink-0 overflow-hidden rounded-2xl md:w-[60vw] lg:w-[45vw] bg-muted/10 border border-border/50"
                 style={{
                   transform: 'translateZ(0)',
                   WebkitTransform: 'translateZ(0)',
@@ -119,7 +115,7 @@ export function GallerySection() {
                   src={image.src || "/placeholder.svg"}
                   alt={image.alt}
                   fill
-                  className="object-cover"
+                  className="object-contain p-4 md:p-8"
                   sizes="(max-width: 768px) 85vw, (max-width: 1024px) 60vw, 45vw"
                   priority={index < 3}
                 />

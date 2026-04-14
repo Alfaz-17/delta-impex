@@ -129,56 +129,65 @@ export function FeaturedProductsSection({
                   key={product._id} 
                   delay={(index % 4) * 0.1}
                 >
-                  <div 
-                    className={`group relative flex flex-col transition-all duration-1000 ${
+                  <Link 
+                    href={`/products/${product.slug}`}
+                    className={`group relative flex flex-col block transition-all duration-1000 ${
                       isOffset ? "mt-12 md:mt-0 lg:mt-32" : ""
                     } ${
-                        // On middle screen (2 cols), we might want to keep the offset consistent
                         (index % 2 === 1) ? "md:mt-24 lg:mt-32" : ""
                     }`}
                   >
                     {/* Index Number */}
-                    <div className="mb-3 md:mb-6 overflow-hidden">
+                    <div className="mb-3 md:mb-6 overflow-hidden flex justify-between items-center">
                         <p className="font-tech text-[10px] md:text-xs font-bold text-foreground/20 group-hover:text-primary transition-colors duration-500">
                             {displayIndex}
                         </p>
+                        {/* Status/Condition Badges if present */}
+                        {product.condition && (
+                            <span className="font-tech text-[9px] uppercase tracking-widest text-primary/60 border border-border/20 px-2 py-1 rounded-full group-hover:border-primary/40 transition-colors">
+                                {product.condition}
+                            </span>
+                        )}
                     </div>
 
                     {/* Image Container */}
-                    <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] md:rounded-[2.5rem] bg-muted/20 border border-border/10 shadow-sm transition-all duration-700 group-hover:shadow-2xl group-hover:shadow-primary/5">
+                    <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] md:rounded-[2.5rem] bg-muted/10 border border-border/10 shadow-sm transition-all duration-700 group-hover:shadow-2xl group-hover:border-white/20 p-4 flex items-center justify-center">
                       <Image
                         src={product.imageUrl || "/placeholder.svg"}
                         alt={product.name}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                        className="object-contain p-4 md:p-8 group-hover:scale-105 transition-transform duration-1000"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       />
                       
-                      {/* Subtitle/Category overlay on hover (very subtle) */}
                       <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                     </div>
 
                     {/* Content below image */}
-                    <div className="pt-4 md:pt-8 lg:pt-10 pl-1">
-                      <h3 className="font-display text-sm md:text-lg lg:text-xl font-medium text-foreground mb-1 md:mb-2 leading-tight transition-colors group-hover:text-primary">
+                    <div className="pt-4 md:pt-8 lg:pt-10 pl-1 flex flex-col h-full">
+                      <h3 className="font-display text-sm md:text-lg lg:text-xl font-medium text-foreground mb-2 md:mb-3 leading-tight transition-colors group-hover:text-white line-clamp-2">
                         {product.name}
                       </h3>
                       
-                      <div className="flex flex-col gap-1">
-                        <span className="font-tech text-[10px] uppercase tracking-widest text-muted-foreground/60 transition-colors group-hover:text-muted-foreground">
-                            {product.category?.name || 'Technical Component'}
+                      <div className="flex flex-col gap-2 mt-auto">
+                        <div className="flex justify-between items-center">
+                           <span className="font-tech text-[10px] uppercase tracking-widest text-muted-foreground/60 transition-colors group-hover:text-muted-foreground">
+                               {product.category?.name || 'Technical Component'}
+                           </span>
+                           {product.price && (
+                               <span className="font-mono text-xs font-bold text-white uppercase bg-white/10 px-2 pl-3 py-1 rounded-full">
+                                   {product.price}
+                               </span>
+                           )}
+                        </div>
+                        <span className="font-mono text-[9px] text-primary/40 uppercase mt-1">
+                           REF: {product._id?.substring(0, 8).toUpperCase()}
                         </span>
-                        {product.price && (
-                             <span className="font-mono text-[9px] text-primary/40 uppercase mt-2">
-                                REF: {product._id?.substring(0, 8).toUpperCase()}
-                             </span>
-                        )}
                       </div>
                       
-                      {/* Hidden but clean divider line between products on large screens */}
                       <div className="hidden lg:block absolute -right-8 lg:-right-10 top-0 bottom-0 w-[1px] bg-border/20 group-last:hidden" />
                     </div>
-                  </div>
+                  </Link>
                 </FadeInOnScroll>
               );
             })}

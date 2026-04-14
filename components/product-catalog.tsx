@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Loader2, Search, MessageCircle, FileText, ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { Loader2, Search, MessageCircle, FileText, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
 interface ProductCatalogProps {
   divisionSlug: string;
@@ -130,37 +131,39 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                   <div key={product._id} className="group relative">
                     {/* Image Area - Cardless Style */}
                     <div className="relative aspect-[4/5] mb-6 overflow-hidden bg-muted/10 rounded-xl group-hover:bg-muted/20 transition-colors">
-                      {product.imageUrl ? (
-                        <Image 
-                          src={product.imageUrl} 
-                          alt={product.name} 
-                          fill 
-                          className="object-cover group-hover:scale-105 transition-transform duration-700"
-                        />
-                      ) : (
-                         <div className="absolute inset-0 flex items-center justify-center bg-muted/10">
-                            <FileText className="w-8 h-8 text-muted-foreground/30" />
-                         </div>
-                      )}
+                      <Link href={`/products/${product.slug}`} className="absolute inset-0 z-0">
+                        {product.imageUrl ? (
+                          <Image 
+                            src={product.imageUrl} 
+                            alt={product.name} 
+                            fill 
+                            className="object-cover group-hover:scale-105 transition-transform duration-700"
+                          />
+                        ) : (
+                           <div className="absolute inset-0 flex items-center justify-center bg-muted/10">
+                              <FileText className="w-8 h-8 text-muted-foreground/30" />
+                           </div>
+                        )}
+                      </Link>
                       
-                      {/* Interaction Overlay: Visible on hover for desktop, always visible buttons for mobile inside the card or similar */}
+                      {/* Interaction Overlay: Visible on hover for desktop */}
                       <div className="absolute inset-0 bg-background/60 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 backdrop-blur-[2px]">
                         <a 
                           href={getWhatsAppLink(product.name)}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-6 py-3 bg-[#25D366] text-black btn-text rounded-full hover:bg-white hover:text-black transition-colors flex items-center gap-2 shadow-xl translate-y-4 lg:group-hover:translate-y-0 duration-300"
+                          className="px-6 py-3 bg-[#25D366] text-black btn-text rounded-full hover:bg-white hover:text-black transition-colors flex items-center gap-2 shadow-xl translate-y-4 lg:group-hover:translate-y-0 duration-300 z-10"
                         >
                           <MessageCircle className="w-3.5 h-3.5" />
-                          Inquire
+                          WhatsApp
                         </a>
-                        <a 
-                          href={`/contact?product=${encodeURIComponent(product.name)}`}
-                          className="px-6 py-3 bg-white text-black btn-text rounded-full hover:bg-white/80 transition-colors flex items-center gap-2 shadow-xl translate-y-4 lg:group-hover:translate-y-0 duration-300 delay-75"
+                        <Link 
+                          href={`/products/${product.slug}`}
+                          className="px-6 py-3 bg-white text-black btn-text rounded-full hover:bg-white/80 transition-colors flex items-center gap-2 shadow-xl translate-y-4 lg:group-hover:translate-y-0 duration-300 delay-75 z-10"
                         >
-                          <FileText className="w-3.5 h-3.5" />
-                          Request Quote
-                        </a>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                          View Details
+                        </Link>
                       </div>
                       
                       {/* Mobile Quick Action Buttons (Visible only on small screens) */}
@@ -185,9 +188,11 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                           {product.condition}
                         </span>
                       </div>
-                      <h3 className="text-base font-semibold leading-tight text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                        {product.name}
-                      </h3>
+                      <Link href={`/products/${product.slug}`}>
+                        <h3 className="text-base font-semibold leading-tight text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                          {product.name}
+                        </h3>
+                      </Link>
                       <div className="flex items-center justify-between">
                          <span className="text-sm font-tech font-medium text-foreground">
                            {product.price || "Contact for Price"}

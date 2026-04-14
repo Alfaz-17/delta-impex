@@ -73,7 +73,7 @@ export function HeroSection() {
             style={{ opacity: textOpacity }}
           >
             {/* Dark overlay for text legibility over video */}
-            <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+            <div className="absolute inset-0 bg-black/25 pointer-events-none" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/10 pointer-events-none" />
 
             <div className="relative z-10 max-w-3xl" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.4)' }}>

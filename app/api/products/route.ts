@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/mongodb";
 import Product from "@/lib/models/Product";
+import Division from "@/lib/models/Division";
+import Category from "@/lib/models/Category";
 import { getServerSession } from "next-auth";
 
 export async function GET(req: NextRequest) {
@@ -23,6 +25,7 @@ export async function GET(req: NextRequest) {
       
     return NextResponse.json(products);
   } catch (error: any) {
+    console.error("GET /api/products Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -45,6 +48,7 @@ export async function POST(req: NextRequest) {
     const product = await Product.create(data);
     return NextResponse.json(product, { status: 201 });
   } catch (error: any) {
+    console.error("POST /api/products Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -67,6 +71,7 @@ export async function DELETE(req: NextRequest) {
     await Product.deleteMany({ _id: { $in: ids } });
     return NextResponse.json({ message: "Products deleted successfully" });
   } catch (error: any) {
+    console.error("DELETE /api/products Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
