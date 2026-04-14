@@ -36,7 +36,7 @@ export function FeaturedProductsSection({
         
         const divRes = await fetch("/api/divisions");
         const divisions = await divRes.json();
-        const division = divisions.find((d: any) => d.slug === targetSlug);
+        const division = Array.isArray(divisions) ? divisions.find((d: any) => d.slug === targetSlug) : null;
         
         if (division) {
           let url = `/api/products?divisionId=${division._id}`;
@@ -45,7 +45,9 @@ export function FeaturedProductsSection({
           }
           const res = await fetch(url);
           const data = await res.json();
-          setProducts(data);
+          setProducts(Array.isArray(data) ? data : []);
+        } else {
+          setProducts([]);
         }
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -111,7 +113,7 @@ export function FeaturedProductsSection({
           <div className="flex justify-center items-center py-40">
             <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
           </div>
-        ) : products.length === 0 ? (
+        ) : (!Array.isArray(products) || products.length === 0) ? (
           <div className="text-center py-24 border border-dashed border-border/50 rounded-3xl opacity-40">
             <p className="font-tech text-[10px] uppercase tracking-[0.4em]">Inventory Synchronizing...</p>
           </div>

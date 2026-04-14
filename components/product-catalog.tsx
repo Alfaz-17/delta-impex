@@ -25,16 +25,19 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
       try {
         const divRes = await fetch("/api/divisions");
         const divisions = await divRes.json();
-        const division = divisions.find((d: any) => d.slug === divisionSlug);
+        const division = Array.isArray(divisions) ? divisions.find((d: any) => d.slug === divisionSlug) : null;
         
         if (division) {
           const catRes = await fetch(`/api/categories?divisionId=${division._id}`);
           const catData = await catRes.json();
-          setCategories(catData);
+          setCategories(Array.isArray(catData) ? catData : []);
 
           const prodRes = await fetch(`/api/products?divisionId=${division._id}`);
           const prodData = await prodRes.json();
-          setProducts(prodData);
+          setProducts(Array.isArray(prodData) ? prodData : []);
+        } else {
+          setCategories([]);
+          setProducts([]);
         }
       } catch (error) {
         console.error("Error fetching catalog data:", error);

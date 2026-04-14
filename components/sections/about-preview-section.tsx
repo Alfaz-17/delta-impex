@@ -82,12 +82,12 @@ export function AboutPreviewSection() {
               {/* Decorative border */}
               <div className="absolute inset-x-8 bottom-8 h-24 bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 flex items-center justify-between px-8 text-white">
                 <div>
-                  <p className="text-[10px] font-tech uppercase tracking-[0.3em] opacity-60">Established</p>
-                  <p className="text-xl font-display font-bold">LEGACY SOURCING</p>
+                  <p className="text-[10px] font-tech uppercase tracking-[0.3em] opacity-60">Focus</p>
+                  <p className="text-xl font-display font-bold">Authentic Spares</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[10px] font-tech uppercase tracking-[0.3em] opacity-60">Operations</p>
-                  <p className="text-xl font-display font-bold">GLOBAL REACH</p>
+                  <p className="text-[10px] font-tech uppercase tracking-[0.3em] opacity-60">Delivery</p>
+                  <p className="text-xl font-display font-bold">Worldwide</p>
                 </div>
               </div>
             </div>
@@ -98,21 +98,18 @@ export function AboutPreviewSection() {
             <FadeInOnScroll>
               <div>
                 <p className="label-tech text-primary mb-5">
-                  The Delta Advantage
+                  About Delta Impex
                 </p>
                 <h2 className="heading-display text-foreground mb-8">
-                  Excellence in <br /> 
-                  <span className="text-primary italic">Precision Engineering.</span>
+                  Genuine Parts. <br /> 
+                  <span className="text-primary italic">Reliable Sourcing.</span>
                 </h2>
                 <div className="space-y-6">
                   <p className="body-text !leading-relaxed text-muted-foreground">
-                    At Delta Impex, we don&apos;t just supply parts; we provide operational continuity. 
-                    Specializing in high-end marine machinery and industrial solutions, 
-                    our legacy is built on a foundation of technical precision and global reliability.
+                    We specialize in sourcing and supplying critical marine machinery, industrial equipment, and complete RO water treatment plants. Our direct relationships with manufacturers allow us to provide authentic components you can trust.
                   </p>
                   <p className="body-text !leading-relaxed text-muted-foreground">
-                    From vessels in the mid-ocean to heavy industrial plants, we ensure that your 
-                    critical systems keep running with zero compromise on quality or performance.
+                    When you are dealing with crucial vessel systems or heavy industrial operations, quality cannot be compromised. We work diligently to ensure you get exactly what you need, securely and efficiently.
                   </p>
                 </div>
               </div>
@@ -122,14 +119,14 @@ export function AboutPreviewSection() {
             <div className="grid grid-cols-2 gap-8 pt-8 border-t border-border">
               <FadeInOnScroll delay={0.1}>
                 <div>
-                  <h3 className="heading-sub text-foreground mb-2">3500+</h3>
-                  <p className="label-tech !text-muted-foreground !mb-0 lowercase">SKUs inventoried</p>
+                  <h3 className="heading-sub text-foreground mb-2">100%</h3>
+                  <p className="label-tech !text-muted-foreground !mb-0 lowercase">Authentic parts check</p>
                 </div>
               </FadeInOnScroll>
               <FadeInOnScroll delay={0.2}>
                 <div>
-                  <h3 className="heading-sub text-foreground mb-2">24h</h3>
-                  <p className="label-tech !text-muted-foreground !mb-0 lowercase">Response Guarantee</p>
+                  <h3 className="heading-sub text-foreground mb-2">Fast</h3>
+                  <p className="label-tech !text-muted-foreground !mb-0 lowercase">Expedited quoting</p>
                 </div>
               </FadeInOnScroll>
             </div>
@@ -142,7 +139,7 @@ export function AboutPreviewSection() {
                 <div className="ml-2 flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
                   <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </div>
-                Explore Our Legacy
+                More About Us
               </Link>
             </FadeInOnScroll>
           </div>
