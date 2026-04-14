@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Loader2, Search, MessageCircle, FileText, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { Loader2, Search, FileText, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
 interface ProductCatalogProps {
   divisionSlug: string;
@@ -63,10 +63,7 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
     currentPage * ITEMS_PER_PAGE
   );
 
-  const getWhatsAppLink = (productName: string) => {
-    const message = encodeURIComponent(`Hello Delta Impex, I would like to inquire about: ${productName}`);
-    return `https://wa.me/YOUR_PHONE_NUMBER?text=${message}`; // TODO: Add real WhatsApp number in next refactor or contact page link
-  };
+
 
   return (
     <section className="bg-background py-16 md:py-24 border-t border-border/50 min-h-screen">
@@ -148,15 +145,6 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                       
                       {/* Interaction Overlay: Visible on hover for desktop */}
                       <div className="absolute inset-0 bg-background/60 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 backdrop-blur-[2px]">
-                        <a 
-                          href={getWhatsAppLink(product.name)}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="px-6 py-3 bg-[#25D366] text-black btn-text rounded-full hover:bg-white hover:text-black transition-colors flex items-center gap-2 shadow-xl translate-y-4 lg:group-hover:translate-y-0 duration-300 z-10"
-                        >
-                          <MessageCircle className="w-3.5 h-3.5" />
-                          WhatsApp
-                        </a>
                         <Link 
                           href={`/products/${product.slug}`}
                           className="px-6 py-3 bg-white text-black btn-text rounded-full hover:bg-white/80 transition-colors flex items-center gap-2 shadow-xl translate-y-4 lg:group-hover:translate-y-0 duration-300 delay-75 z-10"
@@ -165,27 +153,13 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                           View Details
                         </Link>
                       </div>
-                      
-                      {/* Mobile Quick Action Buttons (Visible only on small screens) */}
-                      <div className="absolute bottom-4 right-4 flex lg:hidden gap-2">
-                        <a 
-                          href={getWhatsAppLink(product.name)}
-                          className="p-3 bg-[#25D366] text-black rounded-full shadow-lg"
-                          aria-label="WhatsApp Inquiry"
-                        >
-                          <MessageCircle className="w-4 h-4" />
-                        </a>
-                      </div>
                     </div>
 
                     {/* Typography Area */}
                     <div>
                       <div className="flex justify-between items-start mb-2 gap-4">
-                        <span className="text-[10px] font-tech uppercase tracking-widest text-primary truncate max-w-[70%]">
+                        <span className="text-[10px] font-tech uppercase tracking-widest text-primary truncate max-w-full">
                           {product.category?.name || "Uncategorized"}
-                        </span>
-                        <span className="text-[10px] uppercase font-tech text-muted-foreground">
-                          {product.condition}
                         </span>
                       </div>
                       <Link href={`/products/${product.slug}`}>
@@ -193,11 +167,6 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                           {product.name}
                         </h3>
                       </Link>
-                      <div className="flex items-center justify-between">
-                         <span className="text-sm font-tech font-medium text-foreground">
-                           {product.price || "Contact for Price"}
-                         </span>
-                      </div>
                     </div>
                   </div>
                 ))}
