@@ -226,24 +226,29 @@ export function Header() {
                           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                           className={`absolute top-full left-1/2 -translate-x-1/2 pt-10 ${isMarine ? "w-[600px]" : "w-[300px]"}`}
                         >
-                          <div className={`bg-[#020617]/95 backdrop-blur-3xl border border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden ${isMarine ? "grid grid-cols-2 gap-x-8 gap-y-6" : "flex flex-col gap-6"}`}>
-                            {link.divisions.map((div: any) => (
-                              <div key={div._id} className="space-y-4">
-                                <h3 className="label-tech text-white !text-[11px] mb-2">{div.name}</h3>
-                                <div className="flex flex-col gap-2">
-                                  {div.categories.map((cat: any) => (
-                                    <Link
-                                      key={cat._id}
-                                      href={`/products?categoryId=${cat._id}`}
-                                      className="group/item flex items-center justify-between text-sm py-1 transition-all hover:text-white text-white/50 hover:translate-x-1"
-                                    >
-                                      <span>{cat.name}</span>
-                                      <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-40 transition-opacity" />
-                                    </Link>
-                                  ))}
+                          <div 
+                            className="max-h-[70vh] overflow-y-auto custom-scrollbar pr-4 overscroll-contain"
+                            onWheel={(e) => e.stopPropagation()}
+                          >
+                            <div className={`bg-[#020617]/95 backdrop-blur-3xl border border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden ${isMarine ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
+                              {link.divisions.map((div: any) => (
+                                <div key={div._id} className="space-y-6">
+                                  <h3 className="label-tech text-white !text-[11px] mb-4 border-b border-white/10 pb-2">{div.name}</h3>
+                                  <div className="flex flex-col gap-3">
+                                    {div.categories.map((cat: any) => (
+                                      <Link
+                                        key={cat._id}
+                                        href={`/products?categoryId=${cat._id}`}
+                                        className="group/item flex items-center justify-between text-sm py-1 transition-all hover:text-white text-white/50 hover:translate-x-1"
+                                      >
+                                        <span>{cat.name}</span>
+                                        <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-40 transition-opacity" />
+                                      </Link>
+                                    ))}
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
+                              ))}
+                            </div>
                           </div>
                         </motion.div>
                       )}
