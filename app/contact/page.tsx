@@ -19,15 +19,15 @@ const contactMethods = [
   {
     icon: Phone,
     title: "Call Us",
-    primary: "+91 9925999945 (India)",
-    secondary: "+971 524918899 (UAE)",
+    primary: "+91 99259 99945 / +91 99133 33145",
+    secondary: "+971 52 491 8899 (UAE)",
     color: "bg-green-500/10 text-green-600"
   },
   {
     icon: Mail,
     title: "Email Us",
-    primary: "info@deltaimpex.com",
-    secondary: "For quotes and inquiries",
+    primary: "sales@deltaimpex.com",
+    secondary: "info@deltaimpex.com",
     color: "bg-primary/10 text-primary"
   },
   {

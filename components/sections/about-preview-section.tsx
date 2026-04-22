@@ -103,10 +103,10 @@ export function AboutPreviewSection() {
                 </h2>
                 <div className="space-y-6">
                   <p className="body-text !leading-relaxed">
-                    Delta Impex is a Bhavnagar-based company focused on supplying marine and industrial machinery, spare parts, and complete systems worldwide.
+                    Delta Impex is a Bhavnagar-based company focused on supplying marine and industrial machinery, spare parts, and complete systems.
                   </p>
                   <p className="body-text !leading-relaxed">
-                    With strong sourcing capabilities and deep industry knowledge, we support ship owners, managers, and industrial clients with efficient, reliable, and economical supply solutions. Our commitment is to deliver quality products and long-term business relationships.
+                    With strong sourcing capabilities and industry knowledge, we support ship owners, managers, and industrial clients with efficient, reliable, and economical supply solutions. Our commitment is to deliver quality products, timely service, and long-term business relationships.
                   </p>
                   <div className="pt-4">
                     <p className="label-tech mb-2">Our Vision</p>

@@ -71,20 +71,20 @@ function ParallaxImage({ src, alt }: { src: string; alt: string }) {
 
 const values = [
   {
-    title: "Quality First",
-    description: "We source only the highest-quality parts — new, used, or reconditioned — each thoroughly inspected before delivery.",
+    title: "Complete Solutions",
+    description: "Tailored engineering and supply solutions for both marine and industrial sectors, ensuring operational excellence.",
   },
   {
-    title: "Timely Delivery",
-    description: "Our logistics network ensures your parts reach you on schedule, whether at port or at your facility.",
+    title: "Global Sourcing",
+    description: "Reliable sourcing of new, used, and reconditioned spare parts across an extensive international network.",
   },
   {
-    title: "Cost-Effective",
-    description: "We help optimize your maintenance budgets with competitive pricing across our full product range.",
+    title: "Robust Logistics",
+    description: "Efficient supply chain management focused on reliability and speed to minimize downtime worldwide.",
   },
   {
-    title: "Long-Term Trust",
-    description: "We don't just sell parts — we build relationships that last decades with consistent service and reliability.",
+    title: "Competitive Pricing",
+    description: "Cost-effective and flexible solutions tailored to the specific budgetary and technical requirements of our clients.",
   },
 ];
 
@@ -152,7 +152,7 @@ export default function AboutPage() {
           <div className="lg:col-span-8">
             <div className="space-y-2">
               <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Introduction</p>
-              <ScrollRevealText text="Delta Impex is a Bhavnagar-based company specializing in marine spare parts, industrial solutions, and RO water treatment systems, delivering reliable and cost-effective solutions to clients across both maritime and land-based industries." />
+              <ScrollRevealText text="Delta Impex is a Bhavnagar-based company focused on supplying marine and industrial machinery, spare parts, and complete systems." />
             </div>
           </div>
 
@@ -160,20 +160,20 @@ export default function AboutPage() {
           <div className="lg:col-span-4 space-y-12">
             <FadeInOnScroll delay={0.1}>
               <div className="space-y-4">
-                <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Marine Division</p>
-                <h3 className="heading-sub text-foreground !mb-4">Global Marine Engineering.</h3>
+                <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Strategy</p>
+                <h3 className="heading-sub text-foreground !mb-4">Global Sourcing Capabilities.</h3>
                 <p className="body-text !leading-relaxed text-muted-foreground">
-                  In the <strong className="text-foreground font-medium border-b border-primary/20">marine sector</strong>, we supply a complete range of ship spare parts and machinery, including main and auxiliary engine components, turbochargers, pumps, compressors, navigation equipment, and engine room systems. 
+                  With strong sourcing capabilities and industry knowledge, we support <strong className="text-foreground font-medium border-b border-primary/20">ship owners, managers, and industrial clients</strong> with efficient, reliable, and economical supply solutions.
                 </p>
               </div>
             </FadeInOnScroll>
 
             <FadeInOnScroll delay={0.15}>
               <div className="space-y-4">
-                <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Industrial Division</p>
-                <h3 className="heading-sub text-foreground">Heavy Industrial Solutions.</h3>
+                <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Commitment</p>
+                <h3 className="heading-sub text-foreground">Long-Term Partnerships.</h3>
                 <p className="body-text !leading-relaxed text-muted-foreground">
-                  Our <strong className="text-foreground font-medium border-b border-primary/20">industrial division</strong> supports land-based industries with machinery, generator sets, spare parts, and essential equipment.
+                  Our commitment is to deliver quality products, timely service, and long-term business relationships globally.
                 </p>
               </div>
             </FadeInOnScroll>
@@ -201,7 +201,7 @@ export default function AboutPage() {
               Our Vision
             </p>
             <p className="heading-section !not-italic !font-medium text-background">
-              "To become a trusted global supplier in marine, industrial, and water treatment sectors by delivering reliable, efficient, and cost-effective solutions."
+              "To become a trusted global supplier for marine and industrial sectors, delivering reliable and cost-effective solutions."
             </p>
           </FadeInOnScroll>
         </div>

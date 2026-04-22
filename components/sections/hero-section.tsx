@@ -61,8 +61,8 @@ export function HeroSection() {
             variants={itemVariants}
             className="heading-display text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] !text-3xl sm:!text-4xl md:!text-5xl lg:!text-[2.4rem] leading-[1.1] tracking-tight uppercase"
           >
-            Marine & Industrial Spares. <br />
-            <span className="text-accent underline decoration-white/20 underline-offset-4 md:underline-offset-6">Engineered Excellence.</span>
+            Your Trusted Partner for <br />
+            <span className="text-accent underline decoration-white/20 underline-offset-4 md:underline-offset-6">Marine & Industrial Solutions.</span>
           </motion.h1>
 
           {/* Compact Subtext - Constrained Width */}
@@ -70,8 +70,8 @@ export function HeroSection() {
             variants={itemVariants}
             className="body-premium max-w-lg text-xs md:text-sm text-white/90 leading-relaxed drop-shadow-md"
           >
-            Empowering global maritime and industrial sectors with genuine OEM spare parts, 
-            technical reverse osmosis solutions, and precision-engineered logistics.
+            Delta Impex is a reliable supplier of all types of ship spare parts and industrial equipment, 
+            serving clients across marine and land-based industries.
           </motion.p>
 
           {/* Compact CTAs */}

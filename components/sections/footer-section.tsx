@@ -17,9 +17,10 @@ const footerLinks = {
     { label: "Connect", href: "#contact" },
   ],
   service: [
-    { label: "India: +91 9925999945", href: "tel:+919925999945" },
-    { label: "UAE: +971 524918899", href: "tel:+971524918899" },
-    { label: "Official Inquiry", href: "#contact" },
+    { label: "+91 99259 99945 (IN)", href: "tel:+919925999945" },
+    { label: "+91 99133 33145 (IN)", href: "tel:+919913333145" },
+    { label: "+971 52 491 8899 (UAE)", href: "tel:+971524918899" },
+    { label: "sales@deltaimpex.com", href: "mailto:sales@deltaimpex.com" },
   ],
 };
 

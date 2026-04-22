@@ -12,11 +12,11 @@ import Link from "next/link";
 
 const categories = [
   { icon: Ship, name: "Main & Auxiliary Engine Spares" },
-  { icon: Cog, name: "Turbochargers & Compressors" },
+  { icon: Cog, name: "Turbochargers, Pumps & Compressors" },
   { icon: Filter, name: "Purifiers & Separators" },
-  { icon: Gauge, name: "Pumps & Heat Exchangers" },
-  { icon: Compass, name: "Navigation Equipment" },
-  { icon: Zap, name: "Electrical Systems" },
+  { icon: Gauge, name: "FW Generators & Heat Exchangers" },
+  { icon: Compass, name: "Navigation & Electronics" },
+  { icon: Anchor, name: "Deck Machinery & Engine Room" },
 ];
 
 export default function MarinePartsPage() {
@@ -99,14 +99,13 @@ export default function MarinePartsPage() {
           <div className="lg:col-span-5 space-y-12 bg-muted/30 p-8 md:p-12 rounded-[2.5rem] border border-border/50">
             <FadeInOnScroll delay={0.1}>
               <div className="space-y-4">
-                <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Industrial Solutions</p>
-                <h3 className="heading-sub text-foreground">Heavy Machinery & Power.</h3>
+                <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Industrial & Power</p>
+                <h3 className="heading-sub text-foreground">Heavy Machinery Solutions.</h3>
                 <p className="body-text !leading-relaxed text-muted-foreground text-sm">
-                  Beyond the sea, we support land-based industries with high-capacity industrial engines, 
-                  generator sets, and specialized power plant equipment designed for extreme reliability.
+                  Beyond the sea, we support land-based industries with high-capacity industrial engines (Cummins, Caterpillar, Perkins), generator sets, and specialized power plant equipment.
                 </p>
                 <ul className="space-y-3 pt-4">
-                  {["Industrial Generator Sets", "Heavy Engine Components", "Power Plant Support"].map((item, i) => (
+                  {["Industrial Generator Sets (Gensets)", "Complete Power Plant Support", "Technical Machinery Solutions"].map((item, i) => (
                     <li key={i} className="flex items-center gap-3 text-xs font-medium text-foreground/70">
                       <div className="h-1.5 w-1.5 rounded-full bg-primary" />
                       {item}
