@@ -31,14 +31,14 @@ export function PhilosophySection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           
           <Card
-            href="/divisions/marine-parts"
+            href="/divisions/marine-industrial"
             src="/images/marine-parts-clean.png"
             label="Marine & Industrial Parts"
             tag="Engineering"
           />
 
           <Card
-            href="/divisions/ro-systems"
+            href="/divisions/ro-solutions"
             src="/ro/ro-plant-clean.png"
             label="RO Water Treatment"
             tag="Technical"

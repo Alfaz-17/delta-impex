@@ -5,16 +5,16 @@ import Image from "next/image";
 
 const footerLinks = {
   explore: [
-    { label: "Spare Parts", href: "#parts" },
-    { label: "RO Systems", href: "#ro-systems" },
-    { label: "Vision", href: "#vision" },
+    { label: "Spare Parts", href: "#divisions" },
+    { label: "RO Systems", href: "/divisions/ro-solutions" },
+    { label: "About Legacy", href: "#about-preview" },
     { label: "Contact", href: "#contact" },
   ],
   about: [
-    { label: "Our Vision", href: "#vision" },
-    { label: "Core Divisions", href: "#parts" },
-    { label: "Careers", href: "#" },
-    { label: "Contact", href: "#contact" },
+    { label: "Our Legacy", href: "#about-preview" },
+    { label: "Core Divisions", href: "#divisions" },
+    { label: "Methodology", href: "/about" },
+    { label: "Connect", href: "#contact" },
   ],
   service: [
     { label: "India: +91 9925999945", href: "tel:+919925999945" },
