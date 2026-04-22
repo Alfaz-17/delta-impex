@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/mongodb";
 import Category from "@/lib/models/Category";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import mongoose from "mongoose";
 
 export async function GET(req: NextRequest) {
   try {
@@ -11,6 +13,9 @@ export async function GET(req: NextRequest) {
     
     let query = {};
     if (divisionId) {
+      if (!mongoose.Types.ObjectId.isValid(divisionId)) {
+        return NextResponse.json([]); // Return safe empty array to prevent 500
+      }
       query = { division: divisionId };
     }
     
@@ -23,7 +28,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -39,7 +44,7 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

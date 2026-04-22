@@ -20,9 +20,9 @@ export function TestimonialsSection() {
       <div className="section-container py-24 md:py-32 lg:py-48">
         <FadeInOnScroll>
           <div className="max-w-5xl">
-            <p className="label-tech text-primary mb-8">Our Commitment</p>
-            <h2 className="heading-section !not-italic !font-medium !leading-tight text-foreground md:text-5xl lg:text-6xl">
-              Delta Impex combines extensive <span className="text-primary italic">global sourcing</span> networks with deep technical expertise — 
+            <p className="label-tech mb-8">Our Commitment</p>
+            <h2 className="heading-display mb-8">
+              Delta Impex combines extensive <span className="text-accent italic">global sourcing</span> networks with deep technical expertise — 
               built for marine and industrial operators who refuse to compromise on quality, reliability, or operational continuity.
             </h2>
           </div>

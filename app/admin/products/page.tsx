@@ -80,16 +80,16 @@ function ProductsContent() {
     setProducts(data);
   };
 
-  const handleToggleFeatured = async (id: string, currentStatus: boolean) => {
+  const handleToggleFeatured = async (product: any) => {
     try {
-      const res = await fetch(`/api/products/${id}`, {
+      const res = await fetch(`/api/products/${product._id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isFeatured: !currentStatus }),
+        body: JSON.stringify({ isFeatured: !product.isFeatured }),
       });
 
       if (res.ok) {
-        toast.success("Updated featured status");
+        toast.success(`Product ${!product.isFeatured ? 'marked as featured' : 'removed from featured'}`);
         fetchProducts();
       } else {
         toast.error("Failed to update status");
@@ -97,26 +97,6 @@ function ProductsContent() {
     } catch (error) {
       toast.error("Error updating status");
     }
-  };
-
-  const cancelEdit = () => {
-    setEditingId(null);
-    setFormData(defaultValue);
-  };
-
-  const handleEdit = (product: any) => {
-    setEditingId(product._id);
-    setFormData({
-      name: product.name,
-      division: product.division?._id || product.division,
-      category: product.category?._id || product.category,
-      description: product.description || "",
-      price: product.price || "",
-      condition: product.condition || "",
-      isFeatured: product.isFeatured || false,
-      imageUrl: product.imageUrl,
-    });
-    fetchCategories(product.division?._id || product.division);
   };
 
   const toggleSelect = (id: string) => {
@@ -158,44 +138,8 @@ function ProductsContent() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.division || !formData.category || !formData.imageUrl) {
-      toast.error("Please fill all required fields");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const url = editingId ? `/api/products/${editingId}` : "/api/products";
-      const method = editingId ? "PATCH" : "POST";
-
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (res.ok) {
-        toast.success(editingId ? "Product updated" : "Product added");
-        if (!editingId) {
-          setFormData(defaultValue);
-        } else {
-          cancelEdit();
-        }
-        fetchProducts();
-      } else {
-        toast.error("Operation failed");
-      }
-    } catch (error) {
-      toast.error("An error occurred");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-muted/30 text-foreground font-sans">
       <AdminMobileHeader 
         isMenuOpen={isSidebarOpen} 
         onToggleMenu={() => setIsSidebarOpen(!isSidebarOpen)} 
@@ -203,256 +147,127 @@ function ProductsContent() {
       
       <AdminSidebar active="products" isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       
-      <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12 bg-background pb-32">
-        <DivisionSwitcher />
-        <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2">
-              {divisions.find(d => d._id === activeDivisionId)?.name || "Full Stock"}
-            </p>
-            <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
-              Inventory List
-            </h1>
-          </div>
-          
-          {selectedIds.length > 0 && (
-            <div className="flex items-center gap-4 p-3 rounded-xl bg-red-50 text-red-600 border border-red-200 shadow-sm animate-in fade-in slide-in-from-top-4">
-              <span className="text-xs font-bold uppercase tracking-wider">
-                {selectedIds.length} selected
-              </span>
-              <Button 
-                variant="destructive" 
-                size="sm" 
-                onClick={handleBulkDelete}
-                className="rounded-lg h-9 text-[10px] font-bold uppercase tracking-widest shadow-none"
-              >
-                Delete Selected
-              </Button>
-            </div>
-          )}
+      <div className="lg:pl-72 flex flex-col min-h-screen">
+        <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-border h-16 items-center justify-between px-8 hidden lg:flex">
+          <div className="flex-1" />
+          <a href="/" target="_blank" className="text-[10px] font-bold uppercase tracking-widest text-accent hover:text-primary transition-colors">
+             View Public Site →
+          </a>
         </header>
 
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-10">
-          {/* Add/Edit Product Panel */}
-          <div className="xl:col-span-4">
-            <div className={`p-8 rounded-3xl border transition-all duration-500 ${editingId ? "border-primary bg-primary/5 shadow-2xl shadow-primary/10" : "border-border bg-card shadow-sm"} lg:sticky lg:top-8`}>
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-lg font-semibold tracking-tight text-foreground">
-                  {editingId ? "Modify Record" : "New Entry"}
-                </h2>
-                {editingId && (
-                  <button onClick={cancelEdit} className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-full hover:bg-muted">
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-              
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Product Name *</Label>
-                  <Input 
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="bg-background border-border shadow-sm rounded-xl h-11"
-                    placeholder="e.g. Caterpillar Marine Engine"
-                  />
+        <main className="flex-1 p-6 md:p-8 lg:p-12 pb-32">
+            <DivisionSwitcher />
+            
+            <div className="flex items-center justify-between border-b border-border pb-8 mt-4 mb-8">
+                <div>
+                <h1 className="text-3xl font-bold text-primary uppercase tracking-tighter">Inventory</h1>
+                <p className="text-xs font-bold text-accent uppercase tracking-[0.3em] mt-2">Manage Your Global Stock</p>
                 </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Category *</Label>
-                  <Select value={formData.category} onValueChange={(val) => setFormData({ ...formData, category: val })}>
-                    <SelectTrigger className="bg-background border-border shadow-sm rounded-xl h-11">
-                      <SelectValue placeholder="Select Category" />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-xl">
-                      {categories.map((cat) => (
-                        <SelectItem key={cat._id} value={cat._id} className="rounded-lg">{cat.name}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Description</Label>
-                  <Textarea 
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="bg-background border-border shadow-sm rounded-xl min-h-[120px]"
-                    placeholder="Technical specifications and details..."
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Price</Label>
-                    <Input 
-                      value={formData.price}
-                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                      className="bg-background border-border shadow-sm rounded-xl h-11"
-                      placeholder="$ 0.00"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Condition</Label>
-                    <Input 
-                      value={formData.condition}
-                      onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
-                      className="bg-background border-border shadow-sm rounded-xl h-11"
-                      placeholder="New / Used"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/20">
-                  <div className="flex items-center gap-2">
-                    <Star className={`w-4 h-4 ${formData.isFeatured ? "text-yellow-500 fill-yellow-500" : "text-muted-foreground"}`} />
-                    <Label className="text-xs font-semibold uppercase tracking-widest cursor-pointer">Featured Product</Label>
-                  </div>
-                  <Switch 
-                    checked={formData.isFeatured}
-                    onCheckedChange={(val) => setFormData({ ...formData, isFeatured: val })}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Technical Image *</Label>
-                  <div className="relative group">
-                    {formData.imageUrl ? (
-                      <div className="relative aspect-video rounded-2xl overflow-hidden border border-border shadow-sm">
-                        <Image src={formData.imageUrl} alt="Preview" fill className="object-cover" />
+                <div className="flex items-center flex-wrap gap-4">
+                    {selectedIds.length > 0 && (
+                        <div className="flex items-center gap-4 px-4 py-2 bg-red-50 text-red-600 border border-red-200 animate-in fade-in slide-in-from-top-4">
+                        <span className="text-[10px] font-bold uppercase tracking-wider">
+                            {selectedIds.length} selected
+                        </span>
                         <button 
-                          type="button"
-                          onClick={() => setFormData({ ...formData, imageUrl: "" })}
-                          className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={handleBulkDelete}
+                            className="bg-transparent hover:bg-red-100 px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition-colors"
                         >
-                          <Trash2 className="text-white w-6 h-6 border-b border-transparent hover:border-white transition-all" />
+                            Delete Permanently
                         </button>
-                      </div>
-                    ) : (
-                      <label className="flex flex-col items-center justify-center aspect-video rounded-2xl border-2 border-dashed border-border bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer group">
-                        {uploading ? <Loader2 className="animate-spin text-muted-foreground w-6 h-6" /> : <Upload className="text-muted-foreground w-6 h-6 group-hover:scale-110 transition-transform" />}
-                        <span className="mt-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                          {uploading ? "Syncing..." : "Upload Graphics"}
-                        </span>
-                        <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
-                      </label>
+                        </div>
                     )}
-                  </div>
-                </div>
-
-                <Button 
-                  type="submit" 
-                  disabled={isLoading || uploading}
-                  className="w-full bg-foreground text-background font-bold h-12 rounded-xl shadow-lg hover:shadow-xl transition-all uppercase tracking-widest text-[10px]"
-                >
-                  {isLoading ? "Syncing Database..." : editingId ? "Update Inventory" : "Finalize Entry"}
-                </Button>
-              </form>
-            </div>
-          </div>
-
-          {/* Editorial Products List */}
-          <div className="xl:col-span-8">
-            <div className="flex justify-between items-center mb-6 px-2">
-              <div className="flex items-center gap-3">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={toggleSelectAll}
-                  className="h-9 rounded-xl shadow-sm border-border font-tech text-[10px] uppercase tracking-widest"
-                >
-                  <CheckSquare className="w-4 h-4 mr-2" />
-                  {selectedIds.length === products.length && products.length > 0 ? "Reset" : "Bulk Select"}
-                </Button>
-                <div className="h-4 w-[1px] bg-border mx-2" />
-                <span className="text-xs font-tech font-bold uppercase tracking-widest text-foreground/40">{products.length} Units</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              {products.map((product) => (
-                <div 
-                  key={product._id} 
-                  className={`group relative p-3 pr-6 rounded-2xl border transition-all duration-300 flex items-center gap-6 ${
-                    selectedIds.includes(product._id) 
-                      ? "border-primary bg-primary/5 shadow-md shadow-primary/5" 
-                      : (editingId === product._id ? "border-primary/50 bg-primary/5" : "border-border bg-card hover:border-foreground/20 hover:shadow-xl hover:shadow-black/5")
-                  }`}
-                >
-                  {/* Bulk Select Checkbox */}
-                  <div className="pl-2">
-                    <Checkbox 
-                      checked={selectedIds.includes(product._id)} 
-                      onCheckedChange={() => toggleSelect(product._id)}
-                      className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                    />
-                  </div>
-
-                  {/* High-Contrast Thumbnail */}
-                  <div className="relative h-16 w-20 flex-shrink-0 rounded-xl overflow-hidden bg-muted border border-border shadow-sm">
-                    <Image src={product.imageUrl} alt={product.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                  </div>
-                  
-                  {/* Identification */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[9px] uppercase font-bold tracking-[0.2em] text-primary/60 px-2 py-0.5 rounded-md bg-primary/5 border border-primary/10">
-                            {product.category?.name || "Uncategorized"}
-                        </span>
-                        {product.condition && (
-                            <span className="text-[9px] uppercase font-mono text-muted-foreground/60">
-                                • {product.condition}
-                            </span>
-                        )}
-                    </div>
-                    <h3 className="text-sm font-semibold text-foreground truncate">{product.name}</h3>
-                  </div>
-
-                  {/* Attributes (Desktop Only) */}
-                  <div className="hidden md:flex items-center gap-10">
-                    <div className="w-24 text-right">
-                        <p className="text-xs font-tech font-bold text-foreground/80">{product.price || "TBD"}</p>
-                        <p className="text-[9px] uppercase tracking-widest text-muted-foreground/40 mt-0.5">Price Point</p>
-                    </div>
-
-                    <div className="h-8 w-[1px] bg-border/50" />
-
-                    {/* Quick Toggle Feature Switch */}
-                    <div className="flex flex-col items-center gap-1.5 min-w-[60px]">
-                        <Switch 
-                            checked={product.isFeatured}
-                            onCheckedChange={() => handleToggleFeatured(product._id, product.isFeatured)}
-                        />
-                        <span className={`text-[8px] uppercase tracking-widest font-bold ${product.isFeatured ? "text-yellow-600" : "text-muted-foreground/30"}`}>
-                            {product.isFeatured ? "Featured" : "Standard"}
-                        </span>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-2 ml-auto">
-                    <button 
-                      onClick={() => handleEdit(product)}
-                      className="p-2.5 text-muted-foreground hover:bg-foreground hover:text-background rounded-xl transition-all border border-transparent hover:border-foreground shadow-none"
+                    <a 
+                    href={`/admin/products/new${activeDivisionId ? "?divisionId=" + activeDivisionId : ""}`} 
+                    className="px-8 py-4 bg-primary text-white text-[10px] font-bold uppercase tracking-widest hover:bg-accent transition-all shadow-xl flex items-center gap-3"
                     >
-                      <Edit className="w-4 h-4" />
-                    </button>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground/20 lg:group-hover:translate-x-1 lg:group-hover:text-primary transition-all transition-duration-500" />
-                  </div>
+                    <Plus className="w-4 h-4" /> Add Record
+                    </a>
                 </div>
-              ))}
             </div>
 
-            {products.length === 0 && (
-              <div className="p-20 text-center border-2 border-dashed border-border rounded-3xl bg-muted/10">
-                <Package className="w-12 h-12 mx-auto mb-6 text-muted-foreground/30" />
-                <p className="text-sm font-semibold text-foreground/60 uppercase tracking-widest">No Products in Inventory</p>
-                <p className="text-xs text-muted-foreground mt-2">Begin building your digital stock using the panel on the left.</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </main>
+            <div className="bg-white border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <div className="p-4 border-b border-border bg-muted/20 flex justify-between items-center">
+                   <button 
+                      onClick={toggleSelectAll}
+                      className="px-4 py-2 border border-border text-[10px] font-bold uppercase tracking-widest text-primary hover:bg-white transition-colors flex items-center focus:outline-none"
+                    >
+                      <CheckSquare className="w-4 h-4 mr-2" />
+                      {selectedIds.length === products.length && products.length > 0 ? "Deselect All" : "Select All"}
+                    </button>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mr-4">Total: {products.length} Units</span>
+                </div>
+                <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                    <thead>
+                    <tr className="bg-primary text-white text-[10px] font-bold uppercase tracking-widest">
+                        <th className="py-5 px-6 w-12 text-center">Sel</th>
+                        <th className="py-5 px-6">Product Core</th>
+                        <th className="py-5 px-6">Classification</th>
+                        <th className="py-5 px-6 text-center">Featured</th>
+                        <th className="py-5 px-6 text-right">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                    {products.map((product) => (
+                        <tr key={product._id} className={`hover:bg-muted/30 transition-colors ${selectedIds.includes(product._id) ? "bg-accent/5" : ""}`}>
+                        <td className="py-6 px-6 text-center">
+                            <Checkbox 
+                                checked={selectedIds.includes(product._id)} 
+                                onCheckedChange={() => toggleSelect(product._id)}
+                                className="data-[state=checked]:bg-accent data-[state=checked]:border-accent"
+                            />
+                        </td>
+                        <td className="py-6 px-6">
+                            <div className="flex items-center gap-6">
+                                <div className="w-16 h-16 bg-muted relative border border-border shrink-0">
+                                    <Image src={product.imageUrl} alt={product.name} fill className="object-cover" sizes="64px" />
+                                </div>
+                                <div>
+                                    <h4 className="font-bold text-primary tracking-tight text-sm mb-1">{product.name}</h4>
+                                    <div className="flex gap-4">
+                                        {product.price && <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{product.price}</p>}
+                                        {product.condition && <p className="text-[10px] text-muted-foreground uppercase tracking-widest border-l pl-4 border-border">{product.condition}</p>}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td className="py-6 px-6">
+                            <span className="px-3 py-1 bg-accent/10 border border-accent/20 text-accent text-[9px] font-extrabold uppercase tracking-widest">
+                            {product.category?.name || "Uncategorized"}
+                            </span>
+                        </td>
+                        <td className="py-6 px-6 text-center">
+                            <button
+                            onClick={() => handleToggleFeatured(product)}
+                            className={`p-2 transition-all duration-300 ${product.isFeatured ? 'text-yellow-600 scale-125' : 'text-muted-foreground/30 hover:text-accent'}`}
+                            title={product.isFeatured ? "Featured Product" : "Mark as Featured"}
+                            >
+                            <Star className={`w-5 h-5 ${product.isFeatured ? 'fill-yellow-500' : ''}`} />
+                            </button>
+                        </td>
+                        <td className="py-6 px-6 text-right">
+                            <div className="flex items-center justify-end gap-4">
+                            <a href={`/admin/products/new?id=${product._id}&divisionId=${activeDivisionId || ""}`} className="p-2 text-primary hover:text-accent transition-colors">
+                                <Edit className="w-4 h-4" />
+                            </a>
+                            </div>
+                        </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+                {products.length === 0 && (
+                    <div className="p-20 text-center border-t border-border bg-muted/10">
+                    <Package className="w-12 h-12 mx-auto mb-6 text-muted-foreground/30" />
+                    <p className="text-sm font-semibold text-foreground/60 uppercase tracking-widest">No Products in Inventory</p>
+                    <p className="text-[10px] text-muted-foreground uppercase mt-2">Click "Add Record" to begin building your digital stock.</p>
+                    </div>
+                )}
+                </div>
+            </div>
+        </main>
+      </div>
     </div>
   );
 }

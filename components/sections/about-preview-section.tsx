@@ -69,25 +69,22 @@ export function AboutPreviewSection() {
           
           {/* Left — Image Side */}
           <FadeInOnScroll direction="right">
-            <div className="relative aspect-square md:aspect-[4/5] rounded-[2.5rem] md:rounded-[4rem] overflow-hidden group">
+            <div className="relative aspect-square md:aspect-[4/5] rounded-[2.5rem] md:rounded-[4rem] overflow-hidden group border border-border/50">
               <motion.div style={{ y }} className="absolute inset-0">
                 <Image
-                  src="/images/about-hero.png"
+                  src="/images/about-hero-new.png"
                   alt="Delta Impex Industrial Legacy"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </motion.div>
-              {/* Decorative border */}
-              <div className="absolute inset-x-8 bottom-8 h-24 bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 flex items-center justify-between px-8 text-white">
-                <div>
-                  <p className="text-[10px] font-tech uppercase tracking-[0.3em] opacity-60">Focus</p>
-                  <p className="text-xl font-display font-bold">Authentic Spares</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-[10px] font-tech uppercase tracking-[0.3em] opacity-60">Delivery</p>
-                  <p className="text-xl font-display font-bold">Worldwide</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
+              
+              {/* Minimalist Data Overlays */}
+              <div className="absolute top-8 left-8">
+                <div className="bg-background/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-xl">
+                  <p className="label-tech !mb-0 !text-foreground !text-[8px]">Global Sourcing</p>
                 </div>
               </div>
             </div>
@@ -97,20 +94,26 @@ export function AboutPreviewSection() {
           <div className="space-y-10 md:space-y-12">
             <FadeInOnScroll>
               <div>
-                <p className="label-tech text-primary mb-5">
-                  About Delta Impex
+                <p className="label-tech mb-5">
+                  The Delta Impex Legacy
                 </p>
-                <h2 className="heading-display text-foreground mb-8">
-                  Genuine Parts. <br /> 
-                  <span className="text-primary italic">Reliable Sourcing.</span>
+                <h2 className="heading-display mb-8">
+                  Marine Expertise. <br /> 
+                  <span className="text-muted-foreground">Industrial Reliability.</span>
                 </h2>
                 <div className="space-y-6">
-                  <p className="body-text !leading-relaxed text-muted-foreground">
-                    We specialize in sourcing and supplying critical marine machinery, industrial equipment, and complete RO water treatment plants. Our direct relationships with manufacturers allow us to provide authentic components you can trust.
+                  <p className="body-text !leading-relaxed">
+                    Delta Impex is a Bhavnagar-based company focused on supplying marine and industrial machinery, spare parts, and complete systems worldwide.
                   </p>
-                  <p className="body-text !leading-relaxed text-muted-foreground">
-                    When you are dealing with crucial vessel systems or heavy industrial operations, quality cannot be compromised. We work diligently to ensure you get exactly what you need, securely and efficiently.
+                  <p className="body-text !leading-relaxed">
+                    With strong sourcing capabilities and deep industry knowledge, we support ship owners, managers, and industrial clients with efficient, reliable, and economical supply solutions. Our commitment is to deliver quality products and long-term business relationships.
                   </p>
+                  <div className="pt-4">
+                    <p className="label-tech mb-2">Our Vision</p>
+                    <p className="body-text italic">
+                      "To become a trusted global supplier for marine and industrial sectors, delivering reliable and cost-effective solutions."
+                    </p>
+                  </div>
                 </div>
               </div>
             </FadeInOnScroll>
@@ -119,13 +122,13 @@ export function AboutPreviewSection() {
             <div className="grid grid-cols-2 gap-8 pt-8 border-t border-border">
               <FadeInOnScroll delay={0.1}>
                 <div>
-                  <h3 className="heading-sub text-foreground mb-2">100%</h3>
+                  <h3 className="heading-sub mb-2">100%</h3>
                   <p className="label-tech !text-muted-foreground !mb-0 lowercase">Authentic parts check</p>
                 </div>
               </FadeInOnScroll>
               <FadeInOnScroll delay={0.2}>
                 <div>
-                  <h3 className="heading-sub text-foreground mb-2">Fast</h3>
+                  <h3 className="heading-sub mb-2">Fast</h3>
                   <p className="label-tech !text-muted-foreground !mb-0 lowercase">Expedited quoting</p>
                 </div>
               </FadeInOnScroll>
@@ -134,12 +137,12 @@ export function AboutPreviewSection() {
             <FadeInOnScroll delay={0.3}>
               <Link
                 href="/about"
-                className="group inline-flex items-center gap-4 py-4 pr-6 rounded-full bg-foreground text-background font-tech text-[11px] uppercase tracking-[0.3em] font-bold hover:bg-primary transition-all duration-500 shadow-xl"
+                className="group inline-flex items-center gap-4 py-4 pr-8 pl-4 rounded-full bg-foreground text-background label-tech !mb-0 transition-all duration-500 shadow-2xl hover:bg-accent hover:text-white"
               >
-                <div className="ml-2 flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20">
                   <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </div>
-                More About Us
+                Detailed Methodology
               </Link>
             </FadeInOnScroll>
           </div>
@@ -176,7 +179,7 @@ export function AboutPreviewSection() {
                 <div className="group relative overflow-hidden rounded-2xl md:rounded-[2rem] border border-border bg-background hover:bg-muted/40 transition-all duration-500 h-full">
                   {/* Number badge */}
                   <div className="absolute top-4 right-4 md:top-6 md:right-6">
-                    <span className="font-tech text-[10px] font-bold text-muted-foreground/30 tracking-widest">
+                    <span className="label-tech !mb-0 !text-muted-foreground/20 !text-[12px]">
                       0{i + 1}
                     </span>
                   </div>
@@ -190,7 +193,7 @@ export function AboutPreviewSection() {
                     
                     {/* Text */}
                     <div className="flex-1 min-w-0 md:mt-4">
-                      <h3 className="font-display font-medium text-foreground mb-1.5 md:mb-3" style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)' }}>
+                      <h3 className="heading-sub mb-1.5 md:mb-3">
                         {cap.title}
                       </h3>
                       <p className="body-text !leading-relaxed line-clamp-3 md:line-clamp-none">

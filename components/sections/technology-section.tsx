@@ -35,7 +35,7 @@ function ScrollRevealText({ text }: { text: string }) {
   return (
     <p
       ref={containerRef}
-      className="heading-section !not-italic !font-medium !leading-relaxed text-foreground/15"
+      className="heading-section text-foreground/15"
     >
       {words.map((word, index) => {
         const wordProgress = index / words.length;
@@ -86,213 +86,61 @@ const sideImages = [
 ];
 
 export function TechnologySection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const textSectionRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [textProgress, setTextProgress] = useState(0);
-  
-  const descriptionPart1 = "Specializing in high-performance RO Water Treatment Plants, Delta Impex provides custom-engineered solutions for desalination and purification.";
-  const descriptionPart2 = "Our systems serve both marine vessels and land-based industrial sectors, ensuring a reliable supply of clean water through advanced membrane technology and efficient filtration systems.";
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-      
-      const rect = sectionRef.current.getBoundingClientRect();
-      const scrollableHeight = window.innerHeight * 2;
-      const scrolled = -rect.top;
-      const progress = Math.max(0, Math.min(1, scrolled / scrollableHeight));
-      
-      setScrollProgress(progress);
-
-      // Text scroll progress
-      if (textSectionRef.current) {
-        const textRect = textSectionRef.current.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        
-        const startOffset = windowHeight * 0.9;
-        const endOffset = windowHeight * 0.1;
-        
-        const totalDistance = startOffset - endOffset;
-        const currentPosition = startOffset - textRect.top;
-        
-        const newTextProgress = Math.max(0, Math.min(1, currentPosition / totalDistance));
-        setTextProgress(newTextProgress);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  // Title fades out first (0 to 0.2)
-  const titleOpacity = Math.max(0, 1 - (scrollProgress / 0.2));
-  
-  // Image transforms start after title fades (0.2 to 1)
-  const imageProgress = Math.max(0, Math.min(1, (scrollProgress - 0.2) / 0.8));
-  
-  // Smooth interpolations
-  const centerWidth = 100 - (imageProgress * 58); // 100% to 42%
-  const centerHeight = 100 - (imageProgress * 30); // 100% to 70%
-  const sideWidth = imageProgress * 22; // 0% to 22%
-  const sideOpacity = imageProgress;
-  const sideTranslateLeft = -100 + (imageProgress * 100); // -100% to 0%
-  const sideTranslateRight = 100 - (imageProgress * 100); // 100% to 0%
-  const borderRadius = imageProgress * 24; // 0px to 24px
-  const gap = imageProgress * 16; // 0px to 16px
-
-  // Calculate grayscale for text section based on textProgress
-  const grayscaleAmount = Math.round((1 - textProgress) * 100);
-
   return (
-    <section ref={sectionRef} className="relative bg-foreground">
-      {/* Sticky container for scroll animation */}
-      <div className="sticky top-0 h-screen overflow-hidden">
-        <div className="flex h-full w-full items-center justify-center">
-          {/* Bento Grid Container */}
-          <div 
-            className="relative flex h-full w-full items-stretch justify-center"
-            style={{ gap: `${gap}px`, padding: `${imageProgress * 16}px` }}
-          >
-            
-            {/* Left Column */}
-            <div 
-              className="flex flex-col will-change-transform"
-              style={{
-                width: `${sideWidth}%`,
-                gap: `${gap}px`,
-                transform: `translateX(${sideTranslateLeft}%)`,
-                opacity: sideOpacity,
-              }}
-            >
-              {sideImages.filter(img => img.position === "left").map((img, idx) => (
-                <div 
-                  key={idx} 
-                  className="relative overflow-hidden will-change-transform"
-                  style={{
-                    flex: img.span,
-                    borderRadius: `${borderRadius}px`,
-                  }}
-                >
-                  <Image
-                    src={img.src || "/placeholder.svg"}
-                    alt={img.alt}
-                    fill
-                    sizes="22vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* Main Center Image */}
-            <div 
-              className="relative overflow-hidden will-change-transform"
-              style={{
-                width: `${centerWidth}%`,
-                height: "100%",
-                flex: "0 0 auto",
-                borderRadius: `${borderRadius}px`,
-              }}
-            >
-              <Image
-                src="/ro/ro-plant-framed.png"
-                alt="Reverse Osmosis plant and desalination technology"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-foreground/40" />
+    <section className="bg-foreground py-24 md:py-32 lg:py-48 text-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          
+          {/* Content Side */}
+          <div className="order-2 lg:order-1">
+            <p className="label-tech !text-accent mb-6">Advanced Engineering</p>
+            <h2 className="heading-display mb-8">
+              RO Water <br />
+              <span className="text-white/40">Desalination.</span>
+            </h2>
+            <div className="space-y-8 max-w-xl">
+              <p className="body-text !text-white/80">
+                We supply specialized RO systems for both marine and industrial use, designed to convert saline seawater into clean, safe, and potable freshwater.
+              </p>
+              <p className="body-text !text-white/60">
+                Our technology plays a vital role in regions where freshwater resources are limited, especially in coastal and industrial areas. We provide complete solutions including Reverse Osmosis plants, water treatment equipment, and specialized maintenance support.
+              </p>
               
-              {/* Title Text - Fades out word by word with blur */}
-              <div 
-                className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
-              >
-                <h2 className="heading-display max-w-3xl text-white">
-                  {["RO", "Desalination", "Water Systems."].map((word, index) => {
-                    // Each word fades out sequentially based on scrollProgress
-                    const wordFadeStart = index * 0.07; // Technology: 0, Meets: 0.07, Wilderness: 0.14
-                    const wordFadeEnd = wordFadeStart + 0.07;
-                    const wordProgress = Math.max(0, Math.min(1, (scrollProgress - wordFadeStart) / (wordFadeEnd - wordFadeStart)));
-                    const wordOpacity = 1 - wordProgress;
-                    const wordBlur = wordProgress * 10; // 0px to 10px blur
-                    
-                    return (
-                      <span
-                        key={index}
-                        className="inline-block"
-                        style={{
-                          opacity: wordOpacity,
-                          filter: `blur(${wordBlur}px)`,
-                          transition: 'opacity 0.1s linear, filter 0.1s linear',
-                          marginRight: index < 2 ? '0.3em' : '0',
-                        }}
-                      >
-                        {word}
-                        {index === 1 && <br />}
-                      </span>
-                    );
-                  })}
-                </h2>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 pt-4">
+                {[
+                  "Seawater Desalination",
+                  "Technical Maintenance",
+                  "Advanced Filtration",
+                  "Global Supply Chain",
+                  "Industrial Scale",
+                  "Marine Specialized"
+                ].map((item, i) => (
+                  <li key={i} className="label-tech !mb-0 !text-white/90 flex items-center gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Image Side */}
+          <div className="order-1 lg:order-2">
+            <div className="relative aspect-square md:aspect-[4/5] lg:aspect-square group transition-all duration-700">
+              <div className="absolute inset-0 bg-accent/20 blur-[100px] opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity" />
+              <div className="relative h-full w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                <Image
+                  src="/ro/ro-plant-framed.png"
+                  alt="Industrial RO Plant"
+                  fill
+                  className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground via-transparent to-transparent opacity-60" />
               </div>
             </div>
-
-            {/* Right Column */}
-            <div 
-              className="flex flex-col will-change-transform"
-              style={{
-                width: `${sideWidth}%`,
-                gap: `${gap}px`,
-                transform: `translateX(${sideTranslateRight}%)`,
-                opacity: sideOpacity,
-              }}
-            >
-              {sideImages.filter(img => img.position === "right").map((img, idx) => (
-                <div 
-                  key={idx} 
-                  className="relative overflow-hidden will-change-transform"
-                  style={{
-                    flex: img.span,
-                    borderRadius: `${borderRadius}px`,
-                  }}
-                >
-                  <Image
-                    src={img.src || "/placeholder.svg"}
-                    alt={img.alt}
-                    fill
-                    sizes="22vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-
           </div>
-        </div>
-      </div>
 
-      {/* Scroll space to enable animation */}
-      <div className="h-[200vh]" />
-
-      {/* Description Section with Background Image and Scroll Reveal */}
-      <div 
-        ref={textSectionRef}
-        className="relative overflow-hidden bg-background px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40"
-      >
-        {/* Background Image with Grayscale Filter */}
-        
-
-        {/* Text Content */}
-        <div className="relative z-10 mx-auto max-w-4xl">
-          <div className="mb-8 h-1 w-12 bg-primary md:mb-12" />
-          <div className="space-y-10 md:space-y-16">
-            <ScrollRevealText text={descriptionPart1} />
-            <ScrollRevealText text={descriptionPart2} />
-          </div>
         </div>
       </div>
     </section>

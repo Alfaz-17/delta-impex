@@ -161,12 +161,12 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                     {/* Typography Area */}
                     <div>
                       <div className="flex justify-between items-start mb-2 gap-4">
-                        <span className="text-[10px] font-tech uppercase tracking-widest text-primary truncate max-w-full">
+                        <span className="label-tech !mb-0 max-w-full truncate">
                           {product.category?.name || "Uncategorized"}
                         </span>
                       </div>
                       <Link href={`/products/${product.slug}`}>
-                        <h3 className="text-base font-semibold leading-tight text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                        <h3 className="heading-sub !text-base line-clamp-2 transition-colors group-hover:text-primary">
                           {product.name}
                         </h3>
                       </Link>

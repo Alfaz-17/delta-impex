@@ -6,133 +6,79 @@ import { useRef } from "react";
 import { useScroll, useTransform, motion, useSpring } from "framer-motion";
 
 export function PhilosophySection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const smooth = useSpring(scrollYProgress, {
-    stiffness: 70,
-    damping: 20,
-    restDelta: 0.001,
-  });
-
-  // 🔥 RESPONSIVE ENTRY (fix mobile overflow)
-  const leftX = useTransform(
-    smooth,
-    [0, 1],
-    ["-100%", "0%"] // reduced from -150%
-  );
-
-  const rightX = useTransform(
-    smooth,
-    [0, 1],
-    ["100%", "0%"] // reduced from 150%
-  );
-
-  const titleOpacity = useTransform(smooth, [0, 0.6], [1, 0]);
-
   return (
-    <section id="parts" className="bg-background">
-
-      {/* 🔥 SCROLL AREA (reduced for mobile feel) */}
-      <div
-        ref={containerRef}
-        className="relative h-[180vh] md:h-[220vh] lg:h-[250vh]"
-      >        
-        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-          
-          <div className="relative w-full">
-
-            {/* TITLE */}
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
-              style={{ opacity: titleOpacity }}
-            >
-              <h2 className="heading-display text-center px-4 md:px-6">
-                Our Core Divisions.
-              </h2>
-            </motion.div>
-
-            {/* GRID */}
-            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 
-                            gap-6 md:gap-8 lg:gap-12 
-                            px-4 md:px-12 lg:px-20 
-                            w-full max-w-7xl mx-auto">
-
-              {/* LEFT */}
-              <motion.div style={{ x: leftX }}>
-                <Card
-                  href="/divisions/marine-parts"
-                  src="/images/marine-parts-clean.png"
-                  label="Marine & Industrial Parts"
-                />
-              </motion.div>
-
-              {/* RIGHT */}
-              <motion.div style={{ x: rightX }}>
-                <Card
-                  href="/divisions/ro-systems"
-                  src="/ro/ro-plant-clean.png"
-                  label="RO Water Treatment"
-                />
-              </motion.div>
-
-            </div>
+    <section id="divisions" className="bg-background py-24 md:py-32 lg:py-40">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
+        
+        {/* Section Header */}
+        <div className="mb-12 md:mb-20 text-center lg:text-left">
+          <p className="label-tech !text-primary mb-5">
+            Our Core Divisions
+          </p>
+          <h2 className="heading-display mb-8">
+            Specialized Solutions <br className="hidden md:block" />
+            <span className="text-muted-foreground non-italic">for Sea & Land.</span>
+          </h2>
+          <div className="max-w-2xl">
+            <p className="body-text leading-relaxed">
+              Delta Impex operates two specialized divisions: the supply of high-quality Marine & Industrial machinery spare parts, 
+              and the provision of advanced RO Water Treatment Plants for both land and sea applications.
+            </p>
           </div>
         </div>
-      </div>
 
-      {/* DESCRIPTION */}
-      <div className="px-6 py-16 md:px-12 md:py-24 lg:px-20">
-        <div className="text-center max-w-4xl mx-auto">
-          <p className="label-tech !text-primary mb-4 md:mb-6">
-            Trusted Partner Since Inception
-          </p>
+        {/* Static Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          
+          <Card
+            href="/divisions/marine-parts"
+            src="/images/marine-parts-clean.png"
+            label="Marine & Industrial Parts"
+            tag="Engineering"
+          />
 
-          <p className="body-text leading-relaxed">
-            Delta Impex operates two specialized divisions: the supply of high-quality Marine & Industrial machinery spare parts,
-            and the provision of advanced RO Water Treatment Plants for both land and sea applications.
-          </p>
+          <Card
+            href="/divisions/ro-systems"
+            src="/ro/ro-plant-clean.png"
+            label="RO Water Treatment"
+            tag="Technical"
+          />
+
         </div>
       </div>
     </section>
   );
 }
 
-function Card({ href, src, label }: any) {
+function Card({ href, src, label, tag }: any) {
   return (
     <Link
       href={href}
-      className="relative block 
-                 aspect-[4/3] 
-                 rounded-2xl md:rounded-3xl lg:rounded-[2.5rem] 
-                 overflow-hidden 
-                 group shadow-xl md:shadow-2xl"
+      className="relative block aspect-[16/10] md:aspect-[16/9] rounded-2xl overflow-hidden group border border-border/50"
     >
       <Image
         src={src}
         alt={label}
         fill
         sizes="(max-width: 768px) 100vw, 50vw"
-        className="object-cover group-hover:scale-105 transition-transform duration-700"
+        className="object-cover transition-transform duration-1000 group-hover:scale-105"
       />
 
-      <div className="absolute inset-0 bg-black/25 group-hover:bg-black/10 transition" />
+      {/* Elegant Gradient Overlay */}
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500 opacity-90 group-hover:opacity-100" />
 
-      <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8">
-        <span className="backdrop-blur-md px-4 py-2 md:px-6 md:py-3 
-                         text-xs md:text-sm lg:text-base
-                         font-semibold 
-                         rounded-full 
-                         bg-primary/90 text-white 
-                         border border-white/20 
-                         shadow-lg
-                         whitespace-nowrap">
-          {label}
-        </span>
+      <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
+        <div className="flex flex-col gap-2">
+          {tag && (
+            <span className="w-fit px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-tech text-white uppercase tracking-widest">
+              {tag}
+            </span>
+          )}
+          <h3 className="text-white font-display text-xl md:text-3xl font-medium tracking-tight">
+            {label}
+          </h3>
+          <div className="h-[1px] w-0 bg-white/40 transition-all duration-500 group-hover:w-full" />
+        </div>
       </div>
     </Link>
   );

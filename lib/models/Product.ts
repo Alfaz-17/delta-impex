@@ -24,5 +24,11 @@ const ProductSchema = new Schema<IProduct>({
   imageUrl: { type: String, required: true },
 }, { timestamps: true });
 
+// Optimize lookups for featured products per division
+ProductSchema.index({ division: 1, isFeatured: -1 });
+
+// Optimize lookups per category
+ProductSchema.index({ category: 1 });
+
 const Product: Model<IProduct> = mongoose.models.Product || mongoose.model<IProduct>("Product", ProductSchema);
 export default Product;

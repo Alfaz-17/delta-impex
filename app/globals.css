@@ -25,64 +25,59 @@ html.lenis, html.lenis body {
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #FAF9F6;  /* Offwhite */
-  --foreground: #0A0A0A;  /* Black */
-  --card: #FFFFFF;        /* Pure white for cards */
-  --card-foreground: #0A0A0A;
+  --background: #FFFFFF;  /* High-end clean background */
+  --foreground: #020617;  /* Deep Slate/Navy text */
+  --card: #F8FAFC;        /* Subtle slate for cards */
+  --card-foreground: #020617;
   --popover: #FFFFFF;
-  --popover-foreground: #0A0A0A;
-  --primary: #074173;     /* NavBlue */
-  --primary-foreground: #FFFFFF;
-  --secondary: #64748B;
-  --secondary-foreground: #0A0A0A;
-  --muted: #F1F5F9;       /* Light Gray */
+  --popover-foreground: #020617;
+  --primary: #0F172A;     /* Industrial Deep Navy */
+  --primary-foreground: #F8FAFC;
+  --secondary: #475569;
+  --secondary-foreground: #020617;
+  --muted: #F1F5F9;       
   --muted-foreground: #64748B;
-  --accent: #E2E8F0;
-  --accent-foreground: #074173;
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --border: #E2E8F0;      /* Light Gray Border */
-  --input: #E2E8F0;
-  --ring: #074173;
-  --radius: 1rem;
+  --accent: #0C4A6E;      /* Sea Blue accent */
+  --accent-foreground: #FFFFFF;
+  --destructive: #991B1B;
+  --destructive-foreground: #F8FAFC;
+  --border: #E2E8F0;      
+  --input: #F1F5F9;
+  --ring: #0F172A;
+  --radius: 0.75rem;
 
   /* ── Fluid Typography Scale ── */
-  --text-display: clamp(2.2rem, 5vw, 4rem);
-  --text-section: clamp(1.6rem, 3vw, 2.5rem);
-  --text-sub: clamp(1.2rem, 2vw, 1.5rem);
-  --text-body: clamp(0.9rem, 1.2vw, 1.05rem);
-  --text-label: clamp(0.6rem, 0.8vw, 0.7rem);
+  --text-display: clamp(2.5rem, 6vw, 5rem);
+  --text-section: clamp(1.75rem, 4vw, 3rem);
+  --text-sub: clamp(1.1rem, 1.5vw, 1.4rem);
+  --text-body: clamp(0.95rem, 1.1vw, 1.125rem);
+  --text-label: clamp(0.7rem, 0.8vw, 0.8rem);
 
   /* ── Section Spacing Tokens ── */
-  --section-px: clamp(1.5rem, 5vw, 5rem);
-  --section-py: clamp(4rem, 8vw, 10rem);
+  --section-px: clamp(1.5rem, 6vw, 6rem);
+  --section-py: clamp(5rem, 10vw, 12rem);
 }
 
-/* 
-  Neutralize unexpected dark mode inversions. 
-  The site will always use the consistent high-contrast nautical theme requested:
-  Navblue, Offwhite, Black, Light Gray.
-*/
 .dark {
-  --background: #FAF9F6;
-  --foreground: #0A0A0A;
-  --card: #FFFFFF;
-  --card-foreground: #0A0A0A;
-  --popover: #FFFFFF;
-  --popover-foreground: #0A0A0A;
-  --primary: #074173;
-  --primary-foreground: #FFFFFF;
-  --secondary: #64748B;
-  --secondary-foreground: #0A0A0A;
-  --muted: #F1F5F9;
-  --muted-foreground: #64748B;
-  --accent: #E2E8F0;
-  --accent-foreground: #074173;
+  --background: #020617;
+  --foreground: #F8FAFC;
+  --card: #0F172A;
+  --card-foreground: #F8FAFC;
+  --popover: #0F172A;
+  --popover-foreground: #F8FAFC;
+  --primary: #F8FAFC;
+  --primary-foreground: #020617;
+  --secondary: #94A3B8;
+  --secondary-foreground: #F8FAFC;
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;
+  --accent: #38BDF8;
+  --accent-foreground: #020617;
   --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --border: #E2E8F0;
-  --input: #E2E8F0;
-  --ring: #074173;
+  --destructive-foreground: #F8FAFC;
+  --border: #1E293B;
+  --input: #1E293B;
+  --ring: #F8FAFC;
 }
 
 @theme inline {
@@ -140,34 +135,33 @@ html.lenis, html.lenis body {
 
 @layer utilities {
   .heading-display {
-    font-size: var(--text-display);
-    line-height: 1.1;
+    @apply font-display font-bold;
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
+    line-height: 1.05;
     letter-spacing: -0.02em;
-    @apply font-display font-medium italic;
   }
   
   .heading-section {
-    font-size: var(--text-section);
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    @apply font-display font-medium italic;
+    @apply font-display font-bold;
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+    line-height: 1.1;
   }
 
   .heading-sub {
-    font-size: var(--text-sub);
-    line-height: 1.3;
-    @apply font-display font-medium italic mb-6;
+    @apply font-display font-bold;
+    @apply text-xl md:text-2xl;
+    line-height: 1.2;
   }
 
   .body-text {
-    font-size: var(--text-body);
+    @apply font-sans text-muted-foreground;
+    @apply text-sm sm:text-base md:text-lg;
     line-height: 1.7;
-    @apply text-muted-foreground font-sans;
   }
 
   .label-tech {
-    font-size: var(--text-label);
-    @apply font-tech uppercase tracking-[0.4em] text-muted-foreground italic mb-2;
+    @apply font-sans font-bold uppercase tracking-[0.3em] text-accent;
+    @apply text-[9px] sm:text-[10px];
   }
   
   .body-premium {
@@ -305,6 +299,18 @@ html.lenis, html.lenis body {
   -webkit-text-fill-color: transparent;
 }
 
+.grid-technical {
+  background-image: 
+    linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+}
+
+.grid-technical-dots {
+  background-image: radial-gradient(circle at 1px 1px, rgba(56, 189, 248, 0.15) 1px, transparent 0);
+  background-size: 4rem 4rem;
+}
+
 .clip-diagonal {
   clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
 }
@@ -353,4 +359,25 @@ html.lenis, html.lenis body {
 .marquee-track-left:hover,
 .marquee-track-right:hover {
   animation-play-state: paused;
+}
+
+/* ── Technical Pulse Animation ── */
+@keyframes tech-pulse {
+  0% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.05); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 0.3; }
+}
+
+.animate-tech-pulse {
+  animation: tech-pulse 4s ease-in-out infinite;
+}
+
+.glass-premium {
+  @apply backdrop-blur-2xl bg-white/5 border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
+}
+
+.text-gradient-silver {
+  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

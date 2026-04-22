@@ -18,8 +18,7 @@ const footerLinks = {
   service: [
     { label: "India: +91 9925999945", href: "tel:+919925999945" },
     { label: "UAE: +971 524918899", href: "tel:+971524918899" },
-    { label: "Email: info@deltaimpex.com", href: "mailto:info@deltaimpex.com" },
-    { label: "Support", href: "#" },
+    { label: "Official Inquiry", href: "#contact" },
   ],
 };
 
@@ -31,7 +30,7 @@ export function FooterSection() {
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1 lg:col-span-2">
-            <Link href="/" className="heading-sub !mb-0 text-foreground">
+            <Link href="/" className="heading-sub">
               Delta Impex
             </Link>
             <p className="mt-4 max-w-xs body-text">
@@ -49,7 +48,7 @@ export function FooterSection() {
 
           {/* Explore */}
           <div>
-            <h4 className="label-tech mb-4" style={{ color: 'var(--foreground)', fontWeight: 700 }}>Explore</h4>
+            <h4 className="label-tech mb-4">Explore</h4>
             <ul className="space-y-3">
               {footerLinks.explore.map((link) => (
                 <li key={link.label}>
@@ -66,7 +65,7 @@ export function FooterSection() {
 
           {/* About */}
           <div>
-            <h4 className="mb-4 text-sm font-medium text-foreground">About</h4>
+            <h4 className="label-tech mb-4">About</h4>
             <ul className="space-y-3">
               {footerLinks.about.map((link) => (
                 <li key={link.label}>
@@ -83,7 +82,7 @@ export function FooterSection() {
 
           {/* Service */}
           <div>
-            <h4 className="mb-4 text-sm font-medium text-foreground">Contact</h4>
+            <h4 className="label-tech mb-4">Contact</h4>
             <ul className="space-y-3">
               {footerLinks.service.map((link) => (
                 <li key={link.label}>
@@ -103,29 +102,28 @@ export function FooterSection() {
       {/* Bottom Bar */}
       <div className="border-t border-border px-6 py-6 md:px-12 lg:px-20">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <p className="text-xs text-muted-foreground">
+          <p className="label-tech !mb-0 !text-muted-foreground lowercase">
             © 2026 Delta Impex. All rights reserved.
           </p>
 
           
 
-          {/* Social Links */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             <Link
               href="#"
-              className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+              className="label-tech !mb-0 !text-muted-foreground transition-colors hover:text-foreground lowercase"
             >
               Instagram
             </Link>
             <Link
               href="#"
-              className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+              className="label-tech !mb-0 !text-muted-foreground transition-colors hover:text-foreground lowercase"
             >
               Twitter
             </Link>
             <Link
               href="#"
-              className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+              className="label-tech !mb-0 !text-muted-foreground transition-colors hover:text-foreground lowercase"
             >
               YouTube
             </Link>

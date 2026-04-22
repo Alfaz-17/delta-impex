@@ -74,8 +74,8 @@ export function Header() {
                   href={link.href}
                   className={`relative btn-text whitespace-nowrap transition-all group ${
                     isActive 
-                      ? "text-primary" 
-                      : isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white/80 hover:text-white drop-shadow-sm"
+                      ? (isScrolled ? "text-primary" : "text-white") 
+                      : isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white/80 hover:text-accent drop-shadow-sm"
                   }`}
                 >
                   {link.label}
@@ -152,10 +152,10 @@ export function Header() {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <div className="space-y-1">
-                      <p className={`font-tech text-[10px] uppercase tracking-widest font-bold ${pathname === link.href ? "text-primary" : "text-muted-foreground"}`}>
+                      <p className={`label-tech !mb-0 ${pathname === link.href ? "text-primary" : "text-muted-foreground"}`}>
                         0{i + 1}
                       </p>
-                      <h2 className={`heading-section !italic-0 group-hover:translate-x-2 transition-transform duration-300 ${
+                      <h2 className={`heading-section group-hover:translate-x-2 transition-transform duration-300 ${
                         pathname === link.href ? "text-primary" : "text-foreground"
                       }`}>
                         {link.label}
@@ -176,12 +176,12 @@ export function Header() {
             >
               <Link
                 href="/contact"
-                className="w-full bg-primary py-5 text-center text-xs font-tech font-bold uppercase tracking-[0.3em] text-white rounded-2xl shadow-xl shadow-primary/20"
+                className="w-full bg-primary py-5 text-center label-tech !text-white !mb-0 rounded-2xl shadow-xl shadow-primary/20"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Start Inquiry
               </Link>
-              <div className="flex justify-between items-center text-[10px] font-tech uppercase tracking-widest text-muted-foreground">
+              <div className="flex justify-between items-center label-tech !mb-0 !text-muted-foreground lowercase">
                 <p>© 2026 Delta Impex</p>
                 <div className="flex gap-4">
                   <span>India</span>

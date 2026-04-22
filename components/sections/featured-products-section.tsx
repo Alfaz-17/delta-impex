@@ -39,7 +39,7 @@ export function FeaturedProductsSection({
         const division = Array.isArray(divisions) ? divisions.find((d: any) => d.slug === targetSlug) : null;
         
         if (division) {
-          let url = `/api/products?divisionId=${division._id}`;
+          let url = `/api/products?divisionId=${division._id}&limit=8`;
           if (featuredOnly) {
             url += "&isFeatured=true";
           }
@@ -65,10 +65,10 @@ export function FeaturedProductsSection({
         <FadeInOnScroll>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-8 border-b border-border/50 pb-8 md:pb-12">
             <div className="max-w-2xl">
-              <h2 className="heading-display text-foreground leading-tight mb-4">
+              <h2 className="heading-display mb-4">
                 {title}
               </h2>
-              <p className="font-tech text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
+              <p className="label-tech">
                 {subtitle}
               </p>
             </div>
@@ -79,16 +79,16 @@ export function FeaturedProductsSection({
                     <div className="flex items-center gap-6 border-b border-transparent">
                         <button
                             onClick={() => setActiveTab("marine")}
-                            className={`font-tech text-[10px] uppercase tracking-widest transition-all pb-2 border-b ${
-                                activeTab === "marine" ? "text-primary border-primary" : "text-muted-foreground border-transparent hover:text-foreground"
+                            className={`label-tech !mb-0 transition-all pb-2 border-b-2 ${
+                                activeTab === "marine" ? "text-primary border-accent" : "text-muted-foreground border-transparent hover:text-foreground"
                             }`}
                         >
                             Marine
                         </button>
                         <button
                             onClick={() => setActiveTab("ro")}
-                            className={`font-tech text-[10px] uppercase tracking-widest transition-all pb-2 border-b ${
-                                activeTab === "ro" ? "text-primary border-primary" : "text-muted-foreground border-transparent hover:text-foreground"
+                            className={`label-tech !mb-0 transition-all pb-2 border-b-2 ${
+                                activeTab === "ro" ? "text-primary border-accent" : "text-muted-foreground border-transparent hover:text-foreground"
                             }`}
                         >
                             Water Systems
@@ -155,14 +155,14 @@ export function FeaturedProductsSection({
 
                     {/* Content below image */}
                     <div className="pt-4 md:pt-8 lg:pt-10 pl-1 flex flex-col h-full">
-                      <h3 className="font-display text-sm md:text-lg lg:text-xl font-medium text-foreground mb-2 md:mb-3 leading-tight transition-colors group-hover:text-white line-clamp-2">
+                      <h3 className="heading-sub mb-2 md:mb-3 transition-colors group-hover:text-accent line-clamp-2">
                         {product.name}
                       </h3>
                       
                       <div className="flex flex-col gap-2 mt-auto">
                         <div className="flex justify-between items-center">
-                           <span className="font-tech text-[10px] uppercase tracking-widest text-muted-foreground/60 transition-colors group-hover:text-muted-foreground">
-                               {product.category?.name || 'Technical Component'}
+                           <span className="label-tech !mb-0 !text-muted-foreground/60 transition-colors group-hover:text-primary">
+                                {product.category?.name || 'Technical Component'}
                            </span>
                         </div>
                       </div>

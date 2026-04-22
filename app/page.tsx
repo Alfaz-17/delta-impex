@@ -29,15 +29,8 @@ export default function Home() {
     <main className="min-h-screen bg-background">
       <Header />
       <HeroSection />
-      <PhilosophySection />
-      <AboutPreviewSection />
-      
-      <CategoriesShowcaseSection />
 
-      <BrandsMarquee />
-      <TechnologySection />
-      
-      {/* Dynamic Marine Featured Section */}
+      {/* Dynamic Marine Featured Section - Moved Up */}
       <FeaturedProductsSection 
         divisionSlug="marine-industrial" 
         hideTabs={true} 
@@ -46,9 +39,10 @@ export default function Home() {
         subtitle="Featured Inventory."
       />
 
-      <GallerySection />
-
-      {/* Dynamic RO Featured Section */}
+      <PhilosophySection />
+      <AboutPreviewSection />
+      
+      {/* Dynamic RO Featured Section - Moved Up */}
       <FeaturedProductsSection 
         divisionSlug="ro-water-treatment" 
         hideTabs={true} 
@@ -56,6 +50,11 @@ export default function Home() {
         title="Water Treatment." 
         subtitle="Technical Highlights."
       />
+
+      <BrandsMarquee />
+      <TechnologySection />
+      
+      <GallerySection />
 
       <TestimonialsSection />
       <FooterSection />

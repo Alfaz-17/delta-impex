@@ -174,19 +174,23 @@ export function ROProcessSection() {
     <section ref={containerRef} className="relative bg-background">
       {/* Introduction Header */}
       <div className="px-6 py-24 text-center md:px-12 md:py-32 lg:px-20 lg:py-40 border-b border-border/10">
-        <h2 className="heading-display mb-6 text-foreground">
+        <h2 className="heading-display mb-8">
           Turning Seawater into <br />
-          <span className="text-muted-foreground">Pure Drinking Water.</span>
+          <span className="text-accent italic">Pure Drinking Water.</span>
         </h2>
-        <p className="mx-auto max-w-2xl body-text !leading-relaxed">
-          A Reverse Osmosis (RO) Seawater Desalination Plant is an advanced water treatment system 
-          designed to convert saline seawater into clean, safe, and potable freshwater.
-        </p>
+        <div className="mx-auto max-w-3xl">
+          <p className="body-text !leading-relaxed mb-6">
+            A Reverse Osmosis (RO) Seawater Desalination Plant is an advanced water treatment system designed to convert saline seawater into clean, safe, and potable freshwater. 
+          </p>
+          <p className="body-text !leading-relaxed">
+            This technology plays a vital role in regions where freshwater resources are limited, especially in coastal and industrial areas.
+          </p>
+        </div>
       </div>
 
       {/* Sticky Scroll Section */}
-      <div className="relative h-[600vh]">
-        <div className="sticky top-0 flex h-screen w-full flex-col overflow-hidden md:flex-row">
+      <div className="relative h-[600dvh]">
+        <div className="sticky top-0 flex h-dvh w-full flex-col overflow-hidden md:flex-row">
           
           {/* Left: Images */}
           <div className="relative h-1/2 w-full overflow-hidden md:h-full md:w-1/2 bg-muted">
@@ -230,7 +234,7 @@ export function ROProcessSection() {
         <p className="label-tech mb-8">
           Reliable Supply Globally
         </p>
-        <h4 className="mx-auto max-w-4xl heading-section !not-italic !tracking-normal">
+        <h4 className="mx-auto max-w-4xl heading-section">
           From vessels at sea to industrial plants on land, providing high-quality spare parts and RO systems.
         </h4>
       </div>
