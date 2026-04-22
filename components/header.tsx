@@ -180,7 +180,7 @@ export function Header() {
               href="/" 
               className="relative h-10 w-48 md:w-56 transition-transform hover:scale-105 duration-300"
             >
-              <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[320px] h-[120px] pointer-events-none">
+              <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[350px] h-[125px] mt-2 pointer-events-none">
                 <Image
                   src="/logo.png"
                   alt="Delta Impex Logo"
