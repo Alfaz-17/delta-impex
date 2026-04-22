@@ -228,6 +228,7 @@ export function Header() {
                         >
                           <div 
                             className="max-h-[70vh] overflow-y-auto custom-scrollbar pr-4 overscroll-contain"
+                            data-lenis-prevent
                             onWheel={(e) => e.stopPropagation()}
                           >
                             <div className={`bg-[#020617]/95 backdrop-blur-3xl border border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden ${isMarine ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
@@ -316,7 +317,8 @@ export function Header() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 bottom-0 z-[90] w-[85%] max-w-sm bg-background border-l border-primary/20 shadow-2xl lg:hidden flex flex-col h-screen overflow-hidden"
+              className="fixed top-0 right-0 bottom-0 z-[90] w-[85%] max-w-sm bg-background border-l border-primary/20 shadow-2xl lg:hidden flex flex-col h-[100dvh] overflow-hidden"
+              data-lenis-prevent
             >
               {/* Technical Grid Background */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(56,189,248,0.05)_1px,transparent_0)] bg-[size:30px_30px] opacity-40 pointer-events-none" />
@@ -341,7 +343,7 @@ export function Header() {
                  <span className="text-[7px] text-primary/60 tracking-[0.2em] uppercase">Log: AX-774</span>
               </div>
 
-              <div className="flex-1 overflow-y-auto px-8 py-10 space-y-12 custom-scrollbar relative z-10">
+              <div className="flex-1 overflow-y-auto px-8 py-10 space-y-12 custom-scrollbar relative z-10 overscroll-contain" data-lenis-prevent>
                 {/* Primary Links */}
                 <div className="space-y-6">
                   {navLinks.map((link, i) => {
@@ -377,7 +379,7 @@ export function Header() {
                               exit={{ height: 0, opacity: 0 }}
                               className="overflow-hidden"
                             >
-                              <div className="max-h-[350px] overflow-y-auto custom-scrollbar pr-2 mb-4">
+                              <div className="max-h-[350px] overflow-y-auto custom-scrollbar pr-2 mb-4 overscroll-contain" data-lenis-prevent>
                                 <div className="pl-4 space-y-8 pt-4 pb-4 border-l border-primary/20 ml-1">
                                   {link.divisions.map((div: any) => (
                                     <div key={div._id} className="space-y-4">
