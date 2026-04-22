@@ -51,7 +51,7 @@ export function HeroSection() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="max-w-xl md:max-w-2xl lg:max-w-3xl flex flex-col items-start space-y-4 md:space-y-5"
+          className="max-w-xl md:max-w-2xl flex flex-col items-start space-y-4 md:space-y-5"
         >
        
          
@@ -59,7 +59,7 @@ export function HeroSection() {
           {/* Proper Compact Heading */}
           <motion.h1 
             variants={itemVariants}
-            className="heading-display text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] !text-3xl sm:!text-4xl md:!text-5xl lg:!text-[3.5rem] leading-[1.1] tracking-tight uppercase"
+            className="heading-display text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] !text-3xl sm:!text-4xl md:!text-5xl lg:!text-[2.4rem] leading-[1.1] tracking-tight uppercase"
           >
             Marine & Industrial Spares. <br />
             <span className="text-accent underline decoration-white/20 underline-offset-4 md:underline-offset-6">Engineered Excellence.</span>
@@ -68,7 +68,7 @@ export function HeroSection() {
           {/* Compact Subtext - Constrained Width */}
           <motion.p 
             variants={itemVariants}
-            className="body-premium max-w-lg text-xs md:text-sm lg:text-base text-white/90 leading-relaxed drop-shadow-md"
+            className="body-premium max-w-lg text-xs md:text-sm text-white/90 leading-relaxed drop-shadow-md"
           >
             Empowering global maritime and industrial sectors with genuine OEM spare parts, 
             technical reverse osmosis solutions, and precision-engineered logistics.
