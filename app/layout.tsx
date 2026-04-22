@@ -114,7 +114,10 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${outfit.variable} ${syne.variable} ${spaceMono.variable} ${syncopate.variable} font-sans antialiased`}>
+      <head>
+        <link rel="preload" as="image" href="/hero-poster.png" />
+      </head>
+      <body className={`${outfit.variable} ${syne.variable} ${spaceMono.variable} ${syncopate.variable} font-sans antialiased text-foreground`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

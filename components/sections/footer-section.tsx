@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 const footerLinks = {
   explore: [
@@ -30,8 +31,13 @@ export function FooterSection() {
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1 lg:col-span-2">
-            <Link href="/" className="heading-sub">
-              Delta Impex
+            <Link href="/" className="relative block h-8 w-32 mb-6">
+              <Image
+                src="/logo.png"
+                alt="Delta Impex Logo"
+                fill
+                className="object-contain object-left"
+              />
             </Link>
             <p className="mt-4 max-w-xs body-text">
               Your Trusted Partner for Marine & Industrial Spare Parts and Advanced RO Water Treatment Systems worldwide.

@@ -9,14 +9,15 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Initialize Lenis
     lenisRef.current = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 1.5, // Slightly longer duration for "weight"
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1,
+      wheelMultiplier: 1.1, // Faster responsiveness
+      lerp: 0.08, // Smoother interpolation
       // mobile settings
-      smoothTouch: false, // native touch is usually better on mobile
+      smoothTouch: false,
       touchMultiplier: 2,
     });
 

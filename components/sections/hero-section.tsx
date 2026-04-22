@@ -31,6 +31,7 @@ export function HeroSection() {
       <div className="absolute inset-0 z-0">
         <video
           src="/hero.mp4"
+          poster="/hero-poster.png"
           autoPlay
           muted
           loop

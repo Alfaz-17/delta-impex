@@ -5,6 +5,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import mongoose from "mongoose";
 
+export const revalidate = 60;
+
 export async function GET(req: NextRequest) {
   try {
     await connectToDatabase();

@@ -35,6 +35,7 @@ function ProductFormContent() {
     condition: "",
     isFeatured: false,
     imageUrl: "",
+    images: [] as string[],
   };
 
   const [formData, setFormData] = useState(defaultValue);
@@ -83,6 +84,7 @@ function ProductFormContent() {
             condition: data.condition || "",
             isFeatured: data.isFeatured || false,
             imageUrl: data.imageUrl || "",
+            images: data.images || [],
         });
       }
     } catch (error) {
@@ -116,6 +118,51 @@ function ProductFormContent() {
     } finally {
       setUploading(false);
     }
+  };
+  
+  const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+    const uploadedUrls: string[] = [];
+
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const uploadData = new FormData();
+        uploadData.append("file", files[i]);
+        
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadData,
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          uploadedUrls.push(data.url);
+        }
+      }
+
+      setFormData(prev => ({ 
+        ...prev, 
+        images: [...(prev.images || []), ...uploadedUrls] 
+      }));
+      
+      if (uploadedUrls.length > 0) {
+        toast.success(`${uploadedUrls.length} image(s) added to gallery`);
+      }
+    } catch (error) {
+      toast.error("Error uploading gallery images");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const removeGalleryImage = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -258,7 +305,7 @@ function ProductFormContent() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Visual Asset *</Label>
+                  <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Primary Visual Asset *</Label>
                   <div className="relative group">
                     {formData.imageUrl ? (
                       <div className="relative aspect-video max-w-sm rounded-none overflow-hidden border border-border">
@@ -280,6 +327,34 @@ function ProductFormContent() {
                         <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
                       </label>
                     )}
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Technical Gallery</Label>
+                    <span className="text-[9px] text-muted-foreground uppercase">Optional supplementary specs</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {formData.images.map((img, idx) => (
+                      <div key={idx} className="relative aspect-square border border-border group overflow-hidden">
+                        <Image src={img} alt={`Gallery ${idx}`} fill className="object-cover" />
+                        <button 
+                          type="button"
+                          onClick={() => removeGalleryImage(idx)}
+                          className="absolute inset-0 bg-red-600/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="text-white w-5 h-5" />
+                        </button>
+                      </div>
+                    ))}
+                    
+                    <label className="flex flex-col items-center justify-center aspect-square border-2 border-dashed border-border bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer group">
+                      {uploading ? <Loader2 className="animate-spin text-primary w-5 h-5" /> : <Upload className="text-primary w-5 h-5 group-hover:scale-110 transition-transform" />}
+                      <span className="mt-2 text-[9px] font-bold uppercase tracking-widest text-primary">Add More</span>
+                      <input type="file" className="hidden" accept="image/*" multiple onChange={handleGalleryUpload} />
+                    </label>
                   </div>
                 </div>
 

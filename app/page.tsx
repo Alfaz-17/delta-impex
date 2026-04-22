@@ -1,5 +1,6 @@
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/sections/hero-section";
+import { SectionWrapper } from "@/components/section-wrapper";
 import dynamic from "next/dynamic";
 import type { Metadata } from 'next'
 
@@ -39,17 +40,24 @@ export default function Home() {
         subtitle="Featured Inventory."
       />
 
-      <PhilosophySection />
-      <AboutPreviewSection />
+      <SectionWrapper>
+        <PhilosophySection />
+      </SectionWrapper>
+      
+      <SectionWrapper>
+        <AboutPreviewSection />
+      </SectionWrapper>
       
       {/* Dynamic RO Featured Section - Moved Up */}
-      <FeaturedProductsSection 
-        divisionSlug="ro-water-treatment" 
-        hideTabs={true} 
-        featuredOnly={true}
-        title="Water Treatment." 
-        subtitle="Technical Highlights."
-      />
+      <SectionWrapper>
+        <FeaturedProductsSection 
+          divisionSlug="ro-water-treatment" 
+          hideTabs={true} 
+          featuredOnly={true}
+          title="Water Treatment." 
+          subtitle="Technical Highlights."
+        />
+      </SectionWrapper>
 
       <BrandsMarquee />
       <TechnologySection />

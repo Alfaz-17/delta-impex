@@ -10,6 +10,7 @@ export interface IProduct extends Document {
   condition?: string;
   isFeatured: boolean;
   imageUrl: string;
+  images: string[];
 }
 
 const ProductSchema = new Schema<IProduct>({
@@ -22,6 +23,7 @@ const ProductSchema = new Schema<IProduct>({
   condition: { type: String },
   isFeatured: { type: Boolean, default: false },
   imageUrl: { type: String, required: true },
+  images: { type: [String], default: [] },
 }, { timestamps: true });
 
 // Optimize lookups for featured products per division

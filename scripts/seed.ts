@@ -1,199 +1,138 @@
 import mongoose from "mongoose";
-import fs from "fs";
+import * as dotenv from "dotenv";
 import path from "path";
+import Division from "../lib/models/Division";
+import Category from "../lib/models/Category";
+import Product from "../lib/models/Product";
 
-// Load environment variables locally
-const envFile = fs.readFileSync(path.resolve(process.cwd(), ".env.local"), "utf8");
-const match = envFile.match(/MONGODB_URI=(.*)/);
-const MONGODB_URI = match ? match[1]?.trim() : process.env.MONGODB_URI;
+// Load environment variables
+dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
+
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  console.error("MONGODB_URI missing in .env.local");
+  console.error("Please define the MONGODB_URI environment variable inside .env.local");
   process.exit(1);
 }
 
-// Schemas
-const DivisionSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  slug: { type: String, required: true, unique: true },
-  description: String,
-});
-
-const CategorySchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  slug: { type: String, required: true, unique: true },
-  division: { type: mongoose.Schema.Types.ObjectId, ref: 'Division', required: true },
-}, { timestamps: true });
-
-const ProductSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  slug: { type: String, required: true, unique: true },
-  division: { type: mongoose.Schema.Types.ObjectId, ref: 'Division', required: true },
-  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
-  description: String,
-  price: String,
-  condition: String,
-  imageUrl: String,
-  isFeatured: { type: Boolean, default: false },
-}, { timestamps: true });
-
-const Division = mongoose.models.Division || mongoose.model("Division", DivisionSchema);
-const Category = mongoose.models.Category || mongoose.model("Category", CategorySchema);
-const Product = mongoose.models.Product || mongoose.model("Product", ProductSchema);
-
-const toSlug = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-
 const seedData = async () => {
-  console.log("🌱 Starting database seeding...");
-  
   try {
-    await mongoose.connect(MONGODB_URI!);
-    console.log("✅ Database Connected.");
+    console.log("Connecting to Database...");
+    await mongoose.connect(MONGODB_URI);
+    console.log("Connected Successfully.");
 
-    // Clear existing products and categories
-    await Product.deleteMany({});
+    // Clear existing data
+    console.log("Clearing existing collections...");
+    await Division.deleteMany({});
     await Category.deleteMany({});
-    console.log("🧹 Cleared existing Products and Categories.");
+    await Product.deleteMany({});
 
-    // Ensure divisions exist
-    let marineDivision = await Division.findOne({ slug: "marine-industrial" });
-    if (!marineDivision) {
-      marineDivision = await Division.create({ name: "Marine & Industrial Parts", slug: "marine-industrial" });
-    }
-    
-    let roDivision = await Division.findOne({ slug: "ro-water-treatment" });
-    if (!roDivision) {
-      roDivision = await Division.create({ name: "RO Water Treatment", slug: "ro-water-treatment" });
-    }
+    // 1. Create Divisions
+    console.log("Creating Divisions...");
+    const divisions = await Division.insertMany([
+      { name: "Marine Propulsion", slug: "marine-propulsion" },
+      { name: "Power Systems", slug: "power-systems" },
+      { name: "Industrial Filtration", slug: "industrial-filtration" },
+      { name: "Engineering Spares", slug: "engineering-spares" }
+    ]);
 
-    console.log("✅ Divisions validated.");
+    const divPropulsion = divisions.find(d => d.slug === "marine-propulsion")!._id;
+    const divPower = divisions.find(d => d.slug === "power-systems")!._id;
+    const divFiltration = divisions.find(d => d.slug === "industrial-filtration")!._id;
+    const divSpares = divisions.find(d => d.slug === "engineering-spares")!._id;
 
-    // ---- MARINE CATEGORIES ----
-    const marineCategoriesData = [
-      { name: "Main Engine Components", slug: "main-engine-components", division: marineDivision._id },
-      { name: "Auxiliary Machinery", slug: "auxiliary-machinery", division: marineDivision._id },
-      { name: "Pumps & Valves", slug: "pumps-valves", division: marineDivision._id },
-      { name: "Navigational Equipment", slug: "navigational-equipment", division: marineDivision._id },
-    ];
-    const marineCategories = await Category.insertMany(marineCategoriesData);
-    const getCat = (name: string) => marineCategories.find(c => c.name === name)?._id;
+    // 2. Create Categories
+    console.log("Creating Categories...");
+    const categories = await Category.insertMany([
+      { name: "Inboard Engines", slug: "inboard-engines", division: divPropulsion },
+      { name: "Outboard Motors", slug: "outboard-motors", division: divPropulsion },
+      { name: "Marine Gensets", slug: "marine-gensets", division: divPower },
+      { name: "Industrial Generators", slug: "industrial-generators", division: divPower },
+      { name: "Fuel Water Separators", slug: "fuel-water-separators", division: divFiltration },
+      { name: "Oil Filtration", slug: "oil-filtration", division: divFiltration },
+      { name: "Gasket Kits", slug: "gasket-kits", division: divSpares },
+      { name: "Turbochargers", slug: "turbochargers", division: divSpares }
+    ]);
 
-    // ---- RO CATEGORIES ----
-    const roCategoriesData = [
-      { name: "High Pressure Pumps", slug: "high-pressure-pumps", division: roDivision._id },
-      { name: "Reverse Osmosis Membranes", slug: "ro-membranes", division: roDivision._id },
-      { name: "Filtration Systems", slug: "filtration-systems", division: roDivision._id },
-      { name: "Control Panels & Sensors", slug: "control-panels", division: roDivision._id },
-    ];
-    const roCategories = await Category.insertMany(roCategoriesData);
-    const getRoCat = (name: string) => roCategories.find(c => c.name === name)?._id;
+    const catInboard = categories.find(c => c.slug === "inboard-engines")!._id;
+    const catOutboard = categories.find(c => c.slug === "outboard-motors")!._id;
+    const catGenset = categories.find(c => c.slug === "marine-gensets")!._id;
+    const catSeparator = categories.find(c => c.slug === "fuel-water-separators")!._id;
+    const catTurbo = categories.find(c => c.slug === "turbochargers")!._id;
 
-    console.log(`✅ Created ${marineCategories.length + roCategories.length} Categories.`);
-
-    // ---- PRODUCTS ----
-    const productsData = [
-      // Marine Products
+    // 3. Create Products
+    console.log("Populating Products...");
+    await Product.insertMany([
       {
-        name: "Wärtsilä 32 Main Engine Piston Rings",
-        slug: toSlug("Wärtsilä 32 Main Engine Piston Rings"),
-        division: marineDivision._id,
-        category: getCat("Main Engine Components"),
-        description: "High-grade OEM replacement piston rings designed for optimal sealing and durability under extreme pressure. Certified for Wärtsilä 32 series.",
-        price: "$450 / set",
-        condition: "New OEM",
-        imageUrl: "/images/marine-parts-clean.png",
-        isFeatured: true
+        name: "Caterpillar 3512C Marine Engine",
+        slug: "cat-3512c-marine",
+        division: divPropulsion,
+        category: catInboard,
+        description: "The 3512C marine propulsion engine is available with a wide range of ratings that meet IMO II regulations without any additional aftertreatment. Provide superior power and reliability in a compact envelope.",
+        price: "Contact for Quote",
+        condition: "New / Zero Hours",
+        isFeatured: true,
+        imageUrl: "https://images.unsplash.com/photo-1590400541360-b20340107fd6?q=80&w=1000&auto=format&fit=crop",
+        images: [
+           "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=1000&auto=format&fit=crop",
+           "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=1000&auto=format&fit=crop"
+        ]
       },
       {
-        name: "Alfa Laval Purifier Bowl Assembly",
-        slug: toSlug("Alfa Laval Purifier Bowl Assembly"),
-        division: marineDivision._id,
-        category: getCat("Auxiliary Machinery"),
-        description: "Complete refurbished bowl assembly for Alfa Laval series separators. Dynamically balanced and tested to factory specifications.",
-        price: "$2,800",
+        name: "Cummins QSK60-M",
+        slug: "cummins-qsk60-m",
+        division: divPropulsion,
+        category: catInboard,
+        description: "V-16 cylinder, 4-stroke diesel engine. Designed for reliability and durability in extreme marine environments.",
+        price: "$ 125,000",
         condition: "Reconditioned",
-        imageUrl: "/images/mood/hero-marine-detail.png",
-        isFeatured: true
+        isFeatured: true,
+        imageUrl: "https://images.unsplash.com/photo-1541625602330-2277a1cd43a7?q=80&w=1000&auto=format&fit=crop",
+        images: []
       },
       {
-        name: "Desmi NSL Centrifugal Pump",
-        slug: toSlug("Desmi NSL Centrifugal Pump"),
-        division: marineDivision._id,
-        category: getCat("Pumps & Valves"),
-        description: "Vertical in-line centrifugal pump designed for cooling water, HVAC, and general industrial applications.",
-        price: "$1,200",
+        name: "Kohler 80EFOZDJ Marine Generator",
+        slug: "kohler-80efozdj",
+        division: divPower,
+        category: catGenset,
+        description: "80 kW high-output marine generator set. Features advanced sound shielding and digital controls.",
+        price: "$ 48,500",
         condition: "New",
-        imageUrl: "/images/marine-1.jpeg",
-        isFeatured: false
+        isFeatured: true,
+        imageUrl: "https://images.unsplash.com/photo-1581092918056-0c8c30060c19?q=80&w=1000&auto=format&fit=crop",
+        images: []
       },
       {
-        name: "Furuno FAR-2xx8 Navigational Radar",
-        slug: toSlug("Furuno FAR-2xx8 Navigational Radar"),
-        division: marineDivision._id,
-        category: getCat("Navigational Equipment"),
-        description: "Advanced X-band radar system offering superior target tracking and environmental unclutter functions.",
-        price: "Contact for Quote",
-        condition: "New",
-        imageUrl: "/images/mood/hero-marine-sunset.png",
-        isFeatured: false
-      },
-
-      // RO Products
-      {
-        name: "Danfoss APP 30 High-Pressure Pump",
-        slug: toSlug("Danfoss APP 30 High-Pressure Pump"),
-        division: roDivision._id,
-        category: getRoCat("High Pressure Pumps"),
-        description: "Energy-efficient axial piston pump designed specifically for SWRO (Seawater Reverse Osmosis) applications requiring high durability.",
-        price: "$4,200",
-        condition: "New",
-        imageUrl: "/ro/ro-pump-clean.png",
-        isFeatured: true
+        name: "Racor Dual 751000FH Fuel Filter",
+        slug: "racor-dual-751000fh",
+        division: divFiltration,
+        category: catSeparator,
+        description: "Duplex turbine series fuel filter water separator. Allows for filter change while engine is running.",
+        price: "$ 1,250",
+        condition: "Stock Item",
+        isFeatured: false,
+        imageUrl: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=1000&auto=format&fit=crop",
+        images: []
       },
       {
-        name: "Dow Filmtec SW30HRLE-400 Membrane",
-        slug: toSlug("Dow Filmtec SW30HRLE-400 Membrane"),
-        division: roDivision._id,
-        category: getRoCat("Reverse Osmosis Membranes"),
-        description: "High-rejection seawater membrane element yielding maximum fresh water production while maintaining industry-leading salt rejection.",
-        price: "$850",
+        name: "BorgWarner S400 Marine Turbocharger",
+        slug: "borgwarner-s400",
+        division: divSpares,
+        category: catTurbo,
+        description: "High-performance replacement turbocharger for medium speed marine diesel engines.",
+        price: "$ 3,800",
         condition: "New",
-        imageUrl: "/ro/ro-membrane-clean.png",
-        isFeatured: true
-      },
-      {
-        name: "Industrial Multimedia Filter Tank",
-        slug: toSlug("Industrial Multimedia Filter Tank"),
-        division: roDivision._id,
-        category: getRoCat("Filtration Systems"),
-        description: "FRP multi-media filtration tank capable of handling high flow rates for industrial pre-treatment phases.",
-        price: "$1,500",
-        condition: "New",
-        imageUrl: "/ro/ro-plant-clean.png",
-        isFeatured: false
-      },
-      {
-        name: "Siemens PLC Control Panel for SWRO",
-        slug: toSlug("Siemens PLC Control Panel for SWRO"),
-        division: roDivision._id,
-        category: getRoCat("Control Panels & Sensors"),
-        description: "Fully assembled automation panel with HMI touch interface, designed for automated monitoring of RO salinity and pressure parameters.",
-        price: "Contact for Quote",
-        condition: "New",
-        imageUrl: "/images/mood/hero-industrial-scale.png",
-        isFeatured: false
+        isFeatured: false,
+        imageUrl: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1000&auto=format&fit=crop",
+        images: []
       }
-    ];
+    ]);
 
-    await Product.insertMany(productsData);
-    console.log(`✅ Created ${productsData.length} Seed Products.`);
-
-    console.log("\n🎉 Seeding completed successfully!");
-  } catch (error) {
-    console.error("\n❌ SEEDING FAILED:", error);
-  } finally {
-    await mongoose.disconnect();
+    console.log("Database Seeded Successfully!");
     process.exit(0);
+  } catch (error) {
+    console.error("Seeding Error:", error);
+    process.exit(1);
   }
 };
 
