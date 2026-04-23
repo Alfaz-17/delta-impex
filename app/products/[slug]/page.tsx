@@ -35,7 +35,7 @@ export async function generateMetadata(
     openGraph: {
       title: product.name,
       description: product.description,
-      url: `https://www.deltaimpex.co/products/${slug}`,
+      url: `https://deltaimpex.co/products/${slug}`,
       images: [product.imageUrl || '/og-image.png', ...previousImages],
     },
     keywords: [product.name, product.category?.name, "marine spares", "industrial equipment", "Delta Impex"],
@@ -80,7 +80,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     },
     "offers": {
       "@type": "Offer",
-      "url": `https://www.deltaimpex.co/products/${slug}`,
+      "url": `https://deltaimpex.co/products/${slug}`,
       "priceCurrency": "USD",
       "price": product.price ? product.price.replace(/[^0-9.]/g, '') : "0",
       "availability": "https://schema.org/InStock",
@@ -96,25 +96,25 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://www.deltaimpex.co"
+        "item": "https://deltaimpex.co"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": product.division?.name || "Divisions",
-        "item": `https://www.deltaimpex.co/divisions/${product.division?.slug || 'marine-industrial'}`
+        "item": `https://deltaimpex.co/divisions/${product.division?.slug || 'marine-industrial'}`
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": product.category?.name || "Category",
-        "item": `https://www.deltaimpex.co/products?category=${product.category?.slug || ''}`
+        "item": `https://deltaimpex.co/products?category=${product.category?.slug || ''}`
       },
       {
         "@type": "ListItem",
         "position": 4,
         "name": product.name,
-        "item": `https://www.deltaimpex.co/products/${slug}`
+        "item": `https://deltaimpex.co/products/${slug}`
       }
     ]
   };

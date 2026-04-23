@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Contact Us | Delta Impex - Marine & Industrial Support",
     description: "Expert marine and industrial technical support. Get quotes for engine spares and RO water systems within 24 hours.",
-    url: 'https://www.deltaimpex.co/contact',
+    url: 'https://deltaimpex.co/contact',
   }
 }
 

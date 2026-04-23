@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "About Us | Delta Impex - Global Marine & Industrial Supplier",
     description: "Discover the legacy of Delta Impex. Global experts in sourcing marine engines, spare parts, and industrial equipment.",
-    url: 'https://www.deltaimpex.co/about',
+    url: 'https://deltaimpex.co/about',
   }
 }
 

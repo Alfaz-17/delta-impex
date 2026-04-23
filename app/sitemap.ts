@@ -3,7 +3,7 @@ import connectToDatabase from "@/lib/mongodb"
 import Product from "@/lib/models/Product"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://www.deltaimpex.co'
+  const baseUrl = 'https://deltaimpex.co'
 
   // Fetch all products to include in the sitemap
   let productEntries: MetadataRoute.Sitemap = [];

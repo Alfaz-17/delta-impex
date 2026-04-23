@@ -31,7 +31,7 @@ const syncopate = Syncopate({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.deltaimpex.co'),
+  metadataBase: new URL('https://deltaimpex.co'),
   title: {
     default: "Delta Impex | Marine Engine Spares & RO Water Treatment Plants",
     template: "%s | Delta Impex",
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Delta Impex | Marine Spares & RO Water Treatment Systems",
     description: "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions. Reliability delivered globally.",
-    url: 'https://www.deltaimpex.co',
+    url: 'https://deltaimpex.co',
     siteName: 'Delta Impex',
     images: [
       {
@@ -117,9 +117,9 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Delta Impex",
-    "url": "https://www.deltaimpex.co",
-    "logo": "https://www.deltaimpex.co/icon-light-32x32.png",
-    "image": "https://www.deltaimpex.co/og-image.png",
+    "url": "https://deltaimpex.co",
+    "logo": "https://deltaimpex.co/icon-light-32x32.png",
+    "image": "https://deltaimpex.co/og-image.png",
     "description": "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions.",
     "address": {
       "@type": "PostalAddress",

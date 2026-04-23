@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "RO Systems & Water Treatment Solutions | Delta Impex",
     description: "Advanced Reverse Osmosis (RO) plants and water treatment equipment for marine and industrial applications.",
-    url: 'https://www.deltaimpex.co/divisions/ro-solutions',
+    url: 'https://deltaimpex.co/divisions/ro-solutions',
   }
 }
 
