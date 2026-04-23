@@ -8,8 +8,39 @@ import Division from "@/lib/models/Division";
 import { ArrowLeft } from "lucide-react";
 import { Header } from "@/components/header";
 
+import type { Metadata, ResolvingMetadata } from 'next'
+
 // Opt-in to dynamic rendering due to connection caching limits and params
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  await connectToDatabase();
+  const { slug } = await params;
+  const product = await Product.findOne({ slug }).populate("category").lean();
+
+  if (!product) {
+    return {
+      title: 'Product Not Found',
+    }
+  }
+
+  const previousImages = (await parent).openGraph?.images || []
+
+  return {
+    title: `${product.name} | Delta Impex Marine & Industrial`,
+    description: product.description || `High-quality ${product.name} available at Delta Impex. Specialized marine engine parts and industrial equipment.`,
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      url: `https://www.deltaimpex.co/products/${slug}`,
+      images: [product.imageUrl || '/og-image.png', ...previousImages],
+    },
+    keywords: [product.name, product.category?.name, "marine spares", "industrial equipment", "Delta Impex"],
+  }
+}
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   await connectToDatabase();
@@ -37,9 +68,68 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     .limit(4)
     .lean();
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "image": product.imageUrl,
+    "description": product.description,
+    "brand": {
+      "@type": "Brand",
+      "name": "Delta Impex"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": `https://www.deltaimpex.co/products/${slug}`,
+      "priceCurrency": "USD",
+      "price": product.price ? product.price.replace(/[^0-9.]/g, '') : "0",
+      "availability": "https://schema.org/InStock",
+      "itemCondition": product.condition === 'New' ? "https://schema.org/NewCondition" : "https://schema.org/UsedCondition"
+    }
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.deltaimpex.co"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": product.division?.name || "Divisions",
+        "item": `https://www.deltaimpex.co/divisions/${product.division?.slug || 'marine-industrial'}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.category?.name || "Category",
+        "item": `https://www.deltaimpex.co/products?category=${product.category?.slug || ''}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": product.name,
+        "item": `https://www.deltaimpex.co/products/${slug}`
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
        <Header />
+       <script
+         type="application/ld+json"
+         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+       />
+       <script
+         type="application/ld+json"
+         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+       />
        <main className="flex-1 pt-24 pb-16 md:pt-32 md:pb-24 section-container">
           {/* Back button */}
           <Link href={product.division?.slug === 'ro-water-treatment' ? '/divisions/ro-systems' : '/divisions/marine-parts'} className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-8 md:mb-12">

@@ -33,11 +33,24 @@ const syncopate = Syncopate({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.deltaimpex.co'),
   title: {
-    default: "Delta Impex | Marine Parts & RO Water Treatment",
+    default: "Delta Impex | Marine Engine Spares & RO Water Treatment Plants",
     template: "%s | Delta Impex",
   },
-  description: "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions for industrial and nautical applications.",
-  keywords: ["marine spare parts", "engine overhaul", "RO water treatment", "desalination", "shipyard supplies", "industrial machinery", "Delta Impex", "water purification"],
+  description: "Delta Impex is a global leader in supplying high-quality marine engine spare parts, industrial machinery, and advanced RO water treatment solutions. Serving maritime fleets and industrial plants worldwide.",
+  keywords: [
+    "marine spare parts", 
+    "engine overhaul", 
+    "RO water treatment", 
+    "desalination plants", 
+    "shipyard supplies", 
+    "industrial machinery", 
+    "Delta Impex", 
+    "water purification systems",
+    "marine engine parts supplier",
+    "RO plant components",
+    "ship machinery spares",
+    "Bhavnagar marine export"
+  ],
   authors: [{ name: "Delta Impex" }],
   creator: "Delta Impex",
   publisher: "Delta Impex",
@@ -46,9 +59,12 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+  verification: {
+    google: 'verification_token_here', // USER: Replace with your Google Search Console token
+  },
   openGraph: {
-    title: "Delta Impex | Marine Parts & RO Water Treatment",
-    description: "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions.",
+    title: "Delta Impex | Marine Spares & RO Water Treatment Systems",
+    description: "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions. Reliability delivered globally.",
     url: 'https://www.deltaimpex.co',
     siteName: 'Delta Impex',
     images: [
@@ -65,7 +81,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Delta Impex | Marine Parts & RO Systems',
-    description: 'Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions.',
+    description: 'Specialized marine engine spare parts and advanced RO water treatment solutions for industrial and nautical applications.',
     images: ['/og-image.png'],
   },
   robots: {
@@ -103,13 +119,34 @@ export default function RootLayout({
     "name": "Delta Impex",
     "url": "https://www.deltaimpex.co",
     "logo": "https://www.deltaimpex.co/icon-light-32x32.png",
+    "image": "https://www.deltaimpex.co/og-image.png",
     "description": "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions.",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "customer support",
-      "areaServed": "Global",
-      "availableLanguage": "English"
-    }
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Office-07, Madina Tenement, Jamnakund Chowk",
+      "addressLocality": "Bhavnagar",
+      "postalCode": "364001",
+      "addressRegion": "Gujarat",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "21.7645",
+      "longitude": "72.1519"
+    },
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "telephone": "+91-99259-99945",
+        "contactType": "sales",
+        "areaServed": "Global",
+        "availableLanguage": ["English", "Hindi", "Gujarati"]
+      }
+    ],
+    "sameAs": [
+      "https://www.linkedin.com/company/delta-impex", // Placeholder
+      "https://www.facebook.com/deltaimpex" // Placeholder
+    ]
   };
 
   return (

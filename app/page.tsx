@@ -16,8 +16,9 @@ const FooterSection = dynamic(() => import("@/components/sections/footer-section
 const FeaturedProductsSection = dynamic(() => import("@/components/sections/featured-products-section").then(mod => mod.FeaturedProductsSection));
 
 export const metadata: Metadata = {
-  title: "Delta Impex | Premium Marine & Industrial Spares",
-  description: "Your trusted global supplier of specialized marine engine spare parts, industrial machinery, and advanced RO water treatment systems since day one.",
+  title: "Delta Impex | Premium Marine Engine Spares & RO Water Systems",
+  description: "Global supplier of ship engine spare parts, industrial machinery, and advanced reverse osmosis (RO) water treatment plants. Trusted technical sourcing and worldwide delivery.",
+  keywords: ["marine spare parts", "RO water treatment", "ship engine spares", "industrial machinery supplier", "desalination plants", "marine engineering", "Delta Impex Bhavnagar"],
   openGraph: {
     title: "Delta Impex | Premium Marine Spares & RO Systems",
     description: "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions.",
