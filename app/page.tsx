@@ -65,7 +65,6 @@ export default function Home() {
       
       <GallerySection />
 
-      <TestimonialsSection />
       <FooterSection />
     </main>
   );

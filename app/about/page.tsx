@@ -10,16 +10,38 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
 
 function Word({ word, index, total, progress }: { word: string; index: number; total: number; progress: MotionValue<number> }) {
+
   const start = index / total;
   const end = (index + 1) / total;
   const color = useTransform(progress, [start, end], ["rgba(0,0,0,0.15)", "var(--foreground)"]);
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <motion.span style={{ color }}>
       {word}{index < total - 1 ? " " : ""}
     </motion.span>
   );
-}
+};
 
 function ScrollRevealText({ text }: { text: string }) {
   const containerRef = useRef<HTMLParagraphElement>(null);
@@ -43,7 +65,7 @@ function ScrollRevealText({ text }: { text: string }) {
       ))}
     </p>
   );
-}
+};
 
 function ParallaxImage({ src, alt }: { src: string; alt: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -67,7 +89,7 @@ function ParallaxImage({ src, alt }: { src: string; alt: string }) {
       </motion.div>
     </div>
   );
-}
+};
 
 const values = [
   {
