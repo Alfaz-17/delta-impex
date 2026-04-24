@@ -31,19 +31,19 @@ html.lenis, html.lenis body {
   --card-foreground: #020617;
   --popover: #FFFFFF;
   --popover-foreground: #020617;
-  --primary: #0F172A;     /* Industrial Deep Navy */
+  --primary: #1B3A5C;     /* Logo Deep Navy Blue */
   --primary-foreground: #F8FAFC;
-  --secondary: #475569;
+  --secondary: #6B7280;
   --secondary-foreground: #020617;
   --muted: #F1F5F9;       
   --muted-foreground: #64748B;
-  --accent: #0C4A6E;      /* Sea Blue accent */
+  --accent: #1E5FA6;      /* Logo Royal Blue */
   --accent-foreground: #FFFFFF;
   --destructive: #991B1B;
   --destructive-foreground: #F8FAFC;
   --border: #E2E8F0;      
   --input: #F1F5F9;
-  --ring: #0F172A;
+  --ring: #1B3A5C;
   --radius: 0.75rem;
 
   /* ── Fluid Typography Scale ── */
@@ -66,12 +66,12 @@ html.lenis, html.lenis body {
   --popover: #0F172A;
   --popover-foreground: #F8FAFC;
   --primary: #F8FAFC;
-  --primary-foreground: #020617;
+  --primary-foreground: #1B3A5C;
   --secondary: #94A3B8;
   --secondary-foreground: #F8FAFC;
   --muted: #1E293B;
   --muted-foreground: #94A3B8;
-  --accent: #38BDF8;
+  --accent: #5B9BD5;
   --accent-foreground: #020617;
   --destructive: #EF4444;
   --destructive-foreground: #F8FAFC;
@@ -301,13 +301,13 @@ html.lenis, html.lenis body {
 
 .grid-technical {
   background-image: 
-    linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(30, 95, 166, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(30, 95, 166, 0.05) 1px, transparent 1px);
   background-size: 4rem 4rem;
 }
 
 .grid-technical-dots {
-  background-image: radial-gradient(circle at 1px 1px, rgba(56, 189, 248, 0.15) 1px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, rgba(30, 95, 166, 0.15) 1px, transparent 0);
   background-size: 4rem 4rem;
 }
 
@@ -379,5 +379,6 @@ html.lenis, html.lenis body {
 .text-gradient-silver {
   background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }

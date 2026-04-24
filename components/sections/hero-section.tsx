@@ -26,23 +26,24 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-start bg-[#020617] overflow-hidden">
+    <section className="relative h-screen flex items-center justify-start bg-[#1B3A5C] overflow-hidden">
       {/* ── CINEMATIC MP4 LAYER ── */}
       <div className="absolute inset-0 z-0">
         <video
           src="/hero.mp4"
           poster="/hero-poster.png"
-          preload="none"
+          preload="auto"
           autoPlay
           muted
           loop
           playsInline
-          className="absolute inset-0 h-full w-full object-cover opacity-70 transition-opacity duration-1000"
+          className="absolute inset-0 h-full w-full object-cover opacity-100 transition-opacity duration-1000"
         />
-        {/* Compressed Gradient - Heavier edge, faster falloff to show ship */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-transparent to-[#020617]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-[#020617]/10 to-transparent z-0" />
-        <div className="absolute inset-0 grid-technical-dots opacity-10" />
+        {/* Subtle top/bottom vignette for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1B3A5C]/25 via-transparent to-[#1B3A5C]/50" />
+        {/* Left side gradient for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1B3A5C]/45 via-[#1B3A5C]/15 to-transparent" />
+        <div className="absolute inset-0 grid-technical-dots opacity-8" />
       </div>
 
       <div className="section-container relative z-10 w-full flex flex-col items-start translate-y-[-5%] md:translate-y-0">
@@ -62,8 +63,8 @@ export function HeroSection() {
             variants={itemVariants}
             className="heading-display text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] !text-3xl sm:!text-4xl md:!text-5xl lg:!text-[2.4rem] leading-[1.1] tracking-tight uppercase"
           >
-            Delta Impex <br />
-            <span className="text-blue-400/70 underline decoration-white/20 underline-offset-4 md:underline-offset-6">Marine & Industrial Suppliers</span>
+           
+            <span className="text-[#5B9BD5] underline decoration-white/20 underline-offset-4 md:underline-offset-6">Marine & Industrial Suppliers</span>
           </motion.h1>
 
           {/* Compact Subtext - Constrained Width */}

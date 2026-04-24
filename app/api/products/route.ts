@@ -10,8 +10,7 @@ import mongoose from "mongoose";
 export const revalidate = 120;
 
 const DIVISION_SLUG_ALIASES: Record<string, string[]> = {
-  "ro-water-treatment": ["ro-water-treatment", "ro-solutions"],
-  "ro-solutions": ["ro-solutions", "ro-water-treatment"],
+  "ro-solutions": ["ro-solutions"],
   "marine-industrial": ["marine-industrial"],
 };
 

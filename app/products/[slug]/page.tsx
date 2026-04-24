@@ -139,7 +139,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
        />
        <main className="flex-1 pt-24 pb-16 md:pt-32 md:pb-24 section-container">
           {/* Back button */}
-          <Link href={product.division?.slug === 'ro-water-treatment' ? '/divisions/ro-solutions' : '/divisions/marine-industrial'} className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-8 md:mb-12">
+          <Link href={`/products?divisionSlug=${product.division?.slug || 'marine-industrial'}`} className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-8 md:mb-12">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to {product.division?.name || 'Inventory'}
           </Link>

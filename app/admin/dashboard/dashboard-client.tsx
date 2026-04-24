@@ -30,7 +30,7 @@ export function DashboardContent() {
         const data = await res.json();
         
         setStats([
-          { title: "Total Products", value: data.productCount, icon: Package, color: "text-blue-500" },
+          { title: "Total Products", value: data.productCount, icon: Package, color: "text-[#1E5FA6]" },
           { title: "Categories", value: data.categoryCount, icon: Layers, color: "text-purple-500" },
           { title: "Featured Items", value: data.featuredCount, icon: Star, color: "text-yellow-500" },
           { title: "Operational Status", value: "Active", icon: TrendingUp, color: "text-green-500" },

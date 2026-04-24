@@ -60,7 +60,7 @@ export default function Home() {
       {/* Dynamic RO Featured Section - Moved Up */}
       <SectionWrapper>
         <FeaturedProductsSection 
-          divisionSlug="ro-water-treatment" 
+          divisionSlug="ro-solutions" 
           hideTabs={true} 
           featuredOnly={true}
           title="Water Treatment." 

@@ -24,7 +24,7 @@ function normalizeDivisionSlug(value: string | null) {
     return null;
   }
 
-  return value === "ro-solutions" ? "ro-water-treatment" : value;
+  return value;
 }
 
 function ProductsListingContent() {

@@ -49,7 +49,7 @@ const GALLERY_ITEMS = [
 
 export function GallerySection() {
   return (
-    <section className="bg-[#020617] py-8 md:py-10 lg:py-12">
+    <section className="bg-[#1B3A5C] py-8 md:py-10 lg:py-12">
       <div className="section-container mb-6 md:mb-8">
         <span className="label-tech mb-3 block">Technical Archive</span>
         <h2 className="heading-section max-w-xl text-white">
@@ -71,7 +71,7 @@ export function GallerySection() {
                 className="object-cover opacity-75 transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1B3A5C] via-[#1B3A5C]/20 to-transparent" />
             </div>
 
             <div className="absolute inset-x-0 bottom-0 p-5">

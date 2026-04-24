@@ -102,7 +102,7 @@ export function Header() {
           className="relative group"
         >
           <Link
-            href={`/divisions/${link.slug}`}
+            href={`/products?divisionSlug=${link.slug}`}
             className={`text-[10px] font-black uppercase tracking-[0.3em] transition-all flex items-center gap-2 relative ${
               isScrolled ? "text-foreground hover:text-primary" : "text-white hover:text-accent"
             }`}
@@ -169,7 +169,7 @@ export function Header() {
       <nav 
         className={`max-w-full mx-auto px-6 lg:px-12 transition-all duration-500 border-b ${
           isScrolled || !isHome
-            ? "bg-[#020617]/95 backdrop-blur-xl border-white/10 py-4 shadow-md" 
+            ? "bg-white/95 backdrop-blur-xl border-border/50 py-4 shadow-md" 
             : "bg-transparent border-transparent py-8"
         }`}
       >
@@ -181,7 +181,7 @@ export function Header() {
               href="/" 
               className="relative h-10 w-48 md:w-56 transition-transform hover:scale-105 duration-300"
             >
-              <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[360px] h-[135px] mt-2 pointer-events-none">
+              <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[450px] h-[200px] mt-2 pointer-events-none">
                 <Image
                   src="/logo.png"
                   alt="Delta Impex Logo"
@@ -198,7 +198,9 @@ export function Header() {
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               const linkClasses = `text-[10px] font-black uppercase tracking-[0.3em] transition-all group relative ${
-                isActive ? "text-white" : "text-white/60 hover:text-white"
+                 (isScrolled || !isHome)
+                  ? (isActive ? "text-primary" : "text-foreground/60 hover:text-foreground")
+                  : (isActive ? "text-white" : "text-white/60 hover:text-white")
               }`;
 
               if (link.dropdownId) {
@@ -210,12 +212,12 @@ export function Header() {
                     onMouseLeave={() => setActiveDropdown(null)}
                     className="relative group"
                   >
-                    <Link href={`/divisions/${link.slug}`} className={linkClasses}>
+                    <Link href={`/products?divisionSlug=${link.slug}`} className={linkClasses}>
                       <span className="flex items-center gap-2">
                         {link.label}
                         <ChevronDown size={12} className={`transition-transform duration-300 ${activeDropdown === link.dropdownId ? "rotate-180" : ""}`} />
                       </span>
-                      <span className="absolute -bottom-2 left-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                      <span className={`absolute -bottom-2 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isScrolled || !isHome ? "bg-primary" : "bg-white"}`}></span>
                     </Link>
 
                     <AnimatePresence>
@@ -232,16 +234,16 @@ export function Header() {
                             data-lenis-prevent
                             onWheel={(e) => e.stopPropagation()}
                           >
-                            <div className={`bg-[#020617]/95 backdrop-blur-3xl border border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden ${isMarine ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
+                            <div className={`${isScrolled || !isHome ? "bg-white/95" : "bg-[#1B3A5C]/95"} backdrop-blur-3xl border ${isScrolled || !isHome ? "border-border/50" : "border-white/10"} rounded-2xl p-8 shadow-2xl overflow-hidden ${isMarine ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
                               {link.divisions.map((div: any) => (
                                 <div key={div._id} className="space-y-6">
-                                  <h3 className="label-tech text-white !text-[11px] mb-4 border-b border-white/10 pb-2">{div.name}</h3>
+                                  <h3 className={`label-tech ${isScrolled || !isHome ? "text-foreground" : "text-white"} !text-[11px] mb-4 border-b ${isScrolled || !isHome ? "border-border/50" : "border-white/10"} pb-2`}>{div.name}</h3>
                                   <div className="flex flex-col gap-3">
                                     {div.categories.map((cat: any) => (
                                       <Link
                                         key={cat._id}
                                         href={`/products?categoryId=${cat._id}`}
-                                        className="group/item flex items-center justify-between text-sm py-1 transition-all hover:text-white text-white/50 hover:translate-x-1"
+                                        className={`group/item flex items-center justify-between text-sm py-1 transition-all hover:translate-x-1 ${isScrolled || !isHome ? "text-muted-foreground hover:text-primary" : "text-white/50 hover:text-white"}`}
                                       >
                                         <span>{cat.name}</span>
                                         <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-40 transition-opacity" />
@@ -262,7 +264,7 @@ export function Header() {
               return (
                 <Link key={link.label} href={link.href!} className={linkClasses}>
                   {link.label}
-                  <span className={`absolute -bottom-2 left-0 h-[2px] bg-white transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}></span>
+                  <span className={`absolute -bottom-2 left-0 h-[2px] transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"} ${isScrolled || !isHome ? "bg-primary" : "bg-white"}`}></span>
                 </Link>
               );
             })}
@@ -272,7 +274,11 @@ export function Header() {
           <div className="flex items-center gap-4">
             <Link
               href="/contact"
-              className="hidden md:flex px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all rounded-full bg-white text-[#020617] hover:bg-white/90 shadow-xl"
+              className={`hidden md:flex px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all rounded-full shadow-xl ${
+                isScrolled || !isHome
+                  ? "bg-[#1B3A5C] text-white hover:bg-[#1B3A5C]/90"
+                  : "bg-white text-[#1B3A5C] hover:bg-white/90"
+              }`}
             >
               Quote
             </Link>
@@ -283,8 +289,8 @@ export function Header() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`lg:hidden p-2 transition-all rounded-full z-[110] relative ${
                 isMenuOpen 
-                  ? "bg-white text-[#020617]" 
-                  : "text-white hover:bg-white/10"
+                  ? "bg-[#1B3A5C] text-white" 
+                  : (isScrolled || !isHome ? "text-foreground hover:bg-black/5" : "text-white hover:bg-white/10")
               }`}
             >
               {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -292,9 +298,9 @@ export function Header() {
           </div>
         </div>
 
-        {/* Scroll Progress Line - Updated to White */}
+        {/* Scroll Progress Line - Updated to Dark */}
         <motion.div 
-          className="absolute bottom-0 left-0 right-0 h-[2px] bg-white origin-left z-[60]"
+          className={`absolute bottom-0 left-0 right-0 h-[2px] origin-left z-[60] ${isScrolled || !isHome ? "bg-[#1B3A5C]" : "bg-white"}`}
           style={{ scaleX: scrollProgress }}
         />
       </nav>
@@ -322,7 +328,7 @@ export function Header() {
               data-lenis-prevent
             >
               {/* Technical Grid Background */}
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(56,189,248,0.05)_1px,transparent_0)] bg-[size:30px_30px] opacity-40 pointer-events-none" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(30,95,166,0.08)_1px,transparent_0)] bg-[size:30px_30px] opacity-40 pointer-events-none" />
               
               <div className="shrink-0 p-8 pt-12 border-b border-primary/10 flex items-center justify-between bg-background/80 backdrop-blur-md relative">
                 {/* HUD Brackets */}

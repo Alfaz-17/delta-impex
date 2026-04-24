@@ -54,7 +54,7 @@ export default function ROSystemsPage() {
       </section>
 
       {/* E-Commerce Catalog Section */}
-      <ProductCatalog divisionSlug="ro-water-treatment" divisionName="RO Water Treatment" />
+      <ProductCatalog divisionSlug="ro-solutions" divisionName="RO Water Treatment" />
 
       {/* Introduction Section */}
       <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background text-center border-t border-border/50">

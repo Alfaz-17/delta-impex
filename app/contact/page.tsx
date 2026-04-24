@@ -15,7 +15,7 @@ const contactMethods = [
     title: "Visit Us",
     primary: SITE_INFO.addressLine1,
     secondary: SITE_INFO.addressLine2,
-    color: "bg-blue-500/10 text-blue-600",
+    color: "bg-[#1E5FA6]/10 text-[#1E5FA6]",
   },
   {
     icon: Phone,
@@ -148,7 +148,7 @@ export default function ContactPage() {
           <FadeInOnScroll>
             
             <h1 className="heading-display text-white !leading-[0.95] uppercase drop-shadow-2xl">
-              Get in <span className="text-blue-400/70 italic">Touch.</span>
+              Get in <span className="text-[#5B9BD5] italic">Touch.</span>
             </h1>
           </FadeInOnScroll>
         </div>

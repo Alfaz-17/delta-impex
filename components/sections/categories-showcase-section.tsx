@@ -10,7 +10,7 @@ const divisionMeta: Record<string, { description: string; tag: string; image: st
     tag: "Maritime Excellence",
     image: "/images/mood/hero-marine-sunset.png"
   },
-  "ro-water-treatment": {
+  "ro-solutions": {
     description: "Advanced RO systems for marine and land-based industries, converting seawater into pure drinking water with technical precision.",
     tag: "Technical Solutions",
     image: "/images/mood/ro-water-flow.png"

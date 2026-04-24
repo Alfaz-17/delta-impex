@@ -34,11 +34,8 @@ export function FeaturedProductsSection({
     async function fetchProducts() {
       setIsLoading(true);
       try {
-        const targetSlug = divisionSlug || (activeTab === "marine" ? "marine-industrial" : "ro-water-treatment");
-        const slugCandidates =
-          targetSlug === "ro-water-treatment" || targetSlug === "ro-solutions"
-            ? ["ro-water-treatment", "ro-solutions"]
-            : [targetSlug];
+        const targetSlug = divisionSlug || (activeTab === "marine" ? "marine-industrial" : "ro-solutions");
+        const slugCandidates = [targetSlug];
 
         let loadedProducts: any[] = [];
 
@@ -151,7 +148,7 @@ export function FeaturedProductsSection({
                 </div>
 
                 <Link 
-                    href={`/products?divisionSlug=${divisionSlug || (activeTab === 'marine' ? 'marine-industrial' : 'ro-water-treatment')}`}
+                    href={`/products?divisionSlug=${divisionSlug || (activeTab === 'marine' ? 'marine-industrial' : 'ro-solutions')}`}
                     className="group flex items-center gap-3 text-[10px] font-tech font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
                 >
                     View Full Directory 
