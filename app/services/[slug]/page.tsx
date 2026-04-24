@@ -66,11 +66,11 @@ export default function ServiceKeywordPage({ params }: { params: { slug: string 
           <aside className="rounded-3xl border border-border/70 bg-muted/20 p-6 md:p-8 lg:col-span-4">
             <h3 className="heading-sub mb-4 text-foreground">Explore More</h3>
             <div className="space-y-3">
-              {SERVICE_KEYWORD_PAGES.filter((item) => item.slug !== page.slug).map((item) => (
+              {/* {SERVICE_KEYWORD_PAGES.filter((item) => item.slug !== page.slug).map((item) => (
                 <Link key={item.slug} href={`/services/${item.slug}`} className="block text-sm text-primary hover:underline">
                   {item.title}
                 </Link>
-              ))}
+              ))} */}
             </div>
             <div className="mt-6 border-t border-border pt-4">
               <Link href="/contact" className="text-sm font-semibold text-primary hover:underline">
