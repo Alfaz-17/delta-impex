@@ -63,7 +63,7 @@ export function HeroSection() {
             className="heading-display text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] !text-3xl sm:!text-4xl md:!text-5xl lg:!text-[2.4rem] leading-[1.1] tracking-tight uppercase"
           >
             Delta Impex <br />
-            <span className="text-accent underline decoration-white/20 underline-offset-4 md:underline-offset-6">Marine & Industrial Suppliers</span>
+            <span className="text-blue-400/70 underline decoration-white/20 underline-offset-4 md:underline-offset-6">Marine & Industrial Suppliers</span>
           </motion.h1>
 
           {/* Compact Subtext - Constrained Width */}
@@ -80,7 +80,7 @@ export function HeroSection() {
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start gap-4 pt-2 w-full sm:w-auto">
             <Link
               href="/products?divisionSlug=marine-industrial"
-              className="group relative px-7 py-3 bg-white text-primary rounded-full font-bold flex items-center gap-2 overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl group-hover:text-white w-full sm:w-auto justify-center sm:justify-start"
+              className="group relative px-7 py-3 bg-white text-primary rounded-full font-bold flex items-center gap-2 overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl group-hover:text-white justify-center sm:justify-start"
             >
               <span className="relative z-10 transition-colors duration-300 text-sm">Explore Products</span>
               <ArrowRight className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-1 transition-colors duration-300" />
@@ -89,7 +89,7 @@ export function HeroSection() {
             
             <Link
               href="/contact"
-              className="px-7 py-3 border border-white/20 text-white rounded-full font-bold backdrop-blur-3xl hover:bg-white hover:text-primary transition-all active:scale-95 flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-start text-sm"
+              className="px-7 py-3 border border-white/20 text-white rounded-full font-bold backdrop-blur-3xl hover:bg-white hover:text-primary transition-all active:scale-95 flex items-center gap-2 justify-center sm:justify-start text-sm"
             >
               Request Quote
             </Link>
