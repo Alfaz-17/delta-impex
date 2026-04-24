@@ -35,24 +35,18 @@ export function FeaturedProductsSection({
       setIsLoading(true);
       try {
         const targetSlug = divisionSlug || (activeTab === "marine" ? "marine-industrial" : "ro-water-treatment");
-        
-        const divRes = await fetch("/api/divisions");
-        const divisions = await divRes.json();
-        const division = Array.isArray(divisions) ? divisions.find((d: any) => d.slug === targetSlug) : null;
-        
-        if (division) {
-          let url = `/api/products?divisionId=${division._id}&limit=12`;
-          if (featuredOnly) {
-            url += "&isFeatured=true";
-          }
-          const res = await fetch(url);
-          const data = await res.json();
-          setProducts(Array.isArray(data) ? data : []);
-        } else {
-          setProducts([]);
+
+        let url = `/api/products?divisionSlug=${targetSlug}&limit=12`;
+        if (featuredOnly) {
+          url += "&isFeatured=true";
         }
+
+        const res = await fetch(url);
+        const data = await res.json();
+        setProducts(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setProducts([]);
       } finally {
         setIsLoading(false);
       }

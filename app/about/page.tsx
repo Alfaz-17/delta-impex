@@ -167,10 +167,10 @@ export default function AboutPage() {
     <main className="min-h-screen bg-background">
       <Header />
 
-      <section ref={heroRef} className="relative flex min-h-[60vh] md:min-h-[62vh] lg:min-h-[520px] items-center justify-center overflow-hidden bg-foreground">
+      <section ref={heroRef} className="relative flex h-screen items-center overflow-hidden bg-foreground">
         <motion.div className="absolute inset-0 z-0" style={{ scale: heroScale }}>
           <Image
-            src="images\mountain-sunrise.png"
+            src="/images/mountain-sunrise.png"
             alt="Delta Impex operations"
             fill
             className="object-cover opacity-70 contrast-125 saturate-50"
@@ -179,16 +179,18 @@ export default function AboutPage() {
           <div className="absolute inset-0 bg-black/45" />
         </motion.div>
 
-        <div className="relative z-10 max-w-4xl px-6 py-24 md:py-28 text-center text-white" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.5)" }}>
-          <FadeInOnScroll>
-            <p className="label-tech mb-6 text-white/80">About Us</p>
-            <h1 className="heading-section !leading-[1.02] text-white max-w-3xl mx-auto">
-              Marine and industrial supply solutions.
-            </h1>
-            <p className="mx-auto mt-6 max-w-3xl body-text !leading-relaxed text-white/82">
-              Delta Impex is a Bhavnagar-based supplier of machinery, spare parts, and complete system solutions.
-            </p>
-          </FadeInOnScroll>
+        <div className="section-container relative z-10 w-full py-24 md:py-28 text-white" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.5)" }}>
+          <div className="mx-auto max-w-3xl text-center">
+            <FadeInOnScroll>
+              <p className="label-tech mb-6 text-white/80">About Us</p>
+              <h1 className="heading-section !leading-[1.05] text-white">
+                Marine and industrial supply solutions.
+              </h1>
+              <p className="mt-6 body-text !leading-relaxed text-white/82">
+                Delta Impex is a Bhavnagar-based supplier of machinery, spare parts, and complete system solutions.
+              </p>
+            </FadeInOnScroll>
+          </div>
         </div>
       </section>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import AdminSidebar from "@/components/admin/sidebar";
 import { AdminMobileHeader } from "@/components/admin/mobile-header";
@@ -10,21 +10,60 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Upload, Loader2, X, ArrowLeft } from "lucide-react";
+import { Upload, Loader2, X, ArrowLeft, Crop, Sparkles, ShieldCheck, Wand2 } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
+import CropModal from "@/components/common/CropModal";
+import { addWatermark } from "@/lib/utils/watermark";
+import { removeBackgroundClient } from "@/lib/background-removal-client";
+
+type GalleryAsset = {
+  id: string;
+  previewUrl: string;
+  file?: File;
+  existingUrl?: string;
+};
+
+type CropTarget =
+  | { type: "main"; imageUrl: string }
+  | { type: "gallery"; imageUrl: string; assetId: string };
+
+const createId = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+const readFileAsDataUrl = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 
 export function ProductFormContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const activeDivisionId = searchParams.get("divisionId");
   const editingId = searchParams.get("id");
-  
+
   const [categories, setCategories] = useState<any[]>([]);
   const [divisions, setDivisions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
+
+  const [isRemovingBg, setIsRemovingBg] = useState(false);
+  const [bgTarget, setBgTarget] = useState<string | null>(null);
+
+  const [cropTarget, setCropTarget] = useState<CropTarget | null>(null);
+
+  const [mainFile, setMainFile] = useState<File | null>(null);
+  const [mainPreviewUrl, setMainPreviewUrl] = useState("");
+  const [galleryAssets, setGalleryAssets] = useState<GalleryAsset[]>([]);
+
+  const [imageTools, setImageTools] = useState({
+    autoBackgroundRemoval: false,
+    applyWatermark: true,
+    watermarkText: "Delta Impex",
+  });
+
   const defaultValue = {
     name: "",
     division: activeDivisionId || "",
@@ -52,6 +91,11 @@ export function ProductFormContent() {
     }
   }, [formData.division]);
 
+  const newGalleryCount = useMemo(
+    () => galleryAssets.filter((asset) => !!asset.file).length,
+    [galleryAssets]
+  );
+
   const fetchDivisions = async () => {
     try {
       const res = await fetch("/api/divisions");
@@ -60,7 +104,7 @@ export function ProductFormContent() {
         throw new Error(data?.error || "Failed to load divisions");
       }
       setDivisions(data);
-    } catch (error) {
+    } catch {
       toast.error("Failed to load divisions");
     }
   };
@@ -73,7 +117,7 @@ export function ProductFormContent() {
         throw new Error(data?.error || "Failed to load categories");
       }
       setCategories(Array.isArray(data) ? data : []);
-    } catch (error) {
+    } catch {
       toast.error("Failed to load categories");
     }
   };
@@ -86,6 +130,9 @@ export function ProductFormContent() {
         throw new Error(data?.error || "Error loading product");
       }
 
+      const existingMain = data.imageUrl || "";
+      const existingGallery = Array.isArray(data.images) ? data.images : [];
+
       setFormData({
         name: data.name || "",
         division: data.division?._id || data.division || "",
@@ -94,101 +141,231 @@ export function ProductFormContent() {
         price: data.price || "",
         condition: data.condition || "",
         isFeatured: data.isFeatured || false,
-        imageUrl: data.imageUrl || "",
-        images: data.images || [],
+        imageUrl: existingMain,
+        images: existingGallery,
       });
+
+      setMainFile(null);
+      setMainPreviewUrl(existingMain);
+      setGalleryAssets(
+        existingGallery.map((url: string) => ({
+          id: createId(),
+          previewUrl: url,
+          existingUrl: url,
+        }))
+      );
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Error loading product");
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const applyBackgroundRemovalIfNeeded = async (file: File, targetKey: string) => {
+    if (!imageTools.autoBackgroundRemoval) {
+      return file;
+    }
+
+    setIsRemovingBg(true);
+    setBgTarget(targetKey);
+
+    try {
+      const blob = await removeBackgroundClient(file);
+      return new File([blob], `bg-removed-${file.name.replace(/\.[^/.]+$/, "")}.png`, {
+        type: "image/png",
+      });
+    } catch (error: any) {
+      if (error?.message === "MOBILE_MEMORY_ERROR") {
+        toast.error("Image too large for this device memory. Using original image.");
+      } else {
+        toast.error("Background removal failed. Using original image.");
+      }
+      return file;
+    } finally {
+      setIsRemovingBg(false);
+      setBgTarget(null);
+    }
+  };
+
+  const handleMainImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setUploading(true);
-    const uploadData = new FormData();
-    uploadData.append("file", file);
-
-    try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: uploadData,
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data?.error || "Image upload failed");
-      }
-
-      setFormData(prev => ({ ...prev, imageUrl: data.url }));
-      toast.success("Image uploaded successfully");
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Image upload failed");
-    } finally {
-      setUploading(false);
-    }
+    const imageUrl = await readFileAsDataUrl(file);
+    setCropTarget({ type: "main", imageUrl });
+    e.target.value = "";
   };
-  
-  const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleGalleryImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    setUploading(true);
-    const uploadedUrls: string[] = [];
+    for (const file of Array.from(files)) {
+      const id = createId();
+      const processed = await applyBackgroundRemovalIfNeeded(file, `gallery-${id}`);
+      const imageUrl = await readFileAsDataUrl(processed);
+      setGalleryAssets((prev) => [...prev, { id, previewUrl: imageUrl, file: processed }]);
+    }
 
-    try {
-      for (let i = 0; i < files.length; i++) {
-        const uploadData = new FormData();
-        uploadData.append("file", files[i]);
-        
-        const res = await fetch("/api/upload", {
-          method: "POST",
-          body: uploadData,
-        });
+    e.target.value = "";
+  };
 
-        const data = await res.json();
-        if (!res.ok) {
-          throw new Error(data?.error || "Gallery upload failed");
-        }
+  const handleCropComplete = async (croppedFile: File) => {
+    if (!cropTarget) return;
 
-        uploadedUrls.push(data.url);
+    if (cropTarget.type === "main") {
+      const processed = await applyBackgroundRemovalIfNeeded(croppedFile, "main");
+      setMainFile(processed);
+      setMainPreviewUrl(URL.createObjectURL(processed));
+      setFormData((prev) => ({ ...prev, imageUrl: "" }));
+    }
+
+    if (cropTarget.type === "gallery") {
+      const processed = await applyBackgroundRemovalIfNeeded(croppedFile, `gallery-${cropTarget.assetId}`);
+      const nextPreview = URL.createObjectURL(processed);
+
+      setGalleryAssets((prev) =>
+        prev.map((asset) =>
+          asset.id === cropTarget.assetId
+            ? { ...asset, file: processed, previewUrl: nextPreview, existingUrl: undefined }
+            : asset
+        )
+      );
+    }
+
+    setCropTarget(null);
+  };
+
+  const runManualBackgroundRemoval = async (target: "main" | "gallery", assetId?: string) => {
+    if (target === "main") {
+      if (!mainFile) {
+        toast.error("Select and crop a main image first.");
+        return;
       }
 
-      setFormData(prev => ({ 
-        ...prev, 
-        images: [...(prev.images || []), ...uploadedUrls] 
-      }));
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Gallery upload failed");
+      setIsRemovingBg(true);
+      setBgTarget("main");
+
+      try {
+        const blob = await removeBackgroundClient(mainFile);
+        const processed = new File([blob], `bg-removed-${mainFile.name.replace(/\.[^/.]+$/, "")}.png`, {
+          type: "image/png",
+        });
+        setMainFile(processed);
+        setMainPreviewUrl(URL.createObjectURL(processed));
+        toast.success("Background removed from main image");
+      } catch {
+        toast.error("Background removal failed for main image");
+      } finally {
+        setIsRemovingBg(false);
+        setBgTarget(null);
+      }
+      return;
+    }
+
+    if (!assetId) return;
+    const asset = galleryAssets.find((item) => item.id === assetId);
+    if (!asset?.file) {
+      toast.error("Crop the gallery image first to enable processing.");
+      return;
+    }
+
+    setIsRemovingBg(true);
+    setBgTarget(`gallery-${assetId}`);
+
+    try {
+      const blob = await removeBackgroundClient(asset.file);
+      const processed = new File([blob], `bg-removed-${asset.file.name.replace(/\.[^/.]+$/, "")}.png`, {
+        type: "image/png",
+      });
+      setGalleryAssets((prev) =>
+        prev.map((item) =>
+          item.id === assetId
+            ? { ...item, file: processed, previewUrl: URL.createObjectURL(processed), existingUrl: undefined }
+            : item
+        )
+      );
+      toast.success("Background removed from gallery image");
+    } catch {
+      toast.error("Background removal failed for gallery image");
     } finally {
-      setUploading(false);
+      setIsRemovingBg(false);
+      setBgTarget(null);
     }
   };
 
-  const removeGalleryImage = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index)
-    }));
+  const removeGalleryImage = (id: string) => {
+    setGalleryAssets((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const uploadSingleFile = async (file: File) => {
+    const uploadData = new FormData();
+    uploadData.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: uploadData,
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data?.error || "Image upload failed");
+    }
+
+    return data.url as string;
+  };
+
+  const prepareForUpload = async (file: File) => {
+    if (!imageTools.applyWatermark) return file;
+    return addWatermark(file, imageTools.watermarkText || "Delta Impex");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.division || !formData.category || !formData.imageUrl) {
+
+    if (!formData.name || !formData.division || !formData.category) {
       toast.error("Required fields missing");
       return;
     }
 
     setIsLoading(true);
+
     try {
+      setIsUploading(true);
+
+      let finalMainImageUrl = formData.imageUrl;
+      if (mainFile) {
+        const uploadFile = await prepareForUpload(mainFile);
+        finalMainImageUrl = await uploadSingleFile(uploadFile);
+      }
+
+      if (!finalMainImageUrl) {
+        throw new Error("Primary image is required");
+      }
+
+      const finalGalleryUrls: string[] = [];
+
+      for (const asset of galleryAssets) {
+        if (asset.file) {
+          const uploadFile = await prepareForUpload(asset.file);
+          const uploadedUrl = await uploadSingleFile(uploadFile);
+          finalGalleryUrls.push(uploadedUrl);
+        } else if (asset.existingUrl) {
+          finalGalleryUrls.push(asset.existingUrl);
+        }
+      }
+
+      const payload = {
+        ...formData,
+        imageUrl: finalMainImageUrl,
+        images: finalGalleryUrls,
+      };
+
       const url = editingId ? `/api/products/${editingId}` : "/api/products";
       const method = editingId ? "PATCH" : "POST";
 
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -202,204 +379,316 @@ export function ProductFormContent() {
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to save product");
     } finally {
+      setIsUploading(false);
       setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-muted/30 text-foreground font-sans">
-      <AdminMobileHeader 
-        isMenuOpen={isSidebarOpen} 
-        onToggleMenu={() => setIsSidebarOpen(!isSidebarOpen)} 
+      <AdminMobileHeader
+        isMenuOpen={isSidebarOpen}
+        onToggleMenu={() => setIsSidebarOpen(!isSidebarOpen)}
       />
-      
+
       <AdminSidebar active="products" isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      
-      <div className="lg:pl-72 flex flex-col min-h-screen">
-        <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-border h-16 flex items-center justify-between px-8 hidden lg:flex">
+
+      <div className="flex min-h-screen flex-col lg:pl-72">
+        <header className="sticky top-0 z-10 hidden h-16 items-center justify-between border-b border-border bg-white/80 px-8 backdrop-blur-md lg:flex">
           <div className="flex-1" />
-          <a href="/" target="_blank" className="text-[10px] font-bold uppercase tracking-widest text-accent hover:text-primary transition-colors">
-             View Public Site →
+          <a
+            href="/"
+            target="_blank"
+            className="text-[10px] font-bold uppercase tracking-widest text-accent transition-colors hover:text-primary"
+            rel="noreferrer"
+          >
+            View Public Site
           </a>
         </header>
 
-        <main className="flex-1 p-6 md:p-8 lg:p-12 max-w-4xl pb-32">
-            <button 
-                onClick={() => router.back()}
-                className="flex items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors mb-8"
-            >
-                <ArrowLeft className="w-4 h-4 mr-2" /> Back to Inventory List
-            </button>
-            <div className="flex items-center justify-between border-b border-border pb-8 mt-4 mb-8">
-                <div>
-                <h1 className="text-3xl font-bold text-primary uppercase tracking-tighter">{editingId ? "Modify Record" : "Add New Record"}</h1>
-                <p className="text-xs font-bold text-accent uppercase tracking-[0.3em] mt-2">Technical Specification Entry</p>
+        <main className="max-w-5xl flex-1 p-6 pb-32 md:p-8 lg:p-12">
+          <button
+            onClick={() => router.back()}
+            className="mb-8 flex items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Inventory List
+          </button>
+
+          <div className="mt-4 mb-8 flex items-center justify-between border-b border-border pb-8">
+            <div>
+              <h1 className="text-3xl font-bold uppercase tracking-tighter text-primary">
+                {editingId ? "Modify Record" : "Add New Record"}
+              </h1>
+              <p className="mt-2 text-xs font-bold uppercase tracking-[0.3em] text-accent">
+                Technical Specification Entry
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-8 border border-border bg-white p-10">
+            <div className="grid grid-cols-1 gap-4 border border-border/70 bg-muted/20 p-5 md:grid-cols-3">
+              <div className="flex items-center justify-between rounded-md border border-border/70 bg-white px-4 py-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Auto BG Remove</p>
                 </div>
+                <Switch
+                  checked={imageTools.autoBackgroundRemoval}
+                  onCheckedChange={(checked) =>
+                    setImageTools((prev) => ({ ...prev, autoBackgroundRemoval: checked }))
+                  }
+                />
+              </div>
+
+              <div className="flex items-center justify-between rounded-md border border-border/70 bg-white px-4 py-3">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="h-4 w-4 text-primary" />
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Watermark</p>
+                </div>
+                <Switch
+                  checked={imageTools.applyWatermark}
+                  onCheckedChange={(checked) => setImageTools((prev) => ({ ...prev, applyWatermark: checked }))}
+                />
+              </div>
+
+              <div className="space-y-2 rounded-md border border-border/70 bg-white px-4 py-3">
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Watermark Text</Label>
+                <Input
+                  value={imageTools.watermarkText}
+                  onChange={(e) => setImageTools((prev) => ({ ...prev, watermarkText: e.target.value }))}
+                  className="h-9 border-border bg-muted/30 text-xs"
+                  placeholder="Delta Impex"
+                  disabled={!imageTools.applyWatermark}
+                />
+              </div>
             </div>
 
-            <div className="bg-white p-10 border border-border">
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                        <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Division Sector *</Label>
-                        <select 
-                            value={formData.division} 
-                            onChange={(e) => {
-                                setFormData({ ...formData, division: e.target.value, category: "" });
-                            }}
-                            className="w-full px-4 py-3 bg-muted/20 border border-border focus:border-accent outline-none text-xs font-bold uppercase tracking-widest text-primary"
-                        >
-                            <option value="">Select Sector</option>
-                            {divisions.map((div) => (
-                                <option key={div._id} value={div._id}>{div.name}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="space-y-3">
-                        <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Classification *</Label>
-                        <select 
-                            value={formData.category} 
-                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                            className="w-full px-4 py-3 bg-muted/20 border border-border focus:border-accent outline-none text-xs font-bold uppercase tracking-widest text-primary"
-                            disabled={!formData.division}
-                        >
-                            <option value="">Select Classification</option>
-                            {categories.map((cat) => (
-                                <option key={cat._id} value={cat._id}>{cat.name}</option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                 <div className="space-y-3">
-                  <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Product Core Name *</Label>
-                  <Input 
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="bg-muted/20 border-border rounded-none h-12 shadow-none focus-visible:ring-accent focus-visible:border-accent"
-                    placeholder="e.g. Caterpillar Marine Engine 3512B"
-                  />
-                </div>
-
-                <div className="space-y-3">
-                  <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Technical Description</Label>
-                  <Textarea 
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="bg-muted/20 border-border rounded-none shadow-none focus-visible:ring-accent focus-visible:border-accent min-h-[160px]"
-                    placeholder="Enter detailed technical specifications here..."
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-3">
-                    <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Market Value</Label>
-                    <Input 
-                      value={formData.price}
-                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                      className="bg-muted/20 border-border rounded-none h-12 shadow-none focus-visible:ring-accent focus-visible:border-accent"
-                      placeholder="e.g. $ 45,000 / POR"
-                    />
-                  </div>
-                  <div className="space-y-3">
-                    <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Hardware Condition</Label>
-                    <Input 
-                      value={formData.condition}
-                      onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
-                      className="bg-muted/20 border-border rounded-none h-12 shadow-none focus-visible:ring-accent focus-visible:border-accent"
-                      placeholder="e.g. Reconditioned, New, Used"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Primary Visual Asset *</Label>
-                  <div className="relative group">
-                    {formData.imageUrl ? (
-                      <div className="relative aspect-video max-w-sm rounded-none overflow-hidden border border-border">
-                        <Image src={formData.imageUrl} alt="Preview" fill className="object-cover" />
-                        <button 
-                          type="button"
-                          onClick={() => setFormData({ ...formData, imageUrl: "" })}
-                          className="absolute inset-0 bg-primary/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-white border-b border-accent pb-1">Remove Asset</span>
-                        </button>
-                      </div>
-                    ) : (
-                      <label className="flex flex-col items-center justify-center aspect-video max-w-sm border-2 border-dashed border-border bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer group">
-                        {uploading ? <Loader2 className="animate-spin text-primary w-8 h-8" /> : <Upload className="text-primary w-8 h-8 group-hover:scale-110 transition-transform" />}
-                        <span className="mt-4 text-[10px] font-bold uppercase tracking-widest text-primary">
-                          {uploading ? "Syncing..." : "Upload Graphics"}
-                        </span>
-                        <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
-                      </label>
-                    )}
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Technical Gallery</Label>
-                    <span className="text-[9px] text-muted-foreground uppercase">Optional supplementary specs</span>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {formData.images.map((img, idx) => (
-                      <div key={idx} className="relative aspect-square border border-border group overflow-hidden">
-                        <Image src={img} alt={`Gallery ${idx}`} fill className="object-cover" />
-                        <button 
-                          type="button"
-                          onClick={() => removeGalleryImage(idx)}
-                          className="absolute inset-0 bg-red-600/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <X className="text-white w-5 h-5" />
-                        </button>
-                      </div>
+                  <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Division Sector *</Label>
+                  <select
+                    value={formData.division}
+                    onChange={(e) => {
+                      setFormData({ ...formData, division: e.target.value, category: "" });
+                    }}
+                    className="w-full border border-border bg-muted/20 px-4 py-3 text-xs font-bold uppercase tracking-widest text-primary outline-none focus:border-accent"
+                  >
+                    <option value="">Select Sector</option>
+                    {divisions.map((div) => (
+                      <option key={div._id} value={div._id}>
+                        {div.name}
+                      </option>
                     ))}
-                    
-                    <label className="flex flex-col items-center justify-center aspect-square border-2 border-dashed border-border bg-muted/20 hover:bg-muted/40 transition-colors cursor-pointer group">
-                      {uploading ? <Loader2 className="animate-spin text-primary w-5 h-5" /> : <Upload className="text-primary w-5 h-5 group-hover:scale-110 transition-transform" />}
-                      <span className="mt-2 text-[9px] font-bold uppercase tracking-widest text-primary">Add More</span>
-                      <input type="file" className="hidden" accept="image/*" multiple onChange={handleGalleryUpload} />
-                    </label>
-                  </div>
+                  </select>
                 </div>
 
-                <div className="flex items-center justify-between p-6 border border-border bg-muted/20 mt-8">
-                  <div>
-                      <Label className="text-[10px] font-bold uppercase tracking-widest block text-primary">Primary Feature Status</Label>
-                      <p className="text-[9px] text-muted-foreground uppercase mt-1">Display on main overview screens.</p>
-                  </div>
-                  <Switch 
-                    checked={formData.isFeatured}
-                    onCheckedChange={(val) => setFormData({ ...formData, isFeatured: val })}
-                    className="data-[state=checked]:bg-accent"
+                <div className="space-y-3">
+                  <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Classification *</Label>
+                  <select
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="w-full border border-border bg-muted/20 px-4 py-3 text-xs font-bold uppercase tracking-widest text-primary outline-none focus:border-accent"
+                    disabled={!formData.division}
+                  >
+                    <option value="">Select Classification</option>
+                    {categories.map((cat) => (
+                      <option key={cat._id} value={cat._id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Product Core Name *</Label>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="h-12 rounded-none border-border bg-muted/20 shadow-none focus-visible:border-accent focus-visible:ring-accent"
+                  placeholder="e.g. Caterpillar Marine Engine 3512B"
+                />
+              </div>
+
+              <div className="space-y-3">
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Technical Description</Label>
+                <Textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="min-h-[160px] rounded-none border-border bg-muted/20 shadow-none focus-visible:border-accent focus-visible:ring-accent"
+                  placeholder="Enter detailed technical specifications here..."
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                <div className="space-y-3">
+                  <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Market Value</Label>
+                  <Input
+                    value={formData.price}
+                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                    className="h-12 rounded-none border-border bg-muted/20 shadow-none focus-visible:border-accent focus-visible:ring-accent"
+                    placeholder="e.g. $ 45,000 / POR"
                   />
                 </div>
-
-                <div className="pt-8 flex gap-4">
-                    <Button 
-                        type="button" 
-                        variant="outline"
-                        onClick={() => router.back()}
-                        className="flex-1 bg-white border-border text-primary font-bold h-14 rounded-none transition-all uppercase tracking-widest text-[10px] hover:bg-muted"
-                        >
-                        Abort Entry
-                    </Button>
-                    <Button 
-                        type="submit" 
-                        disabled={isLoading || uploading}
-                        className="flex-[2] bg-primary text-white hover:bg-accent font-bold h-14 rounded-none shadow-xl transition-all uppercase tracking-widest text-[10px]"
-                    >
-                        {isLoading ? "Writing..." : editingId ? "Commit Updates" : "Finalize Registration"}
-                    </Button>
+                <div className="space-y-3">
+                  <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Hardware Condition</Label>
+                  <Input
+                    value={formData.condition}
+                    onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
+                    className="h-12 rounded-none border-border bg-muted/20 shadow-none focus-visible:border-accent focus-visible:ring-accent"
+                    placeholder="e.g. Reconditioned, New, Used"
+                  />
                 </div>
-              </form>
-            </div>
+              </div>
+
+              <div className="space-y-3">
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Primary Visual Asset *</Label>
+                <div className="relative max-w-sm">
+                  {mainPreviewUrl ? (
+                    <div className="group relative aspect-video overflow-hidden border border-border bg-muted/20">
+                      <Image src={mainPreviewUrl} alt="Preview" fill className="object-contain" unoptimized />
+                      <div className="absolute right-2 top-2 flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setCropTarget({ type: "main", imageUrl: mainPreviewUrl })}
+                          className="bg-accent/90 p-2 text-white"
+                          title="Crop"
+                        >
+                          <Crop className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => runManualBackgroundRemoval("main")}
+                          disabled={isRemovingBg || !mainFile}
+                          className="bg-primary/90 p-2 text-white disabled:opacity-50"
+                          title="Remove Background"
+                        >
+                          {isRemovingBg && bgTarget === "main" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wand2 className="h-4 w-4" />}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMainFile(null);
+                            setMainPreviewUrl("");
+                            setFormData((prev) => ({ ...prev, imageUrl: "" }));
+                          }}
+                          className="bg-red-600/90 p-2 text-white"
+                          title="Remove"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <label className="group flex aspect-video cursor-pointer flex-col items-center justify-center border-2 border-dashed border-border bg-muted/20 transition-colors hover:bg-muted/40">
+                      <Upload className="h-8 w-8 text-primary transition-transform group-hover:scale-110" />
+                      <span className="mt-4 text-[10px] font-bold uppercase tracking-widest text-primary">Upload and Crop</span>
+                      <input type="file" className="hidden" accept="image/*" onChange={handleMainImageSelect} />
+                    </label>
+                  )}
+                </div>
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Main image uploads on submit. {mainFile ? "New processed file ready." : "Using existing image if not replaced."}
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <Label className="text-[10px] font-bold uppercase tracking-widest text-primary">Technical Gallery</Label>
+                  <span className="text-[9px] uppercase text-muted-foreground">
+                    {galleryAssets.length} total, {newGalleryCount} new pending uploads
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                  {galleryAssets.map((asset) => (
+                    <div key={asset.id} className="group relative aspect-square overflow-hidden border border-border bg-muted/20">
+                      <Image src={asset.previewUrl} alt="Gallery" fill className="object-contain" unoptimized />
+
+                      <div className="absolute right-1 top-1 flex gap-1">
+                        <button
+                          type="button"
+                          onClick={() => setCropTarget({ type: "gallery", imageUrl: asset.previewUrl, assetId: asset.id })}
+                          className="bg-accent/90 p-1 text-white"
+                          title="Crop"
+                        >
+                          <Crop className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => runManualBackgroundRemoval("gallery", asset.id)}
+                          disabled={isRemovingBg || !asset.file}
+                          className="bg-primary/90 p-1 text-white disabled:opacity-50"
+                          title="Remove Background"
+                        >
+                          {isRemovingBg && bgTarget === `gallery-${asset.id}` ? (
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          ) : (
+                            <Wand2 className="h-3.5 w-3.5" />
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removeGalleryImage(asset.id)}
+                          className="bg-red-600/90 p-1 text-white"
+                          title="Remove"
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+
+                  <label className="group flex aspect-square cursor-pointer flex-col items-center justify-center border-2 border-dashed border-border bg-muted/20 transition-colors hover:bg-muted/40">
+                    {isUploading ? (
+                      <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                    ) : (
+                      <Upload className="h-5 w-5 text-primary transition-transform group-hover:scale-110" />
+                    )}
+                    <span className="mt-2 text-[9px] font-bold uppercase tracking-widest text-primary">Add More</span>
+                    <input type="file" className="hidden" accept="image/*" multiple onChange={handleGalleryImageSelect} />
+                  </label>
+                </div>
+              </div>
+
+              <div className="mt-8 flex items-center justify-between border border-border bg-muted/20 p-6">
+                <div>
+                  <Label className="block text-[10px] font-bold uppercase tracking-widest text-primary">Primary Feature Status</Label>
+                  <p className="mt-1 text-[9px] uppercase text-muted-foreground">Display on main overview screens.</p>
+                </div>
+                <Switch
+                  checked={formData.isFeatured}
+                  onCheckedChange={(val) => setFormData({ ...formData, isFeatured: val })}
+                  className="data-[state=checked]:bg-accent"
+                />
+              </div>
+
+              <div className="flex gap-4 pt-8">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.back()}
+                  className="h-14 flex-1 rounded-none border-border bg-white text-[10px] font-bold uppercase tracking-widest text-primary transition-all hover:bg-muted"
+                >
+                  Abort Entry
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isLoading || isUploading || isRemovingBg}
+                  className="h-14 flex-[2] rounded-none bg-primary text-[10px] font-bold uppercase tracking-widest text-white shadow-xl transition-all hover:bg-accent"
+                >
+                  {isLoading || isUploading ? "Processing..." : editingId ? "Commit Updates" : "Finalize Registration"}
+                </Button>
+              </div>
+            </form>
+          </div>
         </main>
       </div>
+
+      {cropTarget ? (
+        <CropModal image={cropTarget.imageUrl} onCropComplete={handleCropComplete} onCancel={() => setCropTarget(null)} />
+      ) : null}
     </div>
   );
 }

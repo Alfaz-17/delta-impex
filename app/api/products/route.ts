@@ -7,6 +7,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import mongoose from "mongoose";
 
+export const revalidate = 120;
+
 function slugify(value: string) {
   return value
     .toLowerCase()
@@ -40,6 +42,7 @@ export async function GET(req: NextRequest) {
     await connectToDatabase();
     const { searchParams } = new URL(req.url);
     const divisionId = searchParams.get("divisionId");
+    const divisionSlug = searchParams.get("divisionSlug");
     const categoryId = searchParams.get("categoryId");
     const isFeatured = searchParams.get("isFeatured");
     const limit = parseInt(searchParams.get("limit") || "0", 10);
@@ -48,6 +51,10 @@ export async function GET(req: NextRequest) {
     if (divisionId) {
       if (!mongoose.Types.ObjectId.isValid(divisionId)) return NextResponse.json([]);
       query.division = divisionId;
+    } else if (divisionSlug) {
+      const division = await Division.findOne({ slug: divisionSlug }).select("_id").lean();
+      if (!division?._id) return NextResponse.json([]);
+      query.division = division._id;
     }
     if (categoryId) {
       if (!mongoose.Types.ObjectId.isValid(categoryId)) return NextResponse.json([]);
@@ -65,9 +72,13 @@ export async function GET(req: NextRequest) {
         dbQuery = dbQuery.limit(limit);
     }
       
-    const products = await dbQuery;
+    const products = await dbQuery.lean();
       
-    return NextResponse.json(products);
+    return NextResponse.json(products, {
+      headers: {
+        "Cache-Control": "public, s-maxage=120, stale-while-revalidate=600",
+      },
+    });
   } catch (error: any) {
     console.error("GET /api/products Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -12,5 +12,7 @@ const CategorySchema = new Schema<ICategory>({
   division: { type: Schema.Types.ObjectId, ref: "Division", required: true },
 });
 
+CategorySchema.index({ division: 1 });
+
 const Category: Model<ICategory> = mongoose.models.Category || mongoose.model<ICategory>("Category", CategorySchema);
 export default Category;

@@ -42,6 +42,7 @@ export async function GET(req: NextRequest) {
     await connectToDatabase();
     const { searchParams } = new URL(req.url);
     const divisionId = searchParams.get("divisionId");
+    const includeCounts = searchParams.get("includeCounts") !== "false";
     
     let query = {};
     if (divisionId) {
@@ -52,12 +53,23 @@ export async function GET(req: NextRequest) {
     }
     
     const categories = await Category.find(query).populate("division").lean();
+
+    if (!includeCounts) {
+      return NextResponse.json(categories, {
+        headers: {
+          "Cache-Control": "public, s-maxage=120, stale-while-revalidate=600",
+        },
+      });
+    }
+
     const categoryIds = categories.map((category) => category._id);
 
-    const productCounts = await Product.aggregate([
-      { $match: { category: { $in: categoryIds } } },
-      { $group: { _id: "$category", count: { $sum: 1 } } },
-    ]);
+    const productCounts = categoryIds.length
+      ? await Product.aggregate([
+          { $match: { category: { $in: categoryIds } } },
+          { $group: { _id: "$category", count: { $sum: 1 } } },
+        ])
+      : [];
 
     const countMap = new Map(
       productCounts.map((item) => [String(item._id), item.count as number])
@@ -69,7 +81,11 @@ export async function GET(req: NextRequest) {
       canDelete: (countMap.get(String(category._id)) || 0) === 0,
     }));
 
-    return NextResponse.json(categoriesWithCounts);
+    return NextResponse.json(categoriesWithCounts, {
+      headers: {
+        "Cache-Control": "public, s-maxage=120, stale-while-revalidate=600",
+      },
+    });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

@@ -25,11 +25,12 @@ export function CategoriesShowcaseSection() {
     async function fetchAllCategories() {
       setIsLoading(true);
       try {
-        const divRes = await fetch("/api/divisions");
-        const divisions = await divRes.json();
-        
-        const catRes = await fetch("/api/categories");
-        const allCategories = await catRes.json();
+        const [divRes, catRes] = await Promise.all([
+          fetch("/api/divisions"),
+          fetch("/api/categories?includeCounts=false"),
+        ]);
+
+        const [divisions, allCategories] = await Promise.all([divRes.json(), catRes.json()]);
         
         const grouped = divisions.map((div: any) => ({
           ...div,

@@ -103,11 +103,9 @@ export default function ContactPage() {
 
         <div className="relative z-10 text-center px-6" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.5)" }}>
           <FadeInOnScroll>
-            <p className="label-tech text-white/80 mb-6 drop-shadow-xl uppercase tracking-[0.4em]">
-              Connect With Us
-            </p>
+            
             <h1 className="heading-display text-white !leading-[0.95] uppercase drop-shadow-2xl">
-              Get in <span className="text-primary italic">Touch.</span>
+              Get in <span className="text-blue-400/70 italic">Touch.</span>
             </h1>
           </FadeInOnScroll>
         </div>
