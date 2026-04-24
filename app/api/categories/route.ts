@@ -51,8 +51,25 @@ export async function GET(req: NextRequest) {
       query = { division: divisionId };
     }
     
-    const categories = await Category.find(query).populate("division");
-    return NextResponse.json(categories);
+    const categories = await Category.find(query).populate("division").lean();
+    const categoryIds = categories.map((category) => category._id);
+
+    const productCounts = await Product.aggregate([
+      { $match: { category: { $in: categoryIds } } },
+      { $group: { _id: "$category", count: { $sum: 1 } } },
+    ]);
+
+    const countMap = new Map(
+      productCounts.map((item) => [String(item._id), item.count as number])
+    );
+
+    const categoriesWithCounts = categories.map((category) => ({
+      ...category,
+      productCount: countMap.get(String(category._id)) || 0,
+      canDelete: (countMap.get(String(category._id)) || 0) === 0,
+    }));
+
+    return NextResponse.json(categoriesWithCounts);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -111,10 +128,17 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ error: "One or more category IDs are invalid" }, { status: 400 });
     }
 
-    const linkedProducts = await Product.countDocuments({ category: { $in: ids } });
-    if (linkedProducts > 0) {
+    const blockedCategories = await Product.aggregate([
+      { $match: { category: { $in: ids.map((id) => new mongoose.Types.ObjectId(id)) } } },
+      { $group: { _id: "$category", count: { $sum: 1 } } },
+    ]);
+
+    if (blockedCategories.length > 0) {
       return NextResponse.json(
-        { error: "Cannot delete categories that still have products assigned" },
+        {
+          error: "Cannot delete categories that still have products assigned",
+          blockedCategoryIds: blockedCategories.map((item) => String(item._id)),
+        },
         { status: 409 }
       );
     }

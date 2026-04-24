@@ -142,18 +142,12 @@ export default function RootLayout({
         "areaServed": "Global",
         "availableLanguage": ["English", "Hindi", "Gujarati"]
       }
-    ],
-    "sameAs": [
-      "https://www.linkedin.com/company/delta-impex", // Placeholder
-      "https://www.facebook.com/deltaimpex" // Placeholder
     ]
   };
 
   return (
     <html lang="en">
-      <head>
-        <link rel="preload" as="image" href="/hero-poster.png" />
-      </head>
+      <head />
       <body className={`${outfit.variable} ${syne.variable} ${spaceMono.variable} ${syncopate.variable} font-sans antialiased text-foreground`}>
         <script
           type="application/ld+json"

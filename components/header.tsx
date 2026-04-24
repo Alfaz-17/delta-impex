@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronRight, ChevronDown, Phone, Mail, MapPin, Instagram, Linkedin, ArrowRight } from "lucide-react";
+import { Menu, X, ChevronRight, ChevronDown, Phone, Mail, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -180,7 +180,7 @@ export function Header() {
               href="/" 
               className="relative h-10 w-48 md:w-56 transition-transform hover:scale-105 duration-300"
             >
-              <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[350px] h-[125px] mt-2 pointer-events-none">
+              <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[360px] h-[135px] mt-2 pointer-events-none">
                 <Image
                   src="/logo.png"
                   alt="Delta Impex Logo"
@@ -429,8 +429,12 @@ export function Header() {
 
               <div className="shrink-0 p-8 border-t border-primary/10 bg-background/80 backdrop-blur-md">
                  <div className="flex items-center gap-6 justify-center">
-                    <a href="#" className="p-2 text-muted-foreground hover:text-primary transition-colors"><Instagram size={20} /></a>
-                    <a href="#" className="p-2 text-muted-foreground hover:text-primary transition-colors"><Linkedin size={20} /></a>
+                    <Link href="/contact" className="p-2 text-muted-foreground hover:text-primary transition-colors">
+                      <Mail size={20} />
+                    </Link>
+                    <Link href="/about" className="p-2 text-muted-foreground hover:text-primary transition-colors">
+                      <ArrowRight size={20} />
+                    </Link>
                  </div>
               </div>
             </motion.div>
@@ -440,4 +444,3 @@ export function Header() {
     </header>
   );
 }
-

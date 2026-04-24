@@ -32,6 +32,7 @@ export function HeroSection() {
         <video
           src="/hero.mp4"
           poster="/hero-poster.png"
+          preload="metadata"
           autoPlay
           muted
           loop
@@ -61,7 +62,7 @@ export function HeroSection() {
             variants={itemVariants}
             className="heading-display text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] !text-3xl sm:!text-4xl md:!text-5xl lg:!text-[2.4rem] leading-[1.1] tracking-tight uppercase"
           >
-            Delta Implex <br />
+            Delta Impex <br />
             <span className="text-accent underline decoration-white/20 underline-offset-4 md:underline-offset-6">Marine & Industrial Suppliers</span>
           </motion.h1>
 
@@ -78,10 +79,10 @@ export function HeroSection() {
           {/* Compact CTAs */}
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start gap-4 pt-2 w-full sm:w-auto">
             <Link
-              href="/catalog"
+              href="/products?divisionSlug=marine-industrial"
               className="group relative px-7 py-3 bg-white text-primary rounded-full font-bold flex items-center gap-2 overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl group-hover:text-white w-full sm:w-auto justify-center sm:justify-start"
             >
-              <span className="relative z-10 transition-colors duration-300 text-sm">Explore Catalog</span>
+              <span className="relative z-10 transition-colors duration-300 text-sm">Explore Products</span>
               <ArrowRight className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-1 transition-colors duration-300" />
               <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-300 -z-0" />
             </Link>

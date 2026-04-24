@@ -5,34 +5,36 @@ import Image from "next/image";
 
 const footerLinks = {
   explore: [
-    { label: "Spare Parts", href: "#divisions" },
+    { label: "Spare Parts", href: "/divisions/marine-industrial" },
     { label: "RO Systems", href: "/divisions/ro-solutions" },
-    { label: "About Legacy", href: "#about-preview" },
-    { label: "Contact", href: "#contact" },
+    { label: "About Us", href: "/about" },
+    { label: "Contact", href: "/contact" },
   ],
   about: [
-    { label: "Our Legacy", href: "#about-preview" },
-    { label: "Core Divisions", href: "#divisions" },
+    { label: "Our Legacy", href: "/about" },
+    { label: "Core Divisions", href: "/products" },
     { label: "Methodology", href: "/about" },
-    { label: "Connect", href: "#contact" },
+    { label: "Connect", href: "/contact" },
   ],
   service: [
     { label: "+91 99259 99945 (IN)", href: "tel:+919925999945" },
-    { label: "+91 99133 33145 (IN)", href: "tel:+919913333145" },
     { label: "+971 52 491 8899 (UAE)", href: "tel:+971524918899" },
     { label: "sales@deltaimpex.co", href: "mailto:sales@deltaimpex.co" },
+  ],
+  quick: [
+    { label: "Products", href: "/products" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
   ],
 };
 
 export function FooterSection() {
   return (
     <footer id="contact" className="bg-background">
-      {/* Main Footer Content */}
       <div className="border-t border-border px-6 py-16 md:px-12 md:py-20 lg:px-20">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
-          {/* Brand */}
           <div className="col-span-2 md:col-span-1 lg:col-span-2">
-            <Link href="/" className="relative block h-8 w-32 mb-6">
+            <Link href="/" className="relative mb-6 block h-24 w-36">
               <Image
                 src="/logo.png"
                 alt="Delta Impex Logo"
@@ -41,19 +43,18 @@ export function FooterSection() {
               />
             </Link>
             <p className="mt-4 max-w-xs body-text">
-              Your Trusted Partner for Marine & Industrial Spare Parts and Advanced RO Water Treatment Systems worldwide.
+              Your trusted partner for marine and industrial spare parts and advanced RO water treatment systems worldwide.
             </p>
             <div className="mt-6 text-sm text-muted-foreground">
               <p className="font-medium text-foreground">Head Office</p>
               <p className="mt-1">
                 Office-07, Madina Tenement,
                 <br />
-                Jamnakund Chowk, Bhavnagar – 364001, India
+                Jamnakund Chowk, Bhavnagar - 364001, India
               </p>
             </div>
           </div>
 
-          {/* Explore */}
           <div>
             <h4 className="label-tech mb-4">Explore</h4>
             <ul className="space-y-3">
@@ -70,7 +71,6 @@ export function FooterSection() {
             </ul>
           </div>
 
-          {/* About */}
           <div>
             <h4 className="label-tech mb-4">About</h4>
             <ul className="space-y-3">
@@ -87,7 +87,6 @@ export function FooterSection() {
             </ul>
           </div>
 
-          {/* Service */}
           <div>
             <h4 className="label-tech mb-4">Contact</h4>
             <ul className="space-y-3">
@@ -106,34 +105,22 @@ export function FooterSection() {
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-border px-6 py-6 md:px-12 lg:px-20">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="label-tech !mb-0 !text-muted-foreground lowercase">
             © 2026 Delta Impex. All rights reserved.
           </p>
 
-          
-
           <div className="flex items-center gap-6">
-            <Link
-              href="#"
-              className="label-tech !mb-0 !text-muted-foreground transition-colors hover:text-foreground lowercase"
-            >
-              Instagram
-            </Link>
-            <Link
-              href="#"
-              className="label-tech !mb-0 !text-muted-foreground transition-colors hover:text-foreground lowercase"
-            >
-              Twitter
-            </Link>
-            <Link
-              href="#"
-              className="label-tech !mb-0 !text-muted-foreground transition-colors hover:text-foreground lowercase"
-            >
-              YouTube
-            </Link>
+            {footerLinks.quick.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="label-tech !mb-0 !text-muted-foreground transition-colors hover:text-foreground lowercase"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

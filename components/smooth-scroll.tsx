@@ -5,6 +5,7 @@ import Lenis from "lenis";
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     // Initialize Lenis
@@ -24,10 +25,10 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     // RAF loop to handle scroll updates efficiently
     function raf(time: number) {
       lenisRef.current?.raf(time);
-      requestAnimationFrame(raf);
+      rafRef.current = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafRef.current = requestAnimationFrame(raf);
 
     // Sync scroll position on orientation change or resize
     const handleResize = () => {
@@ -36,6 +37,9 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     window.addEventListener("resize", handleResize);
 
     return () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
       lenisRef.current?.destroy();
       lenisRef.current = null;
       window.removeEventListener("resize", handleResize);

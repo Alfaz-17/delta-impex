@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { Edit, X, CheckSquare } from "lucide-react";
+import { Edit, X, CheckSquare, Lock } from "lucide-react";
 import { DivisionSwitcher } from "@/components/admin/division-switcher";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
@@ -67,17 +67,24 @@ export function CategoriesContent() {
     });
   };
 
-  const toggleSelect = (id: string) => {
-    setSelectedIds(prev => 
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+  const toggleSelect = (category: any) => {
+    if (!category.canDelete) {
+      toast.error("This category has products assigned and cannot be deleted yet");
+      return;
+    }
+
+    setSelectedIds(prev =>
+      prev.includes(category._id) ? prev.filter(i => i !== category._id) : [...prev, category._id]
     );
   };
 
   const toggleSelectAll = () => {
-    if (selectedIds.length === categories.length && categories.length > 0) {
+    const deletableIds = categories.filter((category) => category.canDelete).map((category) => category._id);
+
+    if (selectedIds.length === deletableIds.length && deletableIds.length > 0) {
       setSelectedIds([]);
     } else {
-      setSelectedIds(categories.map(c => c._id));
+      setSelectedIds(deletableIds);
     }
   };
 
@@ -94,6 +101,9 @@ export function CategoriesContent() {
 
       const data = await res.json();
       if (!res.ok) {
+        if (res.status === 409 && Array.isArray(data?.blockedCategoryIds)) {
+          setSelectedIds((prev) => prev.filter((id) => !data.blockedCategoryIds.includes(id)));
+        }
         throw new Error(data?.error || "Failed to delete categories");
       }
 
@@ -207,7 +217,7 @@ export function CategoriesContent() {
                 <div className="bg-white border border-border flex flex-col shadow-xl overflow-hidden">
                     <div className="p-4 border-b border-border bg-muted/20 flex justify-between items-center">
                         <button onClick={toggleSelectAll} className="px-4 py-2 border border-border text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-colors">
-                            <CheckSquare className="w-4 h-4 mr-2 inline" /> {selectedIds.length === categories.length && categories.length > 0 ? "Deselect" : "Select All"}
+                            <CheckSquare className="w-4 h-4 mr-2 inline" /> {selectedIds.length === categories.filter((category) => category.canDelete).length && categories.some((category) => category.canDelete) ? "Deselect" : "Select All"}
                         </button>
                     </div>
                     <table className="w-full text-left">
@@ -228,11 +238,24 @@ export function CategoriesContent() {
                                 className={`hover:bg-accent/5 group transition-colors ${selectedIds.includes(category._id) ? "bg-accent/5" : (editingId === category._id ? "bg-accent/5 border-l-4 border-l-accent" : "")}`}
                               >
                                   <td className="py-6 px-6 text-center">
-                                      <Checkbox checked={selectedIds.includes(category._id)} onCheckedChange={() => toggleSelect(category._id)} />
+                                      <Checkbox
+                                        checked={selectedIds.includes(category._id)}
+                                        onCheckedChange={() => toggleSelect(category)}
+                                        disabled={!category.canDelete}
+                                      />
                                   </td>
                                   <td className="py-6 px-6">
                                       <h3 className="font-bold text-primary tracking-tight text-sm mb-1 uppercase group-hover:text-accent transition-colors">{category.name}</h3>
                                       <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{category.slug}</p>
+                                      <div className="mt-2 flex items-center gap-3 text-[10px] uppercase tracking-widest text-muted-foreground">
+                                        <span>{category.productCount || 0} products</span>
+                                        {!category.canDelete && (
+                                          <span className="inline-flex items-center gap-1 text-amber-600">
+                                            <Lock className="w-3 h-3" />
+                                            Locked
+                                          </span>
+                                        )}
+                                      </div>
                                   </td>
                                   <td className="py-6 px-6 text-right">
                                       <button onClick={() => handleEdit(category)} className="p-2 hover:text-accent transition-colors">
