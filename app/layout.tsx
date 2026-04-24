@@ -59,8 +59,8 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  verification: {
-    google: 'verification_token_here', // USER: Replace with your Google Search Console token
+  alternates: {
+    canonical: "https://deltaimpex.co",
   },
   openGraph: {
     title: "Delta Impex | Marine Spares & RO Water Treatment Systems",
@@ -113,37 +113,45 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Delta Impex",
-    "url": "https://deltaimpex.co",
-    "logo": "https://deltaimpex.co/icon-light-32x32.png",
-    "image": "https://deltaimpex.co/og-image.png",
-    "description": "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions.",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Office-07, Madina Tenement, Jamnakund Chowk",
-      "addressLocality": "Bhavnagar",
-      "postalCode": "364001",
-      "addressRegion": "Gujarat",
-      "addressCountry": "IN"
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Delta Impex",
+      "url": "https://deltaimpex.co",
+      "logo": "https://deltaimpex.co/icon-light-32x32.png",
+      "image": "https://deltaimpex.co/og-image.png",
+      "description": "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Office-07, Madina Tenement, Jamnakund Chowk",
+        "addressLocality": "Bhavnagar",
+        "postalCode": "364001",
+        "addressRegion": "Gujarat",
+        "addressCountry": "IN"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+91-99259-99945",
+          "contactType": "sales",
+          "areaServed": "Global",
+          "availableLanguage": ["English", "Hindi", "Gujarati"]
+        }
+      ]
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": "21.7645",
-      "longitude": "72.1519"
-    },
-    "contactPoint": [
-      {
-        "@type": "ContactPoint",
-        "telephone": "+91-99259-99945",
-        "contactType": "sales",
-        "areaServed": "Global",
-        "availableLanguage": ["English", "Hindi", "Gujarati"]
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Delta Impex",
+      "url": "https://deltaimpex.co",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://deltaimpex.co/products?query={search_term_string}",
+        "query-input": "required name=search_term_string"
       }
-    ]
-  };
+    }
+  ];
 
   return (
     <html lang="en">
