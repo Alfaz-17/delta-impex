@@ -19,21 +19,20 @@ const contactMethods = [
   {
     icon: Phone,
     title: "Call Us",
-    primary: "+91 99259 99945 / +91 99133 33145",
+    primary: "+91 99259 99945 (IND)",
     secondary: "+971 52 491 8899 (UAE)",
     color: "bg-green-500/10 text-green-600"
   },
   {
     icon: Mail,
     title: "Email Us",
-    primary: "sales@deltaimpex.com",
-    secondary: "info@deltaimpex.com",
+    primary: "sales@deltaimpex.co",
     color: "bg-primary/10 text-primary"
   },
   {
     icon: Globe,
     title: "Global Reach",
-    primary: "50+ Ports Worldwide",
+    primary: "150+ Ports Worldwide",
     secondary: "Serving marine & industrial clients",
     color: "bg-orange-500/10 text-orange-600"
   },
@@ -139,7 +138,7 @@ export default function ContactPage() {
                         {[
                             { icon: Clock, title: "24h Response", desc: "Technical quotes within one business day." },
                             { icon: ShieldCheck, title: "Quality Guaranteed", desc: "Rigorous inspection for every single part." },
-                            { icon: Send, title: "Global Logistics", desc: "Express delivery to 50+ major world ports." }
+                            { icon: Send, title: "Global Logistics", desc: "Express delivery to 100+ major world ports." }
                         ].map((item, i) => (
                             <div key={i} className="flex gap-4 group">
                                 <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-xl bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">

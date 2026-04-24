@@ -215,18 +215,7 @@ export default function AboutPage() {
           />
         </div>
 
-        {/* Vision Section */}
-        <div className="mt-24 md:mt-32 py-24 px-8 md:px-16 bg-foreground rounded-3xl md:rounded-[4rem] text-center overflow-hidden relative">
-          <div className="absolute inset-0 bg-primary/5 pattern-grid-white opacity-10" />
-          <FadeInOnScroll className="relative z-10 max-w-4xl mx-auto">
-            <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-background/50 mb-8">
-              Our Vision
-            </p>
-            <p className="heading-section !not-italic !font-medium text-background">
-              "To become a trusted global supplier for marine and industrial sectors, delivering reliable and cost-effective solutions."
-            </p>
-          </FadeInOnScroll>
-        </div>
+
 
         {/* Values Section */}
         <div className="mt-24 md:mt-32 pb-32">

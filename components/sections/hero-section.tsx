@@ -40,7 +40,7 @@ export function HeroSection() {
         />
         {/* Compressed Gradient - Heavier edge, faster falloff to show ship */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-transparent to-[#020617]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-[#020617]/60 to-transparent z-0" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-[#020617]/10 to-transparent z-0" />
         <div className="absolute inset-0 grid-technical-dots opacity-10" />
       </div>
 
@@ -61,18 +61,19 @@ export function HeroSection() {
             variants={itemVariants}
             className="heading-display text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] !text-3xl sm:!text-4xl md:!text-5xl lg:!text-[2.4rem] leading-[1.1] tracking-tight uppercase"
           >
-            Your Trusted Partner for <br />
-            <span className="text-accent underline decoration-white/20 underline-offset-4 md:underline-offset-6">Marine & Industrial Solutions.</span>
+            Delta Implex <br />
+            <span className="text-accent underline decoration-white/20 underline-offset-4 md:underline-offset-6">Marine & Industrial Suppliers</span>
           </motion.h1>
 
           {/* Compact Subtext - Constrained Width */}
-          <motion.p 
+          {/* <motion.p 
             variants={itemVariants}
             className="body-premium max-w-lg text-xs md:text-sm text-white/90 leading-relaxed drop-shadow-md"
           >
-            Delta Impex is a reliable supplier of all types of ship spare parts and industrial equipment, 
+            Delta Impex is a reliable supplier of all types of ship spare parts 
+            and industrial equipment, 
             serving clients across marine and land-based industries.
-          </motion.p>
+          </motion.p> */}
 
           {/* Compact CTAs */}
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start gap-4 pt-2 w-full sm:w-auto">
