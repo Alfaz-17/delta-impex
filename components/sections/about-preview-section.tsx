@@ -64,8 +64,8 @@ export function AboutPreviewSection() {
       className="relative bg-background overflow-hidden"
     >
       {/* Top — Main Story */}
-      <div className="section-container relative z-10 py-24 md:py-32 lg:py-40">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <div className="section-container relative z-10 py-8 md:py-10 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
           
           {/* Left — Image Side */}
           <FadeInOnScroll direction="right">
@@ -157,7 +157,7 @@ export function AboutPreviewSection() {
       </div>
 
       {/* Bottom — Capabilities Grid */}
-      <div className="px-6 py-20 md:py-24 md:px-12 lg:px-20">
+      <div className="px-6 py-8 md:py-10 md:px-12 lg:px-20">
         <div className="mx-auto max-w-7xl">
           <FadeInOnScroll>
             <div className="flex items-end justify-between mb-10 md:mb-16">

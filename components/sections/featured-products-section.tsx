@@ -35,15 +35,40 @@ export function FeaturedProductsSection({
       setIsLoading(true);
       try {
         const targetSlug = divisionSlug || (activeTab === "marine" ? "marine-industrial" : "ro-water-treatment");
+        const slugCandidates =
+          targetSlug === "ro-water-treatment" || targetSlug === "ro-solutions"
+            ? ["ro-water-treatment", "ro-solutions"]
+            : [targetSlug];
 
-        let url = `/api/products?divisionSlug=${targetSlug}&limit=12`;
-        if (featuredOnly) {
-          url += "&isFeatured=true";
+        let loadedProducts: any[] = [];
+
+        for (const slug of slugCandidates) {
+          let url = `/api/products?divisionSlug=${slug}&limit=12`;
+          if (featuredOnly) {
+            url += "&isFeatured=true";
+          }
+
+          const res = await fetch(url);
+          const data = await res.json();
+          if (Array.isArray(data) && data.length) {
+            loadedProducts = data;
+            break;
+          }
         }
 
-        const res = await fetch(url);
-        const data = await res.json();
-        setProducts(Array.isArray(data) ? data : []);
+        // UX fallback: if no featured products are marked yet, show latest items.
+        if (!loadedProducts.length && featuredOnly) {
+          for (const slug of slugCandidates) {
+            const res = await fetch(`/api/products?divisionSlug=${slug}&limit=12`);
+            const data = await res.json();
+            if (Array.isArray(data) && data.length) {
+              loadedProducts = data;
+              break;
+            }
+          }
+        }
+
+        setProducts(loadedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
         setProducts([]);
@@ -69,9 +94,9 @@ export function FeaturedProductsSection({
   };
 
   return (
-    <section className="bg-background py-16 md:py-24 lg:py-32 overflow-hidden">
+    <section className="bg-background py-8 md:py-10 lg:py-12 overflow-hidden">
       {/* Editorial Header */}
-      <div className="section-container mb-12 md:mb-20">
+      <div className="section-container mb-6 md:mb-8">
         <FadeInOnScroll>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-border/50 pb-10">
             <div className="max-w-xl">
@@ -164,8 +189,8 @@ export function FeaturedProductsSection({
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: (index % 4) * 0.1 }}
-                  className={`flex-none w-[280px] md:w-[380px] snap-start transition-all duration-1000 ${
-                    isOffset ? "mt-12 md:mt-24 lg:mt-32" : ""
+                  className={`flex-none w-[280px] md:w-[360px] snap-start transition-all duration-1000 ${
+                    isOffset ? "mt-4 md:mt-6 lg:mt-8" : ""
                   }`}
                 >
                   <Link 

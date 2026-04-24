@@ -32,7 +32,7 @@ export function HeroSection() {
         <video
           src="/hero.mp4"
           poster="/hero-poster.png"
-          preload="metadata"
+          preload="none"
           autoPlay
           muted
           loop

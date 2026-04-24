@@ -50,9 +50,51 @@ export default function ContactPage() {
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: "", email: "", company: "", message: "" });
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errors, setErrors] = useState<{ name?: string; email?: string; company?: string; message?: string }>({});
+
+  function validateForm() {
+    const nextErrors: { name?: string; email?: string; company?: string; message?: string } = {};
+    const name = formData.name.trim();
+    const email = formData.email.trim();
+    const company = formData.company.trim();
+    const message = formData.message.trim();
+
+    if (!name) {
+      nextErrors.name = "Name is required.";
+    } else if (name.length < 2) {
+      nextErrors.name = "Name must be at least 2 characters.";
+    } else if (name.length > 80) {
+      nextErrors.name = "Name must be under 80 characters.";
+    }
+
+    if (!email) {
+      nextErrors.email = "Email is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      nextErrors.email = "Enter a valid email address.";
+    }
+
+    if (company.length > 120) {
+      nextErrors.company = "Company/Vessel must be under 120 characters.";
+    }
+
+    if (!message) {
+      nextErrors.message = "Message is required.";
+    } else if (message.length < 15) {
+      nextErrors.message = "Message should be at least 15 characters.";
+    } else if (message.length > 1200) {
+      nextErrors.message = "Message must be under 1200 characters.";
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!validateForm()) {
+      setSubmitStatus("error");
+      return;
+    }
 
     try {
       setSubmitStatus("loading");
@@ -132,7 +174,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="section-container py-24 md:py-32 lg:py-48">
+      <section className="section-container py-12 md:py-16 lg:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           <div className="lg:col-span-5">
             <FadeInOnScroll>
@@ -185,26 +227,35 @@ export default function ContactPage() {
                       <input
                         type="text"
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        onChange={(e) => {
+                          setFormData({ ...formData, name: e.target.value });
+                          if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
+                        }}
                         onFocus={() => setFocusedField("name")}
                         onBlur={() => setFocusedField(null)}
-                        className="w-full bg-transparent border-b border-border py-2 text-foreground focus:outline-none focus:border-primary transition-colors font-sans"
+                        className={`w-full bg-transparent border-b py-2 text-foreground focus:outline-none focus:border-primary transition-colors font-sans ${errors.name ? "border-red-500" : "border-border"}`}
                         placeholder="Enter your name"
+                        maxLength={80}
                         required
                       />
+                      {errors.name ? <p className="text-xs text-red-600">{errors.name}</p> : null}
                     </div>
                     <div className="space-y-3">
                       <label className={`label-tech text-[10px] transition-colors ${focusedField === "email" ? "text-primary" : "text-muted-foreground"}`}>Professional Email</label>
                       <input
                         type="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) => {
+                          setFormData({ ...formData, email: e.target.value });
+                          if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+                        }}
                         onFocus={() => setFocusedField("email")}
                         onBlur={() => setFocusedField(null)}
-                        className="w-full bg-transparent border-b border-border py-2 text-foreground focus:outline-none focus:border-primary transition-colors font-sans"
+                        className={`w-full bg-transparent border-b py-2 text-foreground focus:outline-none focus:border-primary transition-colors font-sans ${errors.email ? "border-red-500" : "border-border"}`}
                         placeholder="your@company.com"
                         required
                       />
+                      {errors.email ? <p className="text-xs text-red-600">{errors.email}</p> : null}
                     </div>
                   </div>
 
@@ -213,12 +264,17 @@ export default function ContactPage() {
                     <input
                       type="text"
                       value={formData.company}
-                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, company: e.target.value });
+                        if (errors.company) setErrors((prev) => ({ ...prev, company: undefined }));
+                      }}
                       onFocus={() => setFocusedField("company")}
                       onBlur={() => setFocusedField(null)}
-                      className="w-full bg-transparent border-b border-border py-2 text-foreground focus:outline-none focus:border-primary transition-colors font-sans"
+                      className={`w-full bg-transparent border-b py-2 text-foreground focus:outline-none focus:border-primary transition-colors font-sans ${errors.company ? "border-red-500" : "border-border"}`}
                       placeholder="Ship name or company"
+                      maxLength={120}
                     />
+                    {errors.company ? <p className="text-xs text-red-600">{errors.company}</p> : null}
                   </div>
 
                   <div className="space-y-3">
@@ -226,13 +282,18 @@ export default function ContactPage() {
                     <textarea
                       rows={4}
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, message: e.target.value });
+                        if (errors.message) setErrors((prev) => ({ ...prev, message: undefined }));
+                      }}
                       onFocus={() => setFocusedField("message")}
                       onBlur={() => setFocusedField(null)}
-                      className="w-full bg-transparent border-b border-border py-2 text-foreground focus:outline-none focus:border-primary transition-colors resize-none font-sans"
+                      className={`w-full bg-transparent border-b py-2 text-foreground focus:outline-none focus:border-primary transition-colors resize-none font-sans ${errors.message ? "border-red-500" : "border-border"}`}
                       placeholder="How can we assist you today?"
+                      maxLength={1200}
                       required
                     />
+                    {errors.message ? <p className="text-xs text-red-600">{errors.message}</p> : null}
                   </div>
 
                   <AnimatePresence>

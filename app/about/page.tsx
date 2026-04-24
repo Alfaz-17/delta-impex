@@ -179,7 +179,7 @@ export default function AboutPage() {
           <div className="absolute inset-0 bg-black/45" />
         </motion.div>
 
-        <div className="section-container relative z-10 w-full py-24 md:py-28 text-white" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.5)" }}>
+        <div className="section-container relative z-10 w-full py-16 md:py-20 text-white" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.5)" }}>
           <div className="mx-auto max-w-3xl text-center">
             <FadeInOnScroll>
               <p className="label-tech mb-6 text-white/80">About Us</p>
@@ -194,7 +194,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <div className="section-container pt-16 md:pt-20">
+      <div className="section-container pt-12 md:pt-14">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
             <FadeInOnScroll>
@@ -239,7 +239,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="mt-16 md:mt-20 overflow-hidden rounded-3xl border border-border/50 bg-muted/10 max-w-5xl mx-auto">
+        <div className="mt-12 md:mt-14 overflow-hidden rounded-3xl border border-border/50 bg-muted/10 max-w-5xl mx-auto">
           <Image
             src="/hero-poster.png"
             alt="Delta Impex industrial supply"
@@ -251,7 +251,7 @@ export default function AboutPage() {
           />
         </div>
 
-        <section className="mt-16 md:mt-20">
+        <section className="mt-12 md:mt-14">
           <FadeInOnScroll>
             <p className="font-tech mb-4 text-xs font-bold uppercase tracking-[0.4em] text-primary">What We Do</p>
             <h2 className="heading-section text-foreground">Marine, industrial, power, and water treatment support.</h2>
@@ -288,7 +288,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="mt-16 md:mt-20">
+        <section className="mt-12 md:mt-14">
           <FadeInOnScroll>
             <p className="font-tech mb-4 text-xs font-bold uppercase tracking-[0.4em] text-primary">How It Works</p>
             <h2 className="heading-section text-foreground">RO desalination, step by step.</h2>
@@ -307,7 +307,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="mt-16 grid grid-cols-1 gap-6 pb-24 md:mt-20 lg:grid-cols-2">
+        <section className="mt-12 grid grid-cols-1 gap-6 pb-16 md:mt-14 lg:grid-cols-2">
           <FadeInOnScroll>
             <div className="rounded-3xl border border-border/60 bg-muted/10 p-6 md:p-8">
               <p className="font-tech mb-4 text-xs font-bold uppercase tracking-[0.4em] text-primary">How We Work</p>

@@ -55,7 +55,7 @@ html.lenis, html.lenis body {
 
   /* ── Section Spacing Tokens ── */
   --section-px: clamp(1.5rem, 6vw, 6rem);
-  --section-py: clamp(5rem, 10vw, 12rem);
+  --section-py: clamp(3rem, 6vw, 6rem);
 }
 
 .dark {

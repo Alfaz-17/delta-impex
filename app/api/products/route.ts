@@ -9,6 +9,12 @@ import mongoose from "mongoose";
 
 export const revalidate = 120;
 
+const DIVISION_SLUG_ALIASES: Record<string, string[]> = {
+  "ro-water-treatment": ["ro-water-treatment", "ro-solutions"],
+  "ro-solutions": ["ro-solutions", "ro-water-treatment"],
+  "marine-industrial": ["marine-industrial"],
+};
+
 function slugify(value: string) {
   return value
     .toLowerCase()
@@ -52,9 +58,10 @@ export async function GET(req: NextRequest) {
       if (!mongoose.Types.ObjectId.isValid(divisionId)) return NextResponse.json([]);
       query.division = divisionId;
     } else if (divisionSlug) {
-      const division = await Division.findOne({ slug: divisionSlug }).select("_id").lean();
-      if (!division?._id) return NextResponse.json([]);
-      query.division = division._id;
+      const slugCandidates = DIVISION_SLUG_ALIASES[divisionSlug] || [divisionSlug];
+      const divisionIds = await Division.find({ slug: { $in: slugCandidates } }).distinct("_id");
+      if (!divisionIds?.length) return NextResponse.json([]);
+      query.division = { $in: divisionIds };
     }
     if (categoryId) {
       if (!mongoose.Types.ObjectId.isValid(categoryId)) return NextResponse.json([]);

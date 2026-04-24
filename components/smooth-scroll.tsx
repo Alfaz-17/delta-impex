@@ -8,6 +8,12 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+    if (prefersReducedMotion || isTouchDevice) {
+      return;
+    }
+
     // Initialize Lenis
     lenisRef.current = new Lenis({
       duration: 1.5, // Slightly longer duration for "weight"
@@ -17,9 +23,8 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       smoothWheel: true,
       wheelMultiplier: 1.1, // Faster responsiveness
       lerp: 0.08, // Smoother interpolation
-      // mobile settings
       smoothTouch: false,
-      touchMultiplier: 2,
+      touchMultiplier: 1,
     });
 
     // RAF loop to handle scroll updates efficiently

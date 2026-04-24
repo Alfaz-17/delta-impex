@@ -58,7 +58,7 @@ export function BrandsMarquee() {
     <section
       ref={sectionRef}
       id="brands"
-      className="relative bg-background overflow-hidden py-16 md:py-24 lg:py-32"
+      className="relative bg-background overflow-hidden py-8 md:py-10 lg:py-12"
     >
       {/* Subtle grain texture overlay */}
       <div className="grain-overlay absolute inset-0 pointer-events-none" />
@@ -117,7 +117,7 @@ export function BrandsMarquee() {
       </div>
 
       {/* Thin separator line at bottom */}
-      <div className="mt-16 md:mt-20 lg:mt-24 mx-6 md:mx-12 lg:mx-20">
+      <div className="mt-6 md:mt-8 lg:mt-10 mx-6 md:mx-12 lg:mx-20">
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       </div>
     </section>

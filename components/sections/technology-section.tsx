@@ -87,9 +87,9 @@ const sideImages = [
 
 export function TechnologySection() {
   return (
-    <section className="bg-foreground py-24 md:py-32 lg:py-48 text-white overflow-hidden">
+    <section className="bg-foreground py-8 md:py-10 lg:py-12 text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
           
           {/* Content Side */}
           <div className="order-2 lg:order-1">

@@ -48,10 +48,10 @@ export function CategoriesShowcaseSection() {
   }, []);
 
   return (
-    <section className="bg-background py-24 md:py-32 border-t border-border/40">
+    <section className="bg-background py-8 md:py-10 lg:py-12 border-t border-border/40">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
         {/* Section Header */}
-        <div className="mb-12 md:mb-24 lg:flex lg:items-end lg:justify-between gap-12">
+        <div className="mb-6 md:mb-8 lg:flex lg:items-end lg:justify-between gap-6">
           <div className="max-w-2xl">
             <p className="label-tech mb-5">
               Service Portfolio

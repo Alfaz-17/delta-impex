@@ -7,11 +7,11 @@ import { useScroll, useTransform, motion, useSpring } from "framer-motion";
 
 export function PhilosophySection() {
   return (
-    <section id="divisions" className="bg-background py-24 md:py-32 lg:py-40">
+    <section id="divisions" className="bg-background py-8 md:py-10 lg:py-12">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
         
         {/* Section Header */}
-        <div className="mb-12 md:mb-20 text-center lg:text-left">
+        <div className="mb-8 md:mb-12 text-center lg:text-left">
           <p className="label-tech !text-primary mb-5">
             Our Core Divisions
           </p>

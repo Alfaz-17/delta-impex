@@ -437,6 +437,7 @@ export function ProductFormContent() {
                   onCheckedChange={(checked) =>
                     setImageTools((prev) => ({ ...prev, autoBackgroundRemoval: checked }))
                   }
+                  className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted border-border"
                 />
               </div>
 
@@ -448,6 +449,7 @@ export function ProductFormContent() {
                 <Switch
                   checked={imageTools.applyWatermark}
                   onCheckedChange={(checked) => setImageTools((prev) => ({ ...prev, applyWatermark: checked }))}
+                  className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted border-border"
                 />
               </div>
 
@@ -660,7 +662,7 @@ export function ProductFormContent() {
                 <Switch
                   checked={formData.isFeatured}
                   onCheckedChange={(val) => setFormData({ ...formData, isFeatured: val })}
-                  className="data-[state=checked]:bg-accent"
+                  className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted border-border"
                 />
               </div>
 
