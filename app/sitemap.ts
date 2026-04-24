@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import connectToDatabase from "@/lib/mongodb"
 import Product from "@/lib/models/Product"
+import { SERVICE_KEYWORD_PAGES } from "@/lib/service-keywords"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://deltaimpex.co'
@@ -51,7 +52,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/services`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
   ];
 
-  return [...staticPages, ...productEntries];
+  const servicePages: MetadataRoute.Sitemap = SERVICE_KEYWORD_PAGES.map((item) => ({
+    url: `${baseUrl}/services/${item.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  return [...staticPages, ...servicePages, ...productEntries];
 }

@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Outfit, Syne, Space_Mono, Syncopate } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import { SITE_INFO } from "@/lib/site"
 
 const outfit = Outfit({ 
   subsets: ["latin"], 
@@ -117,19 +118,20 @@ export default function RootLayout({
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Delta Impex",
-      "url": "https://deltaimpex.co",
-      "logo": "https://deltaimpex.co/icon-light-32x32.png",
-      "image": "https://deltaimpex.co/og-image.png",
+      "name": SITE_INFO.name,
+      "url": SITE_INFO.domain,
+      "logo": `${SITE_INFO.domain}/icon-light-32x32.png`,
+      "image": `${SITE_INFO.domain}/og-image.png`,
       "description": "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions.",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "Office-07, Madina Tenement, Jamnakund Chowk",
+        "streetAddress": SITE_INFO.fullAddress,
         "addressLocality": "Bhavnagar",
         "postalCode": "364001",
         "addressRegion": "Gujarat",
         "addressCountry": "IN"
       },
+      "email": SITE_INFO.email,
       "contactPoint": [
         {
           "@type": "ContactPoint",
@@ -143,13 +145,32 @@ export default function RootLayout({
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Delta Impex",
-      "url": "https://deltaimpex.co",
+      "name": SITE_INFO.name,
+      "url": SITE_INFO.domain,
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://deltaimpex.co/products?query={search_term_string}",
+        "target": `${SITE_INFO.domain}/products?query={search_term_string}`,
         "query-input": "required name=search_term_string"
       }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": SITE_INFO.name,
+      "url": SITE_INFO.domain,
+      "image": `${SITE_INFO.domain}/og-image.png`,
+      "telephone": "+91-99259-99945",
+      "email": SITE_INFO.email,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": SITE_INFO.fullAddress,
+        "addressLocality": "Bhavnagar",
+        "addressRegion": "Gujarat",
+        "postalCode": "364001",
+        "addressCountry": "IN"
+      },
+      "sameAs": [SITE_INFO.mapsUrl],
+      "areaServed": "Global"
     }
   ];
 

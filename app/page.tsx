@@ -1,4 +1,4 @@
-import { Header } from "@/components/header";
+﻿import { Header } from "@/components/header";
 import { HeroSection } from "@/components/sections/hero-section";
 import { SectionWrapper } from "@/components/section-wrapper";
 import dynamic from "next/dynamic";
@@ -10,6 +10,7 @@ const AboutPreviewSection = dynamic(() => import("@/components/sections/about-pr
 const BrandsMarquee = dynamic(() => import("@/components/sections/brands-marquee").then(mod => mod.BrandsMarquee));
 const TechnologySection = dynamic(() => import("@/components/sections/technology-section").then(mod => mod.TechnologySection));
 const FooterSection = dynamic(() => import("@/components/sections/footer-section").then(mod => mod.FooterSection));
+const SeoContentSection = dynamic(() => import("@/components/sections/seo-content-section").then(mod => mod.SeoContentSection));
 const FeaturedProductsSection = dynamic(() => import("@/components/sections/featured-products-section").then(mod => mod.FeaturedProductsSection));
 
 export const metadata: Metadata = {
@@ -69,9 +70,10 @@ export default function Home() {
 
       <BrandsMarquee />
       <TechnologySection />
-      
+      <SeoContentSection />
 
       <FooterSection />
     </main>
   );
 }
+

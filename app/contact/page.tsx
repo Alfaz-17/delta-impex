@@ -7,26 +7,27 @@ import { useRef, useState } from "react";
 import { Mail, Phone, MapPin, Globe, Send, ChevronRight, Clock, ShieldCheck, AlertCircle } from "lucide-react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
+import { SITE_INFO } from "@/lib/site";
 
 const contactMethods = [
   {
     icon: MapPin,
     title: "Visit Us",
-    primary: "Office-07, Madina Tenement",
-    secondary: "Jamnakund Chowk, Bhavnagar - 364001, India",
+    primary: SITE_INFO.addressLine1,
+    secondary: SITE_INFO.addressLine2,
     color: "bg-blue-500/10 text-blue-600",
   },
   {
     icon: Phone,
     title: "Call Us",
-    primary: "+91 99259 99945 (IND)",
-    secondary: "+971 52 491 8899 (UAE)",
+    primary: `${SITE_INFO.phoneIndia} (IND)`,
+    secondary: `${SITE_INFO.phoneUAE} (UAE)`,
     color: "bg-green-500/10 text-green-600",
   },
   {
     icon: Mail,
     title: "Email Us",
-    primary: "sales@deltaimpex.co",
+    primary: SITE_INFO.email,
     color: "bg-primary/10 text-primary",
   },
   {
@@ -114,7 +115,7 @@ export default function ContactPage() {
         formData.message,
       ].join("\n");
 
-      window.location.href = `mailto:sales@deltaimpex.co?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = `mailto:${SITE_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       setSubmitStatus("success");
       setFormData({ name: "", email: "", company: "", message: "" });
       setTimeout(() => setSubmitStatus("idle"), 4000);
@@ -316,7 +317,7 @@ export default function ContactPage() {
                         className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-600 font-sans text-sm flex items-center gap-3"
                       >
                         <AlertCircle size={18} />
-                        We could not open your email app. Please email sales@deltaimpex.co directly.
+                        We could not open your email app. Please email {SITE_INFO.email} directly.
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -335,6 +336,33 @@ export default function ContactPage() {
               </div>
             </FadeInOnScroll>
           </div>
+        </div>
+      </section>
+
+      <section className="section-container pb-12 md:pb-16 lg:pb-20">
+        <div className="overflow-hidden rounded-3xl border border-border/70 bg-muted/20">
+          <div className="flex flex-col gap-4 border-b border-border/60 p-6 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="label-tech mb-2">Local Presence</p>
+              <h2 className="heading-sub !mb-0 text-foreground">Delta Impex Bhavnagar Office</h2>
+              <p className="mt-2 text-sm text-muted-foreground">{SITE_INFO.fullAddress}</p>
+            </div>
+            <a
+              href={SITE_INFO.mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+            >
+              Open in Google Maps <ChevronRight size={14} />
+            </a>
+          </div>
+          <iframe
+            title="Delta Impex Bhavnagar Map"
+            src={`https://www.google.com/maps?q=${encodeURIComponent(SITE_INFO.fullAddress)}&output=embed`}
+            className="h-[320px] w-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
         </div>
       </section>
 

@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { SITE_INFO } from "@/lib/site";
 
 const footerLinks = {
   explore: [
     { label: "Spare Parts", href: "/divisions/marine-industrial" },
     { label: "RO Systems", href: "/divisions/ro-solutions" },
+    { label: "Services", href: "/services" },
     { label: "About Us", href: "/about" },
     { label: "Contact", href: "/contact" },
   ],
@@ -17,12 +19,13 @@ const footerLinks = {
     { label: "Connect", href: "/contact" },
   ],
   service: [
-    { label: "+91 99259 99945 (IN)", href: "tel:+919925999945" },
-    { label: "+971 52 491 8899 (UAE)", href: "tel:+971524918899" },
-    { label: "sales@deltaimpex.co", href: "mailto:sales@deltaimpex.co" },
+    { label: `${SITE_INFO.phoneIndia} (IN)`, href: SITE_INFO.phoneIndiaHref },
+    { label: `${SITE_INFO.phoneUAE} (UAE)`, href: SITE_INFO.phoneUAEHref },
+    { label: SITE_INFO.email, href: `mailto:${SITE_INFO.email}` },
   ],
   quick: [
     { label: "Products", href: "/products" },
+    { label: "Services", href: "/services" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
   ],
@@ -48,10 +51,18 @@ export function FooterSection() {
             <div className="mt-6 text-sm text-muted-foreground">
               <p className="font-medium text-foreground">Head Office</p>
               <p className="mt-1">
-                Office-07, Madina Tenement,
+                {SITE_INFO.addressLine1},
                 <br />
-                Jamnakund Chowk, Bhavnagar - 364001, India
+                {SITE_INFO.addressLine2}
               </p>
+              <a
+                href={SITE_INFO.mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-2 inline-block text-xs text-primary hover:underline"
+              >
+                View on Google Maps
+              </a>
             </div>
           </div>
 
