@@ -26,7 +26,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-start bg-[#1B3A5C] overflow-hidden">
+    <section className="relative h-screen flex items-center justify-start  overflow-hidden">
       {/* ── CINEMATIC MP4 LAYER ── */}
       <div className="absolute inset-0 z-0">
         <video
@@ -37,12 +37,14 @@ export function HeroSection() {
           muted
           loop
           playsInline
-          className="absolute inset-0 h-full w-full object-cover opacity-100 transition-opacity duration-1000"
+          className="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000"
         />
-        {/* Subtle top/bottom vignette for depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1B3A5C]/25 via-transparent to-[#1B3A5C]/50" />
-        {/* Left side gradient for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1B3A5C]/45 via-[#1B3A5C]/15 to-transparent" />
+        {/* Dark base overlay */}
+        <div className="absolute inset-0 bg-[#1B3A5C]/35" />
+        {/* Top/bottom vignette for cinematic depth */}
+        <div className="absolute inset-0" />
+        {/* Left side lighter, right side darker */}
+        <div className="absolute inset-0 " />
         <div className="absolute inset-0 grid-technical-dots opacity-8" />
       </div>
 
