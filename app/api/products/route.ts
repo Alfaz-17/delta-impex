@@ -7,6 +7,34 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import mongoose from "mongoose";
 
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-");
+}
+
+async function ensureUniqueProductSlug(baseSlug: string, excludeId?: string) {
+  const rootSlug = baseSlug || `product-${Date.now()}`;
+  let slug = rootSlug;
+  let suffix = 1;
+
+  while (true) {
+    const existing = await Product.findOne({
+      slug,
+      ...(excludeId ? { _id: { $ne: excludeId } } : {}),
+    }).select("_id");
+
+    if (!existing) {
+      return slug;
+    }
+
+    slug = `${rootSlug}-${suffix++}`;
+  }
+}
+
 export async function GET(req: NextRequest) {
   try {
     await connectToDatabase();
@@ -30,7 +58,7 @@ export async function GET(req: NextRequest) {
     let dbQuery = Product.find(query)
       .populate("division", "name slug") // Only fetch essential division fields
       .populate("category", "name slug") // Only fetch essential category fields
-      .select("name slug imageUrl isFeatured category division") // Project only what's needed for grids
+      .select("name slug imageUrl isFeatured category division description price condition") // Project only what's needed for grids
       .sort({ createdAt: -1 });
 
     if (limit > 0) {
@@ -55,16 +83,45 @@ export async function POST(req: NextRequest) {
 
     await connectToDatabase();
     const data = await req.json();
-    
-    // Simple slugification if not provided
-    if (!data.slug) {
-      data.slug = data.name.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
+
+    if (!data?.name || !data?.division || !data?.category || !data?.imageUrl) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
-    
+
+    if (
+      !mongoose.Types.ObjectId.isValid(data.division) ||
+      !mongoose.Types.ObjectId.isValid(data.category)
+    ) {
+      return NextResponse.json({ error: "Invalid division or category ID" }, { status: 400 });
+    }
+
+    const [division, category] = await Promise.all([
+      Division.findById(data.division).select("_id"),
+      Category.findById(data.category).select("_id division"),
+    ]);
+
+    if (!division) {
+      return NextResponse.json({ error: "Division not found" }, { status: 404 });
+    }
+
+    if (!category) {
+      return NextResponse.json({ error: "Category not found" }, { status: 404 });
+    }
+
+    if (String(category.division) !== String(data.division)) {
+      return NextResponse.json({ error: "Category does not belong to the selected division" }, { status: 400 });
+    }
+
+    const baseSlug = slugify(data.slug || data.name);
+    data.slug = await ensureUniqueProductSlug(baseSlug);
+
     const product = await Product.create(data);
     return NextResponse.json(product, { status: 201 });
   } catch (error: any) {
     console.error("POST /api/products Error:", error);
+    if (error?.code === 11000) {
+      return NextResponse.json({ error: "A product with that slug already exists" }, { status: 409 });
+    }
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -82,6 +139,10 @@ export async function DELETE(req: NextRequest) {
 
     if (!ids || !Array.isArray(ids)) {
       return NextResponse.json({ error: "Invalid product IDs" }, { status: 400 });
+    }
+
+    if (ids.some((id) => !mongoose.Types.ObjectId.isValid(id))) {
+      return NextResponse.json({ error: "One or more product IDs are invalid" }, { status: 400 });
     }
 
     await Product.deleteMany({ _id: { $in: ids } });

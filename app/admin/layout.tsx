@@ -1,20 +1,42 @@
 "use client";
 
-import { useState, Suspense } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import AdminSidebar from "@/components/admin/sidebar";
 import { AdminMobileHeader } from "@/components/admin/mobile-header";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
+import { Loader2 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const { status } = useSession();
   
   // Do not show sidebar/header on login page
   const isLoginPage = pathname === "/admin/login";
 
+  useEffect(() => {
+    if (!isLoginPage && status === "unauthenticated") {
+      router.push("/admin/login");
+    }
+  }, [isLoginPage, router, status]);
+
   if (isLoginPage) {
     return <>{children}</>;
+  }
+
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-muted/30">
+        <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
+      </div>
+    );
+  }
+
+  if (status !== "authenticated") {
+    return null;
   }
 
   return (

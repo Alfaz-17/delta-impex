@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Upload, Loader2, Star, X, ArrowLeft } from "lucide-react";
+import { Upload, Loader2, X, ArrowLeft } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 export function ProductFormContent() {
@@ -41,14 +41,24 @@ export function ProductFormContent() {
 
   useEffect(() => {
     fetchDivisions();
-    if (activeDivisionId) fetchCategories(activeDivisionId);
     if (editingId) fetchProduct(editingId);
   }, [activeDivisionId, editingId]);
+
+  useEffect(() => {
+    if (formData.division) {
+      fetchCategories(formData.division);
+    } else {
+      setCategories([]);
+    }
+  }, [formData.division]);
 
   const fetchDivisions = async () => {
     try {
       const res = await fetch("/api/divisions");
       const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to load divisions");
+      }
       setDivisions(data);
     } catch (error) {
       toast.error("Failed to load divisions");
@@ -59,7 +69,10 @@ export function ProductFormContent() {
     try {
       const res = await fetch(`/api/categories?divisionId=${divId}`);
       const data = await res.json();
-      setCategories(data);
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to load categories");
+      }
+      setCategories(Array.isArray(data) ? data : []);
     } catch (error) {
       toast.error("Failed to load categories");
     }
@@ -69,21 +82,23 @@ export function ProductFormContent() {
     try {
       const res = await fetch(`/api/products/${id}`);
       const data = await res.json();
-      if (res.ok) {
-        setFormData({
-            name: data.name || "",
-            division: data.division?._id || data.division || "",
-            category: data.category?._id || data.category || "",
-            description: data.description || "",
-            price: data.price || "",
-            condition: data.condition || "",
-            isFeatured: data.isFeatured || false,
-            imageUrl: data.imageUrl || "",
-            images: data.images || [],
-        });
+      if (!res.ok) {
+        throw new Error(data?.error || "Error loading product");
       }
+
+      setFormData({
+        name: data.name || "",
+        division: data.division?._id || data.division || "",
+        category: data.category?._id || data.category || "",
+        description: data.description || "",
+        price: data.price || "",
+        condition: data.condition || "",
+        isFeatured: data.isFeatured || false,
+        imageUrl: data.imageUrl || "",
+        images: data.images || [],
+      });
     } catch (error) {
-        toast.error("Error loading product");
+      toast.error(error instanceof Error ? error.message : "Error loading product");
     }
   };
 
@@ -102,10 +117,14 @@ export function ProductFormContent() {
       });
 
       const data = await res.json();
-      if (res.ok) {
-        setFormData(prev => ({ ...prev, imageUrl: data.url }));
-        toast.success("Image uploaded successfully");
+      if (!res.ok) {
+        throw new Error(data?.error || "Image upload failed");
       }
+
+      setFormData(prev => ({ ...prev, imageUrl: data.url }));
+      toast.success("Image uploaded successfully");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Image upload failed");
     } finally {
       setUploading(false);
     }
@@ -129,15 +148,19 @@ export function ProductFormContent() {
         });
 
         const data = await res.json();
-        if (res.ok) {
-          uploadedUrls.push(data.url);
+        if (!res.ok) {
+          throw new Error(data?.error || "Gallery upload failed");
         }
+
+        uploadedUrls.push(data.url);
       }
 
       setFormData(prev => ({ 
         ...prev, 
         images: [...(prev.images || []), ...uploadedUrls] 
       }));
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Gallery upload failed");
     } finally {
       setUploading(false);
     }
@@ -168,10 +191,16 @@ export function ProductFormContent() {
         body: JSON.stringify(formData),
       });
 
-      if (res.ok) {
-        toast.success(editingId ? "Updated" : "Created");
-        router.push(`/admin/products${activeDivisionId ? "?divisionId=" + activeDivisionId : ""}`);
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to save product");
       }
+
+      toast.success(editingId ? "Updated" : "Created");
+      const nextDivisionId = formData.division || activeDivisionId;
+      router.push(`/admin/products${nextDivisionId ? "?divisionId=" + nextDivisionId : ""}`);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to save product");
     } finally {
       setIsLoading(false);
     }
@@ -217,7 +246,6 @@ export function ProductFormContent() {
                             value={formData.division} 
                             onChange={(e) => {
                                 setFormData({ ...formData, division: e.target.value, category: "" });
-                                fetchCategories(e.target.value);
                             }}
                             className="w-full px-4 py-3 bg-muted/20 border border-border focus:border-accent outline-none text-xs font-bold uppercase tracking-widest text-primary"
                         >

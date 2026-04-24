@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { Edit, X, CheckSquare } from "lucide-react";
 import { DivisionSwitcher } from "@/components/admin/division-switcher";
 import { useSearchParams } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export function CategoriesContent() {
   const searchParams = useSearchParams();
@@ -32,10 +32,26 @@ export function CategoriesContent() {
   }, [activeDivisionId]);
 
   const fetchCategories = async () => {
-    if (!activeDivisionId) return;
-    const res = await fetch(`/api/categories?divisionId=${activeDivisionId}`);
-    const data = await res.json();
-    setCategories(data);
+    if (!activeDivisionId) {
+      setCategories([]);
+      setSelectedIds([]);
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/categories?divisionId=${activeDivisionId}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to load categories");
+      }
+
+      setCategories(Array.isArray(data) ? data : []);
+      setSelectedIds([]);
+    } catch (error: any) {
+      setCategories([]);
+      toast.error(error?.message || "Failed to load categories");
+    }
   };
 
   const cancelEdit = () => {
@@ -76,13 +92,16 @@ export function CategoriesContent() {
         body: JSON.stringify({ ids: selectedIds }),
       });
 
-      if (res.ok) {
-        toast.success("Categories deleted");
-        setSelectedIds([]);
-        fetchCategories();
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to delete categories");
       }
+
+      toast.success("Categories deleted");
+      setSelectedIds([]);
+      fetchCategories();
     } catch (error) {
-      toast.error("Error deleting");
+      toast.error(error instanceof Error ? error.message : "Error deleting");
     } finally {
       setIsLoading(false);
     }
@@ -102,16 +121,22 @@ export function CategoriesContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
+      const data = await res.json();
       
-      if (res.ok) {
-        toast.success(editingId ? "Updated" : "Added");
-        if (!editingId) {
-          setFormData({ name: "", division: activeDivisionId || "" });
-        } else {
-          cancelEdit();
-        }
-        fetchCategories();
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to save category");
       }
+
+      toast.success(editingId ? "Updated" : "Added");
+      if (!editingId) {
+        setFormData({ name: "", division: activeDivisionId || "" });
+      } else {
+        cancelEdit();
+      }
+      fetchCategories();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to save category");
     } finally {
       setIsLoading(false);
     }

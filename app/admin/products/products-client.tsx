@@ -22,10 +22,26 @@ export function ProductsContent() {
   }, [activeDivisionId]);
 
   const fetchProducts = async () => {
-    if (!activeDivisionId) return;
-    const res = await fetch(`/api/products?divisionId=${activeDivisionId}`);
-    const data = await res.json();
-    setProducts(data);
+    if (!activeDivisionId) {
+      setProducts([]);
+      setSelectedIds([]);
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/products?divisionId=${activeDivisionId}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to load products");
+      }
+
+      setProducts(Array.isArray(data) ? data : []);
+      setSelectedIds([]);
+    } catch (error: any) {
+      setProducts([]);
+      toast.error(error?.message || "Failed to load products");
+    }
   };
 
   const handleToggleFeatured = async (product: any) => {
@@ -36,12 +52,15 @@ export function ProductsContent() {
         body: JSON.stringify({ isFeatured: !product.isFeatured }),
       });
 
-      if (res.ok) {
-        toast.success(`Product ${!product.isFeatured ? 'marked as featured' : 'removed from featured'}`);
-        fetchProducts();
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to update product");
       }
+
+      toast.success(`Product ${!product.isFeatured ? 'marked as featured' : 'removed from featured'}`);
+      fetchProducts();
     } catch (error) {
-      toast.error("Error updating status");
+      toast.error(error instanceof Error ? error.message : "Error updating status");
     }
   };
 
@@ -70,13 +89,16 @@ export function ProductsContent() {
         body: JSON.stringify({ ids: selectedIds }),
       });
 
-      if (res.ok) {
-        toast.success("Products deleted successfully");
-        setSelectedIds([]);
-        fetchProducts();
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to delete products");
       }
+
+      toast.success("Products deleted successfully");
+      setSelectedIds([]);
+      fetchProducts();
     } catch (error) {
-      toast.error("Error deleting products");
+      toast.error(error instanceof Error ? error.message : "Error deleting products");
     } finally {
       setIsLoading(false);
     }
