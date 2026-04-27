@@ -165,13 +165,21 @@ export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-[100]">
       <nav 
-        className={`max-w-full mx-auto px-6 lg:px-12 transition-all duration-500 border-b ${
+        className={`max-w-full mx-auto px-6 lg:px-12 transition-all duration-500 border-b relative overflow-hidden ${
           isScrolled || !isHome
-            ? "bg-[#020617]/95 backdrop-blur-xl border-white/10 py-4 shadow-md" 
+            ? "bg-dark-base/98 backdrop-blur-2xl py-4 shadow-md border-white/10" 
             : "bg-transparent border-transparent py-8"
         }`}
       >
-        <div className="flex items-center justify-between h-[50px] relative">
+        {/* Subtle Horizontal Glow for Sticky Header */}
+        <div 
+          className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-blue/30 to-transparent transition-opacity duration-500 ${isScrolled || !isHome ? "opacity-100" : "opacity-0"}`}
+        />
+        <div 
+          className={`absolute inset-0 bg-gradient-to-b from-accent-blue/5 to-transparent pointer-events-none transition-opacity duration-500 ${isScrolled || !isHome ? "opacity-100" : "opacity-0"}`}
+        />
+        
+        <div className="flex items-center justify-between h-[50px] relative z-10">
           
           {/* Logo - Left */}
           <div className="flex items-center">
@@ -184,7 +192,7 @@ export function Header() {
                   src="/logo.png"
                   alt="Delta Impex Logo"
                   fill
-                  className="object-contain object-left "
+                  className={`object-contain object-left transition-all duration-500 ${!(isScrolled || !isHome) ? "brightness-0 invert" : ""}`}
                   priority
                 />
               </div>
@@ -230,8 +238,11 @@ export function Header() {
                             data-lenis-prevent
                             onWheel={(e) => e.stopPropagation()}
                           >
-                            <div className={`bg-[#020617]/95 backdrop-blur-3xl border border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden ${isMarine ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
-                              {link.divisions.map((div: any) => (
+                            <div className={`bg-dark-base relative overflow-hidden border border-white/10 rounded-2xl p-8 shadow-2xl ${isMarine ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
+                              {/* Dropdown Dot Pattern */}
+                              <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.4) 1px, transparent 0)', backgroundSize: '1.5rem 1.5rem' }} />
+                              <div className="relative z-10 flex flex-col gap-8 w-full">
+                                {link.divisions.map((div: any) => (
                                 <div key={div._id} className="space-y-6">
                                   <h3 className="label-tech text-white !text-[11px] mb-4 border-b border-white/10 pb-2">{div.name}</h3>
                                   <div className="flex flex-col gap-3">
@@ -248,6 +259,7 @@ export function Header() {
                                   </div>
                                 </div>
                               ))}
+                              </div>
                             </div>
                           </div>
                         </motion.div>

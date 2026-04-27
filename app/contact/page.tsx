@@ -15,7 +15,7 @@ const contactMethods = [
     title: "Visit Us",
     primary: SITE_INFO.addressLine1,
     secondary: SITE_INFO.addressLine2,
-    color: "bg-[#1E5FA6]/10 text-[#1E5FA6]",
+    color: "bg-accent-glow/10 text-accent-glow",
   },
   {
     icon: Phone,
@@ -148,27 +148,30 @@ export default function ContactPage() {
           <FadeInOnScroll>
             
             <h1 className="heading-display text-white !leading-[0.95] uppercase drop-shadow-2xl">
-              Get in <span className="text-[#5B9BD5] italic">Touch.</span>
+              Get in <span className="text-accent-blue italic">Touch.</span>
             </h1>
           </FadeInOnScroll>
         </div>
       </section>
 
-      <section className="bg-background border-b border-border/50">
+      <section className="bg-dark-card border-b border-white/[0.06]">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {contactMethods.map((method, index) => (
             <FadeInOnScroll key={index} delay={index * 0.1}>
-              <div className="h-full p-10 md:p-12 border-b sm:border-b-0 sm:border-r border-border/60 group hover:bg-muted/30 transition-all duration-500">
-                <div className={`mb-8 h-14 w-14 flex items-center justify-center rounded-2xl ${method.color} group-hover:scale-110 transition-transform duration-500`}>
-                  <method.icon size={24} strokeWidth={1.5} />
+              <div className="relative h-full overflow-hidden p-10 md:p-12 border-b sm:border-b-0 sm:border-r border-white/[0.06] group hover:bg-white/[0.03] transition-all duration-500">
+                <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.5) 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
+                <div className="relative z-10">
+                  <div className="mb-8 h-14 w-14 flex items-center justify-center rounded-2xl bg-accent-blue/10 text-accent-blue group-hover:scale-110 transition-transform duration-500">
+                    <method.icon size={24} strokeWidth={1.5} />
+                  </div>
+                  <h3 className="font-tech text-xs uppercase tracking-[0.2em] text-accent-blue font-bold mb-4">{method.title}</h3>
+                  <p className="font-display text-xl font-bold text-white mb-2 group-hover:text-accent-blue transition-colors duration-500">
+                    {method.primary}
+                  </p>
+                  <p className="text-sm leading-relaxed text-slate-400">
+                    {method.secondary}
+                  </p>
                 </div>
-                <h3 className="font-tech text-xs uppercase tracking-[0.2em] text-primary font-bold mb-4">{method.title}</h3>
-                <p className="font-display text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-500">
-                  {method.primary}
-                </p>
-                <p className="body-text text-sm !leading-relaxed text-muted-foreground">
-                  {method.secondary}
-                </p>
               </div>
             </FadeInOnScroll>
           ))}
@@ -196,7 +199,7 @@ export default function ContactPage() {
                     { icon: Send, title: "Global Logistics", desc: "Express delivery to 100+ major world ports." },
                   ].map((item, i) => (
                     <div key={i} className="flex gap-4 group">
-                      <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-xl bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                      <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-xl bg-accent-blue/10 text-accent-blue group-hover:bg-accent-blue/20 transition-colors">
                         <item.icon size={18} />
                       </div>
                       <div>
@@ -207,12 +210,16 @@ export default function ContactPage() {
                   ))}
                 </div>
 
-                <div className="p-8 bg-muted/40 rounded-[2.5rem] border border-border/50">
-                  <p className="label-tech !mb-4">Urgent Inquiries</p>
-                  <p className="font-display text-lg font-bold text-foreground mb-2">Available 24/7 for marine emergencies.</p>
-                  <a href="tel:+919925999945" className="text-primary font-tech text-xs font-bold tracking-[0.2em] flex items-center gap-2 hover:underline">
-                    Call Technical Support <ChevronRight size={14} />
-                  </a>
+                <div className="relative overflow-hidden p-8 rounded-[2.5rem] border border-white/[0.06] bg-dark-card shadow-lg">
+                  <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.5) 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
+                  <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-accent-glow/20 blur-[50px]" />
+                  <div className="relative z-10">
+                    <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-accent-blue !mb-4">Urgent Inquiries</p>
+                    <p className="font-display text-lg font-bold text-white mb-2">Available 24/7 for marine emergencies.</p>
+                    <a href="tel:+919925999945" className="text-accent-blue font-tech text-xs font-bold tracking-[0.2em] flex items-center gap-2 hover:underline">
+                      Call Technical Support <ChevronRight size={14} />
+                    </a>
+                  </div>
                 </div>
               </div>
             </FadeInOnScroll>
@@ -340,18 +347,19 @@ export default function ContactPage() {
       </section>
 
       <section className="section-container pb-12 md:pb-16 lg:pb-20">
-        <div className="overflow-hidden rounded-3xl border border-border/70 bg-muted/20">
-          <div className="flex flex-col gap-4 border-b border-border/60 p-6 md:flex-row md:items-center md:justify-between">
+        <div className="relative overflow-hidden rounded-3xl border border-white/[0.06] bg-dark-card shadow-lg">
+          <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.5) 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
+          <div className="relative z-10 flex flex-col gap-4 border-b border-white/[0.06] p-6 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="label-tech mb-2">Local Presence</p>
-              <h2 className="heading-sub !mb-0 text-foreground">Delta Impex Bhavnagar Office</h2>
-              <p className="mt-2 text-sm text-muted-foreground">{SITE_INFO.fullAddress}</p>
+              <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-accent-blue mb-2">Local Presence</p>
+              <h2 className="heading-sub !mb-0 text-white">Delta Impex Bhavnagar Office</h2>
+              <p className="mt-2 text-sm text-slate-400">{SITE_INFO.fullAddress}</p>
             </div>
             <a
               href={SITE_INFO.mapsUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-accent-blue hover:underline"
             >
               Open in Google Maps <ChevronRight size={14} />
             </a>
@@ -359,7 +367,7 @@ export default function ContactPage() {
           <iframe
             title="Delta Impex Bhavnagar Map"
             src={`https://www.google.com/maps?q=${encodeURIComponent(SITE_INFO.fullAddress)}&output=embed`}
-            className="h-[320px] w-full border-0"
+            className="relative z-10 h-[320px] w-full border-0"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />

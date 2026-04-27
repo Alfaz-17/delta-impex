@@ -99,7 +99,7 @@ export function AboutPreviewSection() {
                 </p>
                 <h2 className="heading-display mb-8">
                   Marine Expertise. <br /> 
-                  <span className="text-muted-foreground">Industrial Reliability.</span>
+                  <span className="text-accent-blue italic">Industrial Reliability.</span>
                 </h2>
                 <div className="space-y-6">
                   <p className="body-text !leading-relaxed">
@@ -166,7 +166,7 @@ export function AboutPreviewSection() {
                   What We Do
                 </p>
                 <h2 className="heading-section text-foreground">
-                  Core Capabilities.
+                  Core <span className="text-accent-blue italic">Capabilities.</span>
                 </h2>
               </div>
             </div>
@@ -176,27 +176,29 @@ export function AboutPreviewSection() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-6">
             {capabilities.map((cap, i) => (
               <FadeInOnScroll key={i} delay={i * 0.1}>
-                <div className="group relative overflow-hidden rounded-2xl md:rounded-[2rem] border border-border bg-background hover:bg-muted/40 transition-all duration-500 h-full">
+                <div className="group relative overflow-hidden rounded-2xl md:rounded-[2rem] border border-white/[0.06] bg-dark-card hover:bg-dark-card-hover transition-all duration-500 h-full shadow-lg">
+                  {/* Dot pattern */}
+                  <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.5) 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
                   {/* Number badge */}
                   <div className="absolute top-4 right-4 md:top-6 md:right-6">
-                    <span className="label-tech !mb-0 !text-muted-foreground/20 !text-[12px]">
+                    <span className="font-tech text-[12px] font-bold tracking-widest text-white/10">
                       0{i + 1}
                     </span>
                   </div>
                   
                   {/* Mobile: Horizontal | Desktop: Vertical */}
-                  <div className="flex items-start gap-4 p-5 md:flex-col md:p-8">
+                  <div className="relative z-10 flex items-start gap-4 p-5 md:flex-col md:p-8">
                     {/* Icon */}
-                    <div className="shrink-0 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl md:rounded-2xl bg-primary/10 text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:shadow-lg group-hover:shadow-primary/20">
+                    <div className="shrink-0 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-xl md:rounded-2xl bg-accent-blue/10 text-accent-blue transition-all duration-500 group-hover:bg-accent-blue group-hover:text-white group-hover:shadow-lg group-hover:shadow-accent-blue/20">
                       <cap.icon size={22} strokeWidth={1.5} />
                     </div>
                     
                     {/* Text */}
                     <div className="flex-1 min-w-0 md:mt-4">
-                      <h3 className="heading-sub mb-1.5 md:mb-3">
+                      <h3 className="font-display font-bold text-xl md:text-2xl text-white mb-1.5 md:mb-3">
                         {cap.title}
                       </h3>
-                      <p className="body-text !leading-relaxed line-clamp-3 md:line-clamp-none">
+                      <p className="text-sm md:text-base leading-relaxed text-slate-400 line-clamp-3 md:line-clamp-none">
                         {cap.description}
                       </p>
                     </div>

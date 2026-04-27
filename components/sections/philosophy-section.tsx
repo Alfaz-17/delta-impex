@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
-import { useScroll, useTransform, motion, useSpring } from "framer-motion";
 
 export function PhilosophySection() {
   return (
@@ -17,7 +15,7 @@ export function PhilosophySection() {
           </p>
           <h2 className="heading-display mb-8">
             Specialized Solutions <br className="hidden md:block" />
-            <span className="text-muted-foreground non-italic">for Sea & Land.</span>
+            <span className="text-accent-blue italic">for Sea & Land.</span>
           </h2>
           <div className="max-w-2xl">
             <p className="body-text leading-relaxed">

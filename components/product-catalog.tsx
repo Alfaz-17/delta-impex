@@ -75,7 +75,7 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
           <div className="max-w-2xl">
             <h2 className="heading-display mb-4">
-              Inventory Catalog.
+              Inventory <span className="text-accent-blue italic">Catalog.</span>
             </h2>
             <p className="body-text leading-relaxed">
               Explore our comprehensive range of high-quality {divisionName.toLowerCase()} solutions.
@@ -129,47 +129,58 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-3 gap-y-10 md:gap-x-6 md:gap-y-16">
                 {paginatedProducts.map((product) => (
                   <div key={product._id} className="group relative">
-                    {/* Image Area - Cardless Style */}
-                    <div className="relative aspect-[4/5] mb-6 overflow-hidden bg-muted/10 rounded-xl group-hover:bg-muted/20 transition-colors">
-                      <Link href={`/products/${product.slug}`} className="absolute inset-0 z-0">
+                    {/* Premium Catalog Card - Tech Frame */}
+                    <div className="relative aspect-[4/5] mb-6 overflow-hidden rounded-2xl bg-white/[0.01] border border-white/[0.06] transition-all duration-500 group-hover:border-accent-blue/30 group-hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]">
+                      
+                      {/* Interaction Link Background */}
+                      <Link href={`/products/${product.slug}`} className="absolute inset-0 z-10" />
+
+                      {/* Coordinate Dot Pattern */}
+                      <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.4) 1px, transparent 0)', backgroundSize: '1.25rem 1.25rem' }} />
+                      
+                      {/* Technical Decorative Corner Highlights */}
+                      <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-bl from-accent-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      
+                      {/* Image Content */}
+                      <div className="relative h-full w-full p-6 transition-all duration-700 group-hover:scale-105 group-hover:-translate-y-1">
                         {product.imageUrl ? (
                           <Image 
                             src={product.imageUrl} 
                             alt={product.name} 
                             fill 
-                            className="object-cover group-hover:scale-105 transition-transform duration-700"
+                            className="object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)]"
+                            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
                           />
                         ) : (
-                           <div className="absolute inset-0 flex items-center justify-center bg-muted/10">
-                              <FileText className="w-8 h-8 text-muted-foreground/30" />
+                           <div className="absolute inset-0 flex items-center justify-center">
+                              <FileText className="w-10 h-10 text-white/10" />
                            </div>
                         )}
-                      </Link>
-                      
-                      {/* Interaction Overlay: Visible on hover for desktop */}
-                      <div className="absolute inset-0 bg-background/60 opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 backdrop-blur-[2px]">
-                        <Link 
-                          href={`/products/${product.slug}`}
-                          className="px-6 py-3 bg-white text-black btn-text rounded-full hover:bg-white/80 transition-colors flex items-center gap-2 shadow-xl translate-y-4 lg:group-hover:translate-y-0 duration-300 delay-75 z-10"
-                        >
-                          <ArrowRight className="w-3.5 h-3.5" />
-                          View Details
-                        </Link>
+                      </div>
+
+                      {/* Technical Overlay Indicators */}
+                      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-2 group-hover:translate-x-0">
+                        <div className="h-1 w-1 bg-accent-blue rounded-full shadow-[0_0_8px_rgba(91,155,213,0.8)]" />
                       </div>
                     </div>
 
-                    {/* Typography Area */}
-                    <div>
-                      <div className="flex justify-between items-start mb-2 gap-4">
-                        <span className="label-tech !mb-0 max-w-full truncate">
+                    {/* Typography Area - Glass Labels */}
+                    <div className="px-1 relative">
+                      <div className="flex items-center gap-2 mb-2.5">
+                        <span className="shrink-0 text-[8px] font-tech text-accent-blue opacity-50 px-1.5 py-0.5 border border-accent-blue/30 rounded uppercase">ID:{product.code?.slice(-4) || '9241'}</span>
+                        <span className="label-tech !mb-0 !text-[9px] !text-slate-400 capitalize truncate">
                           {product.category?.name || "Uncategorized"}
                         </span>
                       </div>
                       <Link href={`/products/${product.slug}`}>
-                        <h3 className="heading-sub !text-base line-clamp-2 transition-colors group-hover:text-primary">
+                        <h3 className="heading-sub !text-[15px] md:!text-[17px] font-bold leading-snug transition-colors group-hover:text-accent-blue line-clamp-2 min-h-[3rem]">
                           {product.name}
                         </h3>
                       </Link>
+                      
+                      {/* Hidden Explore Trigger */}
+                      <div className="h-[2px] w-0 bg-accent-blue transition-all duration-500 group-hover:w-full mt-4" />
                     </div>
                   </div>
                 ))}

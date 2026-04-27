@@ -19,7 +19,7 @@ export default function ServicesIndexPage() {
       <Header />
       <section className="section-container pt-28 pb-12 md:pt-32 md:pb-16">
         <p className="label-tech mb-3">Service Keywords</p>
-        <h1 className="heading-display mb-6 text-foreground">Delta Impex Service Coverage</h1>
+        <h1 className="heading-display mb-6 text-foreground">Delta Impex <span className="text-accent-blue italic">Service Coverage.</span></h1>
         <p className="body-text max-w-3xl !text-foreground/80">
           These SEO landing pages describe key service terms clients use when searching for marine, industrial, and water treatment sourcing support.
         </p>

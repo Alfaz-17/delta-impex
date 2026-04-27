@@ -101,7 +101,7 @@ export function FeaturedProductsSection({
                 {subtitle}
               </p>
               <h2 className="heading-display">
-                {title}
+                {title.split(' ').slice(0, -1).join(' ')} <span className="text-accent-blue italic">{title.split(' ').slice(-1)}</span>
               </h2>
             </div>
             
@@ -182,48 +182,67 @@ export function FeaturedProductsSection({
               return (
                 <motion.div
                   key={product._id}
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: (index % 4) * 0.1 }}
-                  className={`flex-none w-[280px] md:w-[360px] snap-start transition-all duration-1000 ${
-                    isOffset ? "mt-4 md:mt-6 lg:mt-8" : ""
+                  className={`flex-none w-[280px] md:w-[320px] snap-start transition-all duration-1000 ${
+                    isOffset ? "mt-4 md:mt-10 lg:mt-16" : ""
                   }`}
                 >
                   <Link 
                     href={`/products/${product.slug}`}
-                    className="group block"
+                    className="group relative block"
                   >
-                    {/* Image Area */}
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-muted/10 border border-border/10 p-6 flex items-center justify-center transition-all duration-700 group-hover:shadow-2xl group-hover:border-white/20">
-                      <Image
-                        src={product.imageUrl || "/placeholder.svg"}
-                        alt={product.name}
-                        fill
-                        className="object-contain p-8 group-hover:scale-105 transition-transform duration-1000"
-                        sizes="(max-width: 768px) 280px, 380px"
-                      />
+                    {/* Premium Card Container */}
+                    <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-white/[0.02] backdrop-blur-xl border border-white/[0.08] p-8 flex items-center justify-center transition-all duration-700 group-hover:border-accent-blue/30 group-hover:shadow-[0_0_50px_-12px_rgba(91,155,213,0.3)]">
                       
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                      {/* Technical Background Layer */}
+                      <div className="absolute inset-0 opacity-[0.05] group-hover:opacity-[0.08] transition-opacity duration-700" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.4) 1px, transparent 0)', backgroundSize: '1.5rem 1.5rem' }} />
                       
-                      {/* Floating Indicator */}
-                      <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
-                        <ArrowRight size={16} className="text-white" />
+                      {/* Ambient Glows */}
+                      <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-accent-blue/10 blur-[60px] group-hover:bg-accent-blue/20 transition-all duration-700" />
+                      <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-cyan-500/5 blur-[60px]" />
+                      
+                      {/* Scanline Effect on Hover */}
+                      <div className="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-accent-blue/20 to-transparent top-0 -translate-y-full group-hover:animate-scanline pointer-events-none" />
+
+                      {/* Product Image */}
+                      <div className="relative w-full h-full transform transition-all duration-1000 group-hover:scale-110 group-hover:-translate-y-2">
+                        <Image
+                          src={product.imageUrl || "/placeholder.svg"}
+                          alt={product.name}
+                          fill
+                          className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
+                          sizes="(max-width: 768px) 280px, 320px"
+                        />
                       </div>
+                      
+                      {/* Glass Bottom Overlay */}
+                      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                      
+                      {/* Corner Accents */}
+                      <div className="absolute top-6 left-6 h-px w-0 bg-accent-blue/40 transition-all duration-700 group-hover:w-8" />
+                      <div className="absolute top-6 left-6 w-px h-0 bg-accent-blue/40 transition-all duration-700 group-hover:h-8" />
                     </div>
 
                     {/* Typography Area */}
-                    <div className="pt-8 pl-1">
-                      <p className="label-tech !text-[9px] !text-accent mb-2 uppercase tracking-widest">
-                        {product.category?.name || 'Precision Component'}
-                      </p>
-                      <h3 className="heading-sub text-xl md:text-2xl transition-colors group-hover:text-primary">
+                    <div className="mt-8 px-2">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="h-px w-4 bg-accent-blue/30" />
+                        <p className="font-tech text-[9px] font-bold uppercase tracking-[0.2em] text-accent-blue group-hover:text-cyan-400 transition-colors">
+                          {product.category?.name || 'Precision Component'}
+                        </p>
+                      </div>
+                      
+                      <h3 className="heading-sub text-xl md:text-2xl text-white group-hover:text-accent-blue transition-colors duration-500 line-clamp-2">
                         {product.name}
                       </h3>
                       
-                      <div className="mt-6 flex items-center gap-4 opacity-40 group-hover:opacity-100 transition-opacity">
-                         <div className="h-px w-8 bg-foreground" />
-                         <span className="text-[10px] font-tech font-bold uppercase tracking-widest leading-none">Details</span>
+                      {/* Interaction Footer */}
+                      <div className="mt-6 flex items-center justify-between opacity-40 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0 text-white/60 group-hover:text-accent-blue">
+                         <span className="text-[10px] font-tech font-bold uppercase tracking-[0.3em]">View Technical Specs</span>
+                         <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
                   </Link>

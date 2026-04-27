@@ -47,7 +47,7 @@ export default function ROSystemsPage() {
               Division 02
             </p>
             <h1 className="heading-display text-white !leading-[0.95] uppercase drop-shadow-2xl">
-              Water Treatment <br /> & RO Systems.
+              Water Treatment <br /> & <span className="text-accent-blue italic">RO Systems.</span>
             </h1>
           </FadeInOnScroll>
         </div>
@@ -57,19 +57,22 @@ export default function ROSystemsPage() {
       <ProductCatalog divisionSlug="ro-solutions" divisionName="RO Water Treatment" />
 
       {/* Introduction Section */}
-      <section className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 bg-background text-center border-t border-border/50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="heading-section mb-8">
-            RO Water Treatment Plants
-          </h2>
-          <p className="body-text !leading-relaxed mb-6">
-            We supply RO systems for both marine and industrial use, including:
-          </p>
-          <ul className="list-none space-y-4 font-sans text-lg text-foreground mb-6 inline-block text-left">
-            <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-primary" /> Reverse osmosis plants</li>
-            <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-primary" /> Water treatment equipment</li>
-            <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-primary" /> Spare parts & maintenance support</li>
-          </ul>
+      <section className="relative overflow-hidden bg-dark-base border-t border-white/[0.06]">
+        <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.5) 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
+        <div className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40 text-center relative z-10">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="heading-section mb-8 text-white">
+              RO Water <span className="text-accent-blue italic">Treatment Plants.</span>
+            </h2>
+            <p className="text-base md:text-lg leading-relaxed text-slate-300/90 mb-6">
+              We supply RO systems for both marine and industrial use, including:
+            </p>
+            <ul className="list-none space-y-4 font-sans text-lg text-slate-200 mb-6 inline-block text-left">
+              <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent-blue" /> Reverse osmosis plants</li>
+              <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent-blue" /> Water treatment equipment</li>
+              <li className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-accent-blue" /> Spare parts & maintenance support</li>
+            </ul>
+          </div>
         </div>
       </section>
 

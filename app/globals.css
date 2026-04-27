@@ -46,6 +46,13 @@ html.lenis, html.lenis body {
   --ring: #1B3A5C;
   --radius: 0.75rem;
 
+  /* ── Dark Card Palette ── */
+  --dark-base: #081020;       /* More vibrant Midnight Navy for premium feel */
+  --dark-card: #0B1A2E;       /* One step lighter for card separation */
+  --dark-card-hover: #0F2137; /* Card hover state */
+  --accent-blue: #5B9BD5;     /* Bright blue for labels, icons, bullets */
+  --accent-glow: #1E5FA6;     /* Blue glow orbs (same as --accent) */
+
   /* ── Fluid Typography Scale ── */
   --text-display: clamp(2.5rem, 6vw, 5rem);
   --text-section: clamp(1.75rem, 4vw, 3rem);
@@ -59,25 +66,25 @@ html.lenis, html.lenis body {
 }
 
 .dark {
-  --background: #020617;
-  --foreground: #F8FAFC;
-  --card: #0F172A;
+  --background: #081020;
+  --foreground: #F1F5F9;      /* Light gray for readability */
+  --card: #0B1A2E;            /* Matches --dark-card */
   --card-foreground: #F8FAFC;
-  --popover: #0F172A;
+  --popover: #0B1A2E;
   --popover-foreground: #F8FAFC;
-  --primary: #F8FAFC;
-  --primary-foreground: #1B3A5C;
+  --primary: #5B9BD5;         /* Brand Blue stays Blue in dark mode */
+  --primary-foreground: #020617;
   --secondary: #94A3B8;
   --secondary-foreground: #F8FAFC;
   --muted: #1E293B;
   --muted-foreground: #94A3B8;
-  --accent: #5B9BD5;
-  --accent-foreground: #020617;
+  --accent: #1E5FA6;          /* Brand Glow Blue */
+  --accent-foreground: #FFFFFF;
   --destructive: #EF4444;
   --destructive-foreground: #F8FAFC;
-  --border: #1E293B;
+  --border: rgba(255, 255, 255, 0.08); /* Subtle border for dark mode */
   --input: #1E293B;
-  --ring: #F8FAFC;
+  --ring: #5B9BD5;
 }
 
 @theme inline {
@@ -121,6 +128,11 @@ html.lenis, html.lenis body {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-dark-base: var(--dark-base);
+  --color-dark-card: var(--dark-card);
+  --color-dark-card-hover: var(--dark-card-hover);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-glow: var(--accent-glow);
 }
 
 @layer base {
@@ -230,6 +242,15 @@ html.lenis, html.lenis body {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(500%); }
+}
+
+.animate-scanline {
+  animation: scanline 3s linear infinite;
 }
 
 @keyframes scale-in {

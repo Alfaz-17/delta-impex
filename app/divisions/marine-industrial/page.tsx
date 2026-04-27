@@ -58,7 +58,7 @@ export default function MarinePartsPage() {
             </p>
             <h1 className="heading-display text-white !leading-[0.95] uppercase drop-shadow-2xl">
               Marine & Industrial <br />
-              <span className="text-primary italic">Global Souring.</span>
+              <span className="text-accent-blue italic">Global Sourcing.</span>
             </h1>
           </FadeInOnScroll>
         </div>
@@ -83,7 +83,7 @@ export default function MarinePartsPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
                   {categories.map((cat, idx) => (
                     <div key={idx} className="flex items-center gap-4 group">
-                      <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                      <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-accent-blue/10 text-accent-blue group-hover:bg-accent-blue group-hover:text-white transition-all duration-300">
                         <cat.icon size={18} />
                       </div>
                       <span className="font-tech text-[11px] uppercase tracking-widest text-muted-foreground font-bold group-hover:text-foreground transition-colors">
@@ -96,18 +96,20 @@ export default function MarinePartsPage() {
             </FadeInOnScroll>
           </div>
 
-          <div className="lg:col-span-5 space-y-12 bg-muted/30 p-8 md:p-12 rounded-[2.5rem] border border-border/50">
+          <div className="lg:col-span-5 space-y-12 relative overflow-hidden bg-dark-card p-8 md:p-12 rounded-[2.5rem] border border-white/[0.06] shadow-lg">
+            <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.5) 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
+            <div className="absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-accent-glow/15 blur-[70px]" />
             <FadeInOnScroll delay={0.1}>
-              <div className="space-y-4">
-                <p className="font-tech text-[10px] uppercase tracking-widest text-primary font-bold">Industrial & Power</p>
-                <h3 className="heading-sub text-foreground">Heavy Machinery Solutions.</h3>
-                <p className="body-text !leading-relaxed text-muted-foreground text-sm">
+              <div className="relative z-10 space-y-4">
+                <p className="font-tech text-[10px] uppercase tracking-widest text-accent-blue font-bold">Industrial & Power</p>
+                <h3 className="heading-sub text-white">Heavy Machinery Solutions.</h3>
+                <p className="text-sm leading-relaxed text-slate-400">
                   Beyond the sea, we support land-based industries with high-capacity industrial engines (Cummins, Caterpillar, Perkins), generator sets, and specialized power plant equipment.
                 </p>
                 <ul className="space-y-3 pt-4">
                   {["Industrial Generator Sets (Gensets)", "Complete Power Plant Support", "Technical Machinery Solutions"].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3 text-xs font-medium text-foreground/70">
-                      <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    <li key={i} className="flex items-center gap-3 text-xs font-medium text-slate-300/80">
+                      <div className="h-1.5 w-1.5 rounded-full bg-accent-blue" />
                       {item}
                     </li>
                   ))}
@@ -144,7 +146,7 @@ export default function MarinePartsPage() {
                 </p>
                 <div className="flex flex-wrap gap-4 pt-4">
                     {["GENUINE", "OEM", "RECONDITIONED"].map((tag, i) => (
-                        <span key={i} className="px-5 py-2.5 rounded-full border border-border text-[10px] font-tech font-bold uppercase tracking-widest text-muted-foreground">
+                        <span key={i} className="px-5 py-2.5 rounded-full border border-accent-blue/20 bg-accent-blue/10 text-[10px] font-tech font-bold uppercase tracking-widest text-accent-blue">
                             {tag}
                         </span>
                     ))}
