@@ -40,7 +40,7 @@ export function HeroSection() {
           className="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000"
         />
         {/* Dark base overlay */}
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-black/10" />
         {/* Top/bottom vignette for cinematic depth */}
         <div className="absolute inset-0" />
         {/* Left side lighter, right side darker */}
