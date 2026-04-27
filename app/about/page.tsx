@@ -173,10 +173,10 @@ export default function AboutPage() {
             src="/images/mountain-sunrise.png"
             alt="Delta Impex operations"
             fill
-            className="object-cover opacity-70 contrast-125 saturate-50"
+            className="object-cover opacity-90 contrast-125 saturate-50"
             priority
           />
-          <div className="absolute inset-0 bg-black/45" />
+          <div className="absolute inset-0 bg-black/40" />
         </motion.div>
 
         <div className="section-container relative z-10 w-full py-16 md:py-20 text-white" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.5)" }}>
