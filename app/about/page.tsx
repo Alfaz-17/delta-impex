@@ -199,7 +199,7 @@ export default function AboutPage() {
             <FadeInOnScroll>
               <div className="inline-flex items-center gap-3 mb-8">
                 <span className="h-px w-12 bg-accent-blue" />
-                <p className="label-tech !text-accent-blue tracking-[0.4em]">Corporate Identity</p>
+                <p className="label-tech !text-accent-blue tracking-[0.4em]">ABOUT US</p>
               </div>
               <h1 className="heading-display !text-white text-5xl md:text-7xl lg:text-8xl !leading-[0.9] uppercase">
                 Marine & industrial <br />
