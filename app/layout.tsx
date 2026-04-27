@@ -168,6 +168,42 @@ export default function RootLayout({
       },
       "sameAs": [SITE_INFO.mapsUrl],
       "areaServed": "Global"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "SiteNavigationElement",
+          "position": 1,
+          "name": "Home",
+          "url": SITE_INFO.domain
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 2,
+          "name": "About Us",
+          "url": `${SITE_INFO.domain}/about`
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 3,
+          "name": "Marine & Industrial",
+          "url": `${SITE_INFO.domain}/products?divisionSlug=marine-industrial`
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 4,
+          "name": "RO Solutions",
+          "url": `${SITE_INFO.domain}/products?divisionSlug=ro-solutions`
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 5,
+          "name": "Contact",
+          "url": `${SITE_INFO.domain}/contact`
+        }
+      ]
     }
   ];
 
