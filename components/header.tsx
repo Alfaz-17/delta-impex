@@ -153,9 +153,7 @@ export function Header() {
         key={link.label}
         href={link.href!}
         className={`text-[10px] font-black uppercase tracking-[0.3em] transition-all group relative ${
-          isActive 
-            ? (isScrolled ? "text-primary" : "text-white") 
-            : isScrolled ? "text-muted-foreground hover:text-foreground" : "text-white hover:text-accent"
+          isActive ? "text-white" : "text-white/70 hover:text-white"
         }`}
       >
         {link.label}
@@ -169,7 +167,7 @@ export function Header() {
       <nav 
         className={`max-w-full mx-auto px-6 lg:px-12 transition-all duration-500 border-b ${
           isScrolled || !isHome
-            ? "bg-white/95 backdrop-blur-xl border-border/50 py-4 shadow-md" 
+            ? "bg-[#020617]/95 backdrop-blur-xl border-white/10 py-4 shadow-md" 
             : "bg-transparent border-transparent py-8"
         }`}
       >
@@ -198,9 +196,7 @@ export function Header() {
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               const linkClasses = `text-[10px] font-black uppercase tracking-[0.3em] transition-all group relative ${
-                 (isScrolled || !isHome)
-                  ? (isActive ? "text-primary" : "text-foreground/60 hover:text-foreground")
-                  : (isActive ? "text-white" : "text-white/60 hover:text-white")
+                 isActive ? "text-white" : "text-white/70 hover:text-white"
               }`;
 
               if (link.dropdownId) {
@@ -217,7 +213,7 @@ export function Header() {
                         {link.label}
                         <ChevronDown size={12} className={`transition-transform duration-300 ${activeDropdown === link.dropdownId ? "rotate-180" : ""}`} />
                       </span>
-                      <span className={`absolute -bottom-2 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full ${isScrolled || !isHome ? "bg-primary" : "bg-white"}`}></span>
+                      <span className="absolute -bottom-2 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full bg-white"></span>
                     </Link>
 
                     <AnimatePresence>
@@ -234,16 +230,16 @@ export function Header() {
                             data-lenis-prevent
                             onWheel={(e) => e.stopPropagation()}
                           >
-                            <div className={`${isScrolled || !isHome ? "bg-white/95" : "bg-[#1B3A5C]/95"} backdrop-blur-3xl border ${isScrolled || !isHome ? "border-border/50" : "border-white/10"} rounded-2xl p-8 shadow-2xl overflow-hidden ${isMarine ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
+                            <div className={`bg-[#020617]/95 backdrop-blur-3xl border border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden ${isMarine ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
                               {link.divisions.map((div: any) => (
                                 <div key={div._id} className="space-y-6">
-                                  <h3 className={`label-tech ${isScrolled || !isHome ? "text-foreground" : "text-white"} !text-[11px] mb-4 border-b ${isScrolled || !isHome ? "border-border/50" : "border-white/10"} pb-2`}>{div.name}</h3>
+                                  <h3 className="label-tech text-white !text-[11px] mb-4 border-b border-white/10 pb-2">{div.name}</h3>
                                   <div className="flex flex-col gap-3">
                                     {div.categories.map((cat: any) => (
                                       <Link
                                         key={cat._id}
                                         href={`/products?categoryId=${cat._id}`}
-                                        className={`group/item flex items-center justify-between text-sm py-1 transition-all hover:translate-x-1 ${isScrolled || !isHome ? "text-muted-foreground hover:text-primary" : "text-white/50 hover:text-white"}`}
+                                        className="group/item flex items-center justify-between text-sm py-1 transition-all hover:translate-x-1 text-white/70 hover:text-white"
                                       >
                                         <span>{cat.name}</span>
                                         <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-40 transition-opacity" />
@@ -264,7 +260,7 @@ export function Header() {
               return (
                 <Link key={link.label} href={link.href!} className={linkClasses}>
                   {link.label}
-                  <span className={`absolute -bottom-2 left-0 h-[2px] transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"} ${isScrolled || !isHome ? "bg-primary" : "bg-white"}`}></span>
+                  <span className={`absolute -bottom-2 left-0 h-[2px] transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"} bg-white`}></span>
                 </Link>
               );
             })}
@@ -274,11 +270,7 @@ export function Header() {
           <div className="flex items-center gap-4">
             <Link
               href="/contact"
-              className={`hidden md:flex px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all rounded-full shadow-xl ${
-                isScrolled || !isHome
-                  ? "bg-[#1B3A5C] text-white hover:bg-[#1B3A5C]/90"
-                  : "bg-white text-[#1B3A5C] hover:bg-white/90"
-              }`}
+              className="hidden md:flex px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all rounded-full shadow-xl bg-white text-[#1B3A5C] hover:bg-white/90"
             >
               Quote
             </Link>
@@ -290,7 +282,7 @@ export function Header() {
               className={`lg:hidden p-2 transition-all rounded-full z-[110] relative ${
                 isMenuOpen 
                   ? "bg-[#1B3A5C] text-white" 
-                  : (isScrolled || !isHome ? "text-foreground hover:bg-black/5" : "text-white hover:bg-white/10")
+                  : "text-white hover:bg-white/10"
               }`}
             >
               {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -300,7 +292,7 @@ export function Header() {
 
         {/* Scroll Progress Line - Updated to Dark */}
         <motion.div 
-          className={`absolute bottom-0 left-0 right-0 h-[2px] origin-left z-[60] ${isScrolled || !isHome ? "bg-[#1B3A5C]" : "bg-white"}`}
+          className="absolute bottom-0 left-0 right-0 h-[2px] origin-left z-[60] bg-white"
           style={{ scaleX: scrollProgress }}
         />
       </nav>

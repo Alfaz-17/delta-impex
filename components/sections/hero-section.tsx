@@ -40,7 +40,7 @@ export function HeroSection() {
           className="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000"
         />
         {/* Dark base overlay */}
-        <div className="absolute inset-0 bg-[#1B3A5C]/35" />
+        <div className="absolute inset-0 bg-black/20" />
         {/* Top/bottom vignette for cinematic depth */}
         <div className="absolute inset-0" />
         {/* Left side lighter, right side darker */}
@@ -66,7 +66,7 @@ export function HeroSection() {
             className="heading-display text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] !text-3xl sm:!text-4xl md:!text-5xl lg:!text-[2.4rem] leading-[1.1] tracking-tight uppercase"
           >
            
-            <span className="text-[#5B9BD5] underline decoration-white/20 underline-offset-4 md:underline-offset-6">Marine & Industrial Suppliers</span>
+            <span className="text-[#f7f7f7] underline decoration-white/20 underline-offset-4 md:underline-offset-6">Marine & Industrial Suppliers</span>
           </motion.h1>
 
           {/* Compact Subtext - Constrained Width */}
