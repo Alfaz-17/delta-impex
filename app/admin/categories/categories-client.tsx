@@ -6,20 +6,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { Edit, X, CheckSquare, Lock } from "lucide-react";
+import { Edit, X, CheckSquare, Lock, Upload, Loader2, Image as ImageIcon } from "lucide-react";
 import { DivisionSwitcher } from "@/components/admin/division-switcher";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export function CategoriesContent() {
   const searchParams = useSearchParams();
   const activeDivisionId = searchParams.get("divisionId");
   
   const [categories, setCategories] = useState<any[]>([]);
-  const [formData, setFormData] = useState({ name: "", division: "" });
+  const [formData, setFormData] = useState({ name: "", division: "", imageUrl: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
 
   useEffect(() => {
     fetchCategories();
@@ -56,7 +61,9 @@ export function CategoriesContent() {
 
   const cancelEdit = () => {
     setEditingId(null);
-    setFormData({ name: "", division: activeDivisionId || "" });
+    setFormData({ name: "", division: activeDivisionId || "", imageUrl: "" });
+    setImageFile(null);
+    setImagePreviewUrl("");
   };
 
   const handleEdit = (category: any) => {
@@ -64,7 +71,10 @@ export function CategoriesContent() {
     setFormData({
       name: category.name,
       division: category.division?._id || category.division,
+      imageUrl: category.imageUrl || ""
     });
+    setImageFile(null);
+    setImagePreviewUrl(category.imageUrl || "");
   };
 
   const toggleSelect = (category: any) => {
@@ -117,19 +127,59 @@ export function CategoriesContent() {
     }
   };
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.onload = () => setImagePreviewUrl(reader.result as string);
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  };
+
+  const uploadImage = async (file: File) => {
+    const uploadData = new FormData();
+    uploadData.append("file", file);
+
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: uploadData,
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data?.error || "Image upload failed");
+    }
+
+    return data.url;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.division) return;
     
     setIsLoading(true);
+    setIsUploading(true);
     try {
+      let finalImageUrl = formData.imageUrl;
+      
+      if (imageFile) {
+        finalImageUrl = await uploadImage(imageFile);
+      }
+
+      const payload = {
+        ...formData,
+        imageUrl: finalImageUrl,
+      };
+
       const url = editingId ? `/api/categories/${editingId}` : "/api/categories";
       const method = editingId ? "PATCH" : "POST";
 
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -140,7 +190,9 @@ export function CategoriesContent() {
 
       toast.success(editingId ? "Updated" : "Added");
       if (!editingId) {
-        setFormData({ name: "", division: activeDivisionId || "" });
+        setFormData({ name: "", division: activeDivisionId || "", imageUrl: "" });
+        setImageFile(null);
+        setImagePreviewUrl("");
       } else {
         cancelEdit();
       }
@@ -149,8 +201,10 @@ export function CategoriesContent() {
       toast.error(error instanceof Error ? error.message : "Failed to save category");
     } finally {
       setIsLoading(false);
+      setIsUploading(false);
     }
   };
+
 
   return (
     <>
@@ -195,10 +249,43 @@ export function CategoriesContent() {
                                 placeholder="e.g. Main Propulsion"
                             />
                         </div>
+
+                        <div className="space-y-3">
+                            <Label className="text-[10px] font-bold uppercase tracking-widest text-primary block">Category Image (Optional)</Label>
+                            <div className="relative w-32">
+                              {imagePreviewUrl ? (
+                                <div className="group relative aspect-square overflow-hidden border border-border bg-muted/20">
+                                  <Image src={imagePreviewUrl} alt="Preview" fill className="object-cover" unoptimized />
+                                  <div className="absolute right-1 top-1 flex gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setImageFile(null);
+                                        setImagePreviewUrl("");
+                                        setFormData((prev) => ({ ...prev, imageUrl: "" }));
+                                      }}
+                                      className="bg-red-600/90 p-1 text-white"
+                                      title="Remove"
+                                    >
+                                      <X className="h-4 w-4" />
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <label className="group flex aspect-square cursor-pointer flex-col items-center justify-center border-2 border-dashed border-border bg-muted/20 transition-colors hover:bg-muted/40">
+                                  <Upload className="h-6 w-6 text-primary transition-transform group-hover:scale-110" />
+                                  <span className="mt-2 text-[10px] font-bold uppercase tracking-widest text-primary text-center">Upload</span>
+                                  <input type="file" className="hidden" accept="image/*" onChange={handleImageSelect} />
+                                </label>
+                              )}
+                            </div>
+                        </div>
+
                         <div className="flex gap-4">
-                          <Button type="submit" disabled={isLoading} className="flex-1 rounded-none h-14 uppercase tracking-widest text-[10px] font-bold">
-                              {editingId ? "Update" : "Register"}
+                          <Button type="submit" disabled={isLoading || isUploading} className="flex-1 rounded-none h-14 uppercase tracking-widest text-[10px] font-bold">
+                              {isLoading || isUploading ? "Processing..." : editingId ? "Update" : "Register"}
                           </Button>
+
                           {editingId && (
                             <Button type="button" onClick={cancelEdit} variant="outline" className="rounded-none h-14 px-6">
                               <X className="w-4 h-4" />
@@ -245,16 +332,29 @@ export function CategoriesContent() {
                                       />
                                   </td>
                                   <td className="py-6 px-6">
-                                      <h3 className="font-bold text-primary tracking-tight text-sm mb-1 uppercase group-hover:text-accent transition-colors">{category.name}</h3>
-                                      <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{category.slug}</p>
-                                      <div className="mt-2 flex items-center gap-3 text-[10px] uppercase tracking-widest text-muted-foreground">
-                                        <span>{category.productCount || 0} products</span>
-                                        {!category.canDelete && (
-                                          <span className="inline-flex items-center gap-1 text-amber-600">
-                                            <Lock className="w-3 h-3" />
-                                            Locked
-                                          </span>
+                                      <div className="flex items-center gap-4">
+                                        {category.imageUrl ? (
+                                           <div className="relative w-12 h-12 rounded bg-muted/20 border border-border overflow-hidden flex-shrink-0">
+                                              <Image src={category.imageUrl} alt={category.name} fill className="object-cover" />
+                                           </div>
+                                        ) : (
+                                           <div className="w-12 h-12 rounded bg-muted/20 border border-border flex items-center justify-center flex-shrink-0 text-muted-foreground">
+                                              <ImageIcon className="w-5 h-5 opacity-50" />
+                                           </div>
                                         )}
+                                        <div>
+                                            <h3 className="font-bold text-primary tracking-tight text-sm mb-1 uppercase group-hover:text-accent transition-colors">{category.name}</h3>
+                                            <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{category.slug}</p>
+                                            <div className="mt-2 flex items-center gap-3 text-[10px] uppercase tracking-widest text-muted-foreground">
+                                              <span>{category.productCount || 0} products</span>
+                                              {!category.canDelete && (
+                                                <span className="inline-flex items-center gap-1 text-amber-600">
+                                                  <Lock className="w-3 h-3" />
+                                                  Locked
+                                                </span>
+                                              )}
+                                            </div>
+                                        </div>
                                       </div>
                                   </td>
                                   <td className="py-6 px-6 text-right">

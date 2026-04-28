@@ -72,7 +72,7 @@ export function AboutPreviewSection() {
             <div className="relative aspect-square md:aspect-[4/5] rounded-[2.5rem] md:rounded-[4rem] overflow-hidden group border border-border/50">
               <motion.div style={{ y }} className="absolute inset-0">
                 <Image
-                  src="/images/about-hero-new.png"
+                  src="/about-hero.png"
                   alt="Delta Impex Industrial Legacy"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"

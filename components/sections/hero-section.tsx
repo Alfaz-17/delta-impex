@@ -103,9 +103,9 @@ export function HeroSection() {
             className="hidden sm:flex flex-wrap items-center justify-start gap-x-6 gap-y-2 pt-4 border-t border-white/10 w-full max-w-md"
           >
             {[
-              { icon: ShieldCheck, text: "OEM Verified" },
-              { icon: Zap, text: "JIT Logistics" },
-              { icon: Globe, text: "Multi-Sector" },
+              { icon: ShieldCheck, text: "Quality Verified" },
+              { icon: Zap, text: "Fast Delivery" },
+              { icon: Globe, text: "Global Reach" },
             ].map((feature, i) => (
               <div key={i} className="flex items-center gap-2 text-white/40 group hover:text-white/80 transition-colors">
                 <feature.icon className="w-3.5 h-3.5 text-accent" />

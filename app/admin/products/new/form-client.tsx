@@ -48,6 +48,7 @@ export function ProductFormContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const [isRemovingBg, setIsRemovingBg] = useState(false);
   const [bgTarget, setBgTarget] = useState<string | null>(null);
@@ -311,6 +312,48 @@ export function ProductFormContent() {
     }
 
     return data.url as string;
+  };
+
+  const handleAnalyzeAI = async () => {
+    if (!mainFile) {
+      toast.error("Please select a primary visual asset first");
+      return;
+    }
+
+    setIsAnalyzing(true);
+    toast.info("Analyzing image with AI...");
+
+    try {
+      const uploadData = new FormData();
+      uploadData.append("file", mainFile);
+      if (formData.division) {
+        uploadData.append("divisionId", formData.division);
+      }
+
+      const res = await fetch("/api/admin/analyze-product", {
+        method: "POST",
+        body: uploadData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "AI Analysis failed");
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        name: data.title || prev.name,
+        description: data.description || prev.description,
+      }));
+
+      // If categoryName was returned, it might need to be resolved to an ID later,
+      // but the instructions asked for Title and Description specifically.
+      toast.success("AI Analysis complete. Form Auto-filled.");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to analyze image");
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const prepareForUpload = async (file: File) => {
@@ -580,6 +623,17 @@ export function ProductFormContent() {
                         >
                           <X className="h-4 w-4" />
                         </button>
+                      </div>
+                      <div className="absolute left-2 bottom-2">
+                        <Button
+                          type="button"
+                          onClick={handleAnalyzeAI}
+                          disabled={isAnalyzing}
+                          className="h-8 shadow-xl hover:scale-105 transition-transform bg-blue-600 hover:bg-blue-700 text-[10px] uppercase font-bold tracking-widest gap-2"
+                        >
+                          {isAnalyzing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+                          Analyze with AI
+                        </Button>
                       </div>
                     </div>
                   ) : (

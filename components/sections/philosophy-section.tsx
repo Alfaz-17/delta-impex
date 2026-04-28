@@ -19,8 +19,7 @@ export function PhilosophySection() {
           </h2>
           <div className="max-w-2xl">
             <p className="body-text leading-relaxed">
-              Delta Impex operates two specialized divisions: a reliable supplier of all types of ship spare parts and industrial equipment, 
-              and the provision of advanced RO Water Treatment Plants for both marine and land-based applications.
+              Delta Impex operates two dedicated divisions: We supply reliable spare parts for ships and factories, and we provide advanced water treatment systems to give you clean water wherever you need it.
             </p>
           </div>
         </div>
