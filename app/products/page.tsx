@@ -114,7 +114,9 @@ export default function ProductsPage() {
     <>
       <Header />
       <Suspense fallback={<div className="h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary/40" /></div>}>
-        <ProductsListingContent />
+        <main className="min-h-screen bg-background pt-24 md:pt-32">
+          <ProductsListingContent />
+        </main>
       </Suspense>
       <FooterSection />
     </>

@@ -21,11 +21,6 @@ export function AboutPreviewSection() {
                 sizes="(max-width: 1024px) 100vw, 45vw"
                 priority
               />
-              <div className="absolute bottom-6 left-6">
-                <p className="text-white font-tech text-xs uppercase tracking-widest bg-black/50 px-3 py-1 rounded-full">
-                  Complete Engine & Machinery Solutions
-                </p>
-              </div>
             </div>
           </FadeInOnScroll>
 

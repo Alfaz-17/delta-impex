@@ -69,6 +69,17 @@ export function CategoryHeroSection() {
             backgroundSize: "3rem 3rem",
           }}
         />
+        {/* Check pattern overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.01]"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(91,155,213,0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(91,155,213,0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: '2rem 2rem'
+          }}
+        />
         <div className="absolute top-8 left-8 w-8 h-8 border-t border-l border-accent-blue/30" />
         <div className="absolute top-8 right-8 w-8 h-8 border-t border-r border-accent-blue/30" />
         <div className="absolute bottom-8 left-8 w-8 h-8 border-b border-l border-accent-blue/30" />
@@ -168,7 +179,7 @@ export function CategoryHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="px-5 pb-6 space-y-3"
+          className="px-5 pb-6 space-y-3 mt-[-1.5rem]"
         >
           <div className="flex items-center gap-2">
             <span className="h-[2px] w-6 bg-accent-blue rounded-full" />
@@ -184,7 +195,7 @@ export function CategoryHeroSection() {
             Suppliers.
           </h1>
 
-          <p className="text-slate-500 text-sm leading-snug max-w-xs font-sans">
+          <p className="text-slate-500 text-sm leading-snug max-w-xs font-sans hidden">
             Precision sourcing for mission-critical engine components and industrial machinery.
           </p>
 
@@ -204,6 +215,18 @@ export function CategoryHeroSection() {
             </Link>
           </div>
         </motion.div>
+
+        {/* Check pattern overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.01]"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(91,155,213,0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(91,155,213,0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: '2rem 2rem'
+          }}
+        />
       </section>
 
       {/* ═══════════════════════════════════════
@@ -279,17 +302,15 @@ export function CategoryHeroSection() {
           MOBILE CATEGORIES  — below md only
       ═══════════════════════════════════════ */}
       <section
-        className="md:hidden relative w-full px-4 py-5"
+        className="md:hidden relative mt-[-1rem] w-full px-4 py-5"
         style={{
           background: "linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e6f2ff 100%)",
         }}
       >
         <div className="flex items-center gap-3 mb-4">
-          <span className="h-px w-6 bg-accent-blue/50 rounded-full" />
-          <p className="text-[9px] font-black uppercase tracking-[0.4em] text-accent-blue/80">
+          <p className="text-[9px] mb-[-1rem] font-black uppercase tracking-[0.4em] text-accent-blue/80">
             Categories
           </p>
-          <span className="flex-1 h-px bg-slate-200 rounded-full" />
         </div>
 
         {isLoading ? (

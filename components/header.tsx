@@ -20,13 +20,11 @@ export function Header() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
-      
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (totalHeight > 0) {
         setScrollProgress(window.scrollY / totalHeight);
       }
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
@@ -47,10 +45,8 @@ export function Header() {
           fetch("/api/divisions"),
           fetch("/api/categories")
         ]);
-        
         const divisions = await divRes.json();
         const categories = await catRes.json();
-
         const structuredData = divisions.map((div: any) => ({
           ...div,
           categories: categories.filter((cat: any) => {
@@ -58,21 +54,19 @@ export function Header() {
             return divId === div._id;
           })
         }));
-
         setNavData(structuredData);
       } catch (error) {
         console.error("Error fetching nav data:", error);
       }
     };
-
     fetchNavData();
   }, []);
 
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
-    { 
-      label: "Products", 
+    {
+      label: "Products",
       dropdownId: "products",
       divisions: navData
     },
@@ -80,110 +74,24 @@ export function Header() {
     { label: "Contact", href: "/contact" }
   ];
 
-  // Split links for centered logo layout
-  const leftLinks = navLinks.slice(0, 3);
-  const rightLinks = navLinks.slice(3);
-
-  const renderNavLink = (link: any) => {
-    if (link.dropdownId) {
-      const isProducts = link.dropdownId === "products";
-      return (
-        <div 
-          key={link.dropdownId}
-          onMouseEnter={() => setActiveDropdown(link.dropdownId!)}
-          onMouseLeave={() => setActiveDropdown(null)}
-          className="relative group"
-        >
-          <Link
-            href="/products"
-            className={`text-[10px] font-black uppercase tracking-[0.3em] transition-all flex items-center gap-2 relative ${
-              isScrolled ? "text-foreground hover:text-primary" : "text-white hover:text-accent"
-            }`}
-          >
-            {link.label}
-            <ChevronDown size={12} className={`transition-transform duration-300 ${activeDropdown === link.dropdownId ? "rotate-180" : ""}`} />
-            <span className="absolute -bottom-2 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-
-          <AnimatePresence>
-            {activeDropdown === link.dropdownId && (
-              <motion.div
-                initial={{ opacity: 0, y: 15, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className={`absolute top-full left-1/2 -translate-x-1/2 pt-10 ${isProducts ? "w-[700px]" : "w-[300px]"}`}
-              >
-                <div className={`bg-background/95 backdrop-blur-3xl border border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden ${isProducts ? "grid grid-cols-2 gap-x-12 gap-y-8" : "flex flex-col gap-6"}`}>
-                  {link.divisions.map((div: any) => (
-                    <div key={div._id} className="space-y-6">
-                      <div className="flex items-center gap-3 pb-3 border-b border-white/10">
-                        <div className="w-2 h-2 bg-accent-blue rounded-full"></div>
-                        <h3 className="label-tech text-white !text-[12px]">{div.name}</h3>
-                      </div>
-                      <div className="flex flex-col gap-3">
-                        {div.categories.map((cat: any) => (
-                          <Link
-                            key={cat._id}
-                            href={`/products?categoryId=${cat._id}`}
-                            className="group/item flex items-center justify-between text-sm py-2 px-3 rounded-lg transition-all hover:bg-white/5 hover:text-white text-white/70 hover:translate-x-1"
-                          >
-                            <span className="font-medium">{cat.name}</span>
-                            <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-60 transition-opacity text-accent-blue" />
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      );
-    }
-
-    const isActive = pathname === link.href;
-    return (
-      <Link
-        key={link.label}
-        href={link.href!}
-        className={`text-[10px] font-black uppercase tracking-[0.3em] transition-all group relative ${
-          isActive ? "text-white" : "text-white/70 hover:text-white"
-        }`}
-      >
-        {link.label}
-        <span className={`absolute -bottom-2 left-0 h-[2px] bg-primary transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}></span>
-      </Link>
-    );
-  };
-
   return (
     <header className="fixed top-0 left-0 right-0 z-[100]">
-      <nav 
-        className="max-w-full mx-auto px-6 lg:px-12 transition-all duration-500 border-b relative overflow-hidden bg-dark-base/95 backdrop-blur-xl py-6 shadow-md border-white/10"
-      >
-        {/* Enhanced Scrolling Effects */}
-        <div 
-          className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-60"}`}
+      <nav className="max-w-full mx-auto px-6 lg:px-12 transition-all duration-500 border-b relative overflow-visible  bg-dark-base/95 backdrop-blur-xl py-6 shadow-md border-white/10">
+        {/* Glow line */}
+        <div className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-60"}`} />
+        <div className={`absolute inset-0 bg-gradient-to-b from-accent-blue/8 to-transparent pointer-events-none transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-40"}`} />
+
+        {/* Scroll Progress Bar */}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-[4px] origin-left z-[60] bg-white"
+          style={{ scaleX: scrollProgress }}
         />
-        <div 
-          className={`absolute inset-0 bg-gradient-to-b from-accent-blue/8 to-transparent pointer-events-none transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-40"}`}
-        />
-        {/* Scroll Progress Indicator */}
-        <div
-          className="absolute bottom-0 left-0 h-2 bg-linear-to-r from-accent-blue to-primary transition-all duration-300 ease-out"
-          style={{ width: `${scrollProgress * 100}%` }}
-        />
-        
+
         <div className="flex items-center justify-between h-[60px] relative z-10">
-          
-          {/* Logo - Left */}
+
+          {/* Logo */}
           <div className="flex items-center">
-            <Link 
-              href="/" 
-              className="relative h-10 w-48 md:w-56 transition-transform hover:scale-105 duration-300"
-            >
+            <Link href="/" className="relative h-10 w-48 md:w-56 transition-transform hover:scale-105 duration-300">
               <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[450px] h-[200px] mt-2 pointer-events-none">
                 <Image
                   src="/logo.png"
@@ -196,18 +104,18 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Desktop Navigation - Absolute Centered */}
+          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
-            {navLinks.map((link) => {
+            {navLinks.map((link, i) => {
               const isActive = pathname === link.href;
               const linkClasses = `text-[10px] font-black uppercase tracking-[0.3em] transition-all group relative ${
-                 isActive ? "text-white" : "text-white/70 hover:text-white"
+                isActive ? "text-white" : "text-white/70 hover:text-white"
               }`;
 
               if (link.dropdownId) {
                 const isProducts = link.dropdownId === "products";
                 return (
-                  <div 
+                  <div
                     key={link.dropdownId}
                     onMouseEnter={() => setActiveDropdown(link.dropdownId!)}
                     onMouseLeave={() => setActiveDropdown(null)}
@@ -216,60 +124,72 @@ export function Header() {
                     <Link href="/products" className={linkClasses}>
                       <span className="flex items-center gap-2">
                         {link.label}
-                        <ChevronDown size={12} className={`transition-transform duration-300 ${activeDropdown === link.dropdownId ? "rotate-180" : ""}`} />
+                        <ChevronDown
+                          size={12}
+                          className={`transition-transform duration-300 ${activeDropdown === link.dropdownId ? "rotate-180" : ""}`}
+                        />
                       </span>
-                      <span className="absolute -bottom-2 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full bg-white"></span>
+                      <span className="absolute -bottom-2 left-0 w-0 h-[2px] transition-all duration-300 group-hover:w-full bg-white" />
                     </Link>
 
                     <AnimatePresence>
                       {activeDropdown === link.dropdownId && (
                         <motion.div
-                          initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
                           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                          className={`absolute top-full left-1/2 -translate-x-1/2 pt-10 z-50 ${isProducts ? "w-[700px]" : "w-[300px]"}`}
+                          className={`absolute top-full left-1/2 -translate-x-1/2 z-50 ${isProducts ? "w-[700px]" : "w-[300px]"}`}
                         >
-                          <div 
-                            className="max-h-[70vh] overflow-y-auto custom-scrollbar pr-4 overscroll-contain"
+                          {/* Invisible bridge to prevent mouseLeave gap */}
+                          <div className="h-6 w-full" />
+
+                          <div className="max-h-[70vh] overflow-y-auto custom-scrollbar pr-4 overscroll-contain"
                             data-lenis-prevent
                             onWheel={(e) => e.stopPropagation()}
                           >
                             <div className={`bg-dark-base relative overflow-hidden border border-white/10 rounded-2xl p-8 shadow-2xl ${isProducts ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
-                              {/* Dropdown Dot Pattern */}
-                              <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.4) 1px, transparent 0)', backgroundSize: '1.5rem 1.5rem' }} />
-                              <div className="relative z-10 flex flex-col gap-8 w-full">
-                                {link.divisions && link.divisions.length > 0 ? (
-                                  link.divisions.map((div: any) => (
-                                    <div key={div._id} className="space-y-6">
-                                      <div className="flex items-center gap-3 pb-3 border-b border-white/10">
-                                        <div className="w-2 h-2 bg-accent-blue rounded-full"></div>
-                                        <h3 className="label-tech text-white !text-[12px]">{div.name}</h3>
-                                      </div>
-                                      <div className="flex flex-col gap-3">
-                                        {div.categories && div.categories.length > 0 ? (
-                                          div.categories.map((cat: any) => (
-                                            <Link
-                                              key={cat._id}
-                                              href={`/products?categoryId=${cat._id}`}
-                                              className="group/item flex items-center justify-between text-sm py-2 px-3 rounded-lg transition-all hover:bg-white/5 hover:text-white text-white/70 hover:translate-x-1"
-                                            >
-                                              <span className="font-medium">{cat.name}</span>
-                                              <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-60 transition-opacity text-accent-blue" />
-                                            </Link>
-                                          ))
-                                        ) : (
-                                          <p className="text-white/50 text-sm">No categories available</p>
-                                        )}
-                                      </div>
+                              {/* Dot Pattern */}
+                              <div
+                                className="absolute inset-0 opacity-[0.05] pointer-events-none"
+                                style={{
+                                  backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.4) 1px, transparent 0)',
+                                  backgroundSize: '1.5rem 1.5rem'
+                                }}
+                              />
+
+                              {/* ✅ Divisions mapped directly as grid children */}
+                              {link.divisions && link.divisions.length > 0 ? (
+                                link.divisions.map((div: any) => (
+                                  <div key={div._id} className="space-y-6 relative z-10">
+                                    <div className="flex items-center gap-3 pb-3 border-b border-white/10">
+                                      <div className="w-2 h-2 bg-accent-blue rounded-full" />
+                                      <h3 className="label-tech text-white !text-[12px]">{div.name}</h3>
                                     </div>
-                                  ))
-                                ) : (
-                                  <div className="text-center py-8">
-                                    <p className="text-white/50 text-sm">Loading categories...</p>
+                                    <div className="flex flex-col gap-3">
+                                      {div.categories && div.categories.length > 0 ? (
+                                        div.categories.map((cat: any) => (
+                                          <Link
+                                            key={cat._id}
+                                            href={`/products?categoryId=${cat._id}`}
+                                            className="group/item flex items-center justify-between text-sm py-2 px-3 rounded-lg transition-all hover:bg-white/5 hover:text-white text-white/70 hover:translate-x-1"
+                                            onClick={() => setActiveDropdown(null)}
+                                          >
+                                            <span className="font-medium">{cat.name}</span>
+                                            <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-60 transition-opacity text-accent-blue" />
+                                          </Link>
+                                        ))
+                                      ) : (
+                                        <p className="text-white/50 text-sm">No categories available</p>
+                                      )}
+                                    </div>
                                   </div>
-                                )}
-                              </div>
+                                ))
+                              ) : (
+                                <div className="col-span-2 text-center py-8">
+                                  <p className="text-white/50 text-sm">Loading categories...</p>
+                                </div>
+                              )}
                             </div>
                           </div>
                         </motion.div>
@@ -282,13 +202,13 @@ export function Header() {
               return (
                 <Link key={link.label} href={link.href!} className={linkClasses}>
                   {link.label}
-                  <span className={`absolute -bottom-2 left-0 h-[2px] transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"} bg-white`}></span>
+                  <span className={`absolute -bottom-2 left-0 h-[2px] transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"} bg-white`} />
                 </Link>
               );
             })}
           </nav>
 
-          {/* Actions - Right */}
+          {/* Actions */}
           <div className="flex items-center gap-4">
             <Link
               href="/contact"
@@ -297,42 +217,31 @@ export function Header() {
               Quote
             </Link>
 
-            {/* Mobile menu button */}
             <button
               type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`lg:hidden p-2 transition-all rounded-full z-[110] relative ${
-                isMenuOpen 
-                  ? "bg-[#1B3A5C] text-white" 
-                  : "text-white hover:bg-white/10"
+                isMenuOpen ? "bg-[#1B3A5C] text-white" : "text-white hover:bg-white/10"
               }`}
             >
               {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
-
-        {/* Scroll Progress Line - Updated to Dark */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[4px] origin-left z-[60] bg-white"
-          style={{ scaleX: scrollProgress }}
-        />
       </nav>
 
-      {/* High-Fidelity Mobile Sidebar */}
+      {/* Mobile Sidebar */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
-            {/* Backdrop */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMenuOpen(false)}
               className="fixed inset-0 z-[80] bg-black/60 backdrop-blur-md lg:hidden"
             />
-            
-            {/* Sidebar Panel */}
+
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -341,16 +250,13 @@ export function Header() {
               className="fixed top-0 right-0 bottom-0 z-[90] w-[85%] max-w-sm bg-background border-l border-primary/20 shadow-2xl lg:hidden flex flex-col h-[100dvh] overflow-hidden"
               data-lenis-prevent
             >
-              {/* Technical Grid Background */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(30,95,166,0.08)_1px,transparent_0)] bg-[size:30px_30px] opacity-40 pointer-events-none" />
-              
+
               <div className="shrink-0 p-8 pt-12 border-b border-primary/10 flex items-center justify-between bg-background/80 backdrop-blur-md relative">
-                {/* HUD Brackets */}
                 <div className="absolute top-4 left-4 w-2 h-2 border-t border-l border-primary/40" />
                 <div className="absolute top-4 right-4 w-2 h-2 border-t border-r border-primary/40" />
                 <div className="absolute bottom-4 left-4 w-2 h-2 border-b border-l border-primary/40" />
                 <div className="absolute bottom-4 right-4 w-2 h-2 border-b border-r border-primary/40" />
-
                 <h2 className="font-sans text-xl font-black tracking-tight uppercase text-foreground relative z-10">
                   DELTA <span className="text-primary italic">Impex</span>
                 </h2>
@@ -360,12 +266,11 @@ export function Header() {
               </div>
 
               <div className="px-8 py-2 border-b border-primary/5 bg-primary/5 flex justify-between items-center font-mono">
-                 <span className="text-[7px] text-primary/60 tracking-[0.2em] uppercase">Status: Operating</span>
-                 <span className="text-[7px] text-primary/60 tracking-[0.2em] uppercase">Log: AX-774</span>
+                <span className="text-[7px] text-primary/60 tracking-[0.2em] uppercase">Status: Operating</span>
+                <span className="text-[7px] text-primary/60 tracking-[0.2em] uppercase">Log: AX-774</span>
               </div>
 
               <div className="flex-1 overflow-y-auto px-8 py-10 space-y-12 custom-scrollbar relative z-10 overscroll-contain" data-lenis-prevent>
-                {/* Primary Links */}
                 <div className="space-y-6">
                   {navLinks.map((link, i) => {
                     const isDropdown = !!link.dropdownId;
@@ -388,10 +293,15 @@ export function Header() {
                                 </Link>
                               )}
                             </div>
-                            {isDropdown && <ChevronDown size={20} className={`text-muted-foreground transition-transform duration-500 ${isExpanded ? "rotate-180 text-primary" : ""}`} />}
+                            {isDropdown && (
+                              <ChevronDown
+                                size={20}
+                                className={`text-muted-foreground transition-transform duration-500 ${isExpanded ? "rotate-180 text-primary" : ""}`}
+                              />
+                            )}
                           </button>
                         </div>
-                        
+
                         <AnimatePresence>
                           {isExpanded && link.divisions && (
                             <motion.div
@@ -430,7 +340,6 @@ export function Header() {
                   })}
                 </div>
 
-                {/* Operations Contact */}
                 <div className="pt-10 border-t border-primary/10 mt-auto relative">
                   <h3 className="font-mono text-[8px] font-black uppercase tracking-[0.3em] text-primary/60 mb-8">Technical Ops</h3>
                   <div className="space-y-4">
@@ -449,14 +358,14 @@ export function Header() {
               </div>
 
               <div className="shrink-0 p-8 border-t border-primary/10 bg-background/80 backdrop-blur-md">
-                 <div className="flex items-center gap-6 justify-center">
-                    <Link href="/contact" className="p-2 text-muted-foreground hover:text-primary transition-colors">
-                      <Mail size={20} />
-                    </Link>
-                    <Link href="/about" className="p-2 text-muted-foreground hover:text-primary transition-colors">
-                      <ArrowRight size={20} />
-                    </Link>
-                 </div>
+                <div className="flex items-center gap-6 justify-center">
+                  <Link href="/contact" className="p-2 text-muted-foreground hover:text-primary transition-colors">
+                    <Mail size={20} />
+                  </Link>
+                  <Link href="/about" className="p-2 text-muted-foreground hover:text-primary transition-colors">
+                    <ArrowRight size={20} />
+                  </Link>
+                </div>
               </div>
             </motion.div>
           </>
