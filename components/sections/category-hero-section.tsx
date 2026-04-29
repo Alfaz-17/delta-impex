@@ -50,6 +50,28 @@ export function CategoryHeroSection() {
           background: "linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e6f2ff 100%)",
         }}
       >
+        {/* Square Grid Pattern like Footer */}
+        <div 
+          className="absolute inset-0 opacity-[0.15]" 
+          style={{ 
+            backgroundImage: `
+              linear-gradient(to right, rgba(91,155,213,0.4) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(91,155,213,0.4) 1px, transparent 1px)
+            `,
+            backgroundSize: '3rem 3rem' 
+          }} 
+        />
+        {/* Secondary Fine Grid */}
+        <div 
+          className="absolute inset-0 opacity-[0.08]" 
+          style={{ 
+            backgroundImage: `
+              linear-gradient(to right, rgba(91,155,213,0.2) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(91,155,213,0.2) 1px, transparent 1px)
+            `,
+            backgroundSize: '0.75rem 0.75rem' 
+          }} 
+        />
         {/* Decorative elements */}
         <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-br from-accent-blue/10 to-transparent rounded-full blur-2xl opacity-60" />
         <div className="absolute bottom-10 right-10 w-40 h-40 bg-gradient-to-tl from-accent-blue/8 to-transparent rounded-full blur-2xl opacity-50" />
@@ -111,7 +133,7 @@ export function CategoryHeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute inset-y-0 right-0 flex items-center justify-center pr-10 lg:pr-16"
+          className="absolute inset-y-0 right-0 flex mt-7 items-center justify-center pr-10 lg:pr-16"
           style={{ width: "45%", paddingLeft: "2rem" }}
         >
           <div className="w-full max-w-lg space-y-4">
@@ -156,6 +178,28 @@ export function CategoryHeroSection() {
           background: "linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e6f2ff 100%)",
         }}
       >
+        {/* Square Grid Pattern like Hero */}
+        <div 
+          className="absolute inset-0 opacity-[0.15]" 
+          style={{ 
+            backgroundImage: `
+              linear-gradient(to right, rgba(91,155,213,0.4) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(91,155,213,0.4) 1px, transparent 1px)
+            `,
+            backgroundSize: '3rem 3rem' 
+          }} 
+        />
+        {/* Secondary Fine Grid */}
+        <div 
+          className="absolute inset-0 opacity-[0.08]" 
+          style={{ 
+            backgroundImage: `
+              linear-gradient(to right, rgba(91,155,213,0.2) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(91,155,213,0.2) 1px, transparent 1px)
+            `,
+            backgroundSize: '0.75rem 0.75rem' 
+          }} 
+        />
         {/* Ship image — compact */}
         <motion.div
           initial={{ opacity: 0, y: -16 }}
@@ -239,6 +283,28 @@ export function CategoryHeroSection() {
           background: "linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e6f2ff 100%)",
         }}
       >
+        {/* Square Grid Pattern like Hero */}
+        <div 
+          className="absolute inset-0 opacity-[0.15]" 
+          style={{ 
+            backgroundImage: `
+              linear-gradient(to right, rgba(91,155,213,0.4) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(91,155,213,0.4) 1px, transparent 1px)
+            `,
+            backgroundSize: '3rem 3rem' 
+          }} 
+        />
+        {/* Secondary Fine Grid */}
+        <div 
+          className="absolute inset-0 opacity-[0.08]" 
+          style={{ 
+            backgroundImage: `
+              linear-gradient(to right, rgba(91,155,213,0.2) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(91,155,213,0.2) 1px, transparent 1px)
+            `,
+            backgroundSize: '0.75rem 0.75rem' 
+          }} 
+        />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -307,6 +373,28 @@ export function CategoryHeroSection() {
           background: "linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e6f2ff 100%)",
         }}
       >
+        {/* Square Grid Pattern like Hero */}
+        <div 
+          className="absolute inset-0 opacity-[0.15]" 
+          style={{ 
+            backgroundImage: `
+              linear-gradient(to right, rgba(91,155,213,0.4) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(91,155,213,0.4) 1px, transparent 1px)
+            `,
+            backgroundSize: '3rem 3rem' 
+          }} 
+        />
+        {/* Secondary Fine Grid */}
+        <div 
+          className="absolute inset-0 opacity-[0.08]" 
+          style={{ 
+            backgroundImage: `
+              linear-gradient(to right, rgba(91,155,213,0.2) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(91,155,213,0.2) 1px, transparent 1px)
+            `,
+            backgroundSize: '0.75rem 0.75rem' 
+          }} 
+        />
         <div className="flex items-center gap-3 mb-4">
           <p className="text-[9px] mb-[-1rem] font-black uppercase tracking-[0.4em] text-accent-blue/80">
             Categories
