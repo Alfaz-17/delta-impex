@@ -71,19 +71,12 @@ export function Header() {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
-  
     { 
-      label: "Marine & Industrial", 
-      dropdownId: "marine",
-      slug: "marine-industrial",
-      divisions: navData.filter(d => d.slug === "marine-industrial")
+      label: "Products", 
+      dropdownId: "products",
+      divisions: navData
     },
-    { 
-      label: "RO Solutions", 
-      dropdownId: "ro",
-      slug: "ro-solutions",
-      divisions: navData.filter(d => d.slug === "ro-solutions")
-    },
+    { label: "New Arrivals", href: "/new-arrivals" },
     { label: "Contact", href: "/contact" }
   ];
 
@@ -93,7 +86,7 @@ export function Header() {
 
   const renderNavLink = (link: any) => {
     if (link.dropdownId) {
-      const isMarine = link.dropdownId === "marine";
+      const isProducts = link.dropdownId === "products";
       return (
         <div 
           key={link.dropdownId}
@@ -102,7 +95,7 @@ export function Header() {
           className="relative group"
         >
           <Link
-            href={`/products?divisionSlug=${link.slug}`}
+            href="/products"
             className={`text-[10px] font-black uppercase tracking-[0.3em] transition-all flex items-center gap-2 relative ${
               isScrolled ? "text-foreground hover:text-primary" : "text-white hover:text-accent"
             }`}
@@ -119,21 +112,24 @@ export function Header() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 15, scale: 0.95 }}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className={`absolute top-full left-1/2 -translate-x-1/2 pt-10 ${isMarine ? "w-[600px]" : "w-[300px]"}`}
+                className={`absolute top-full left-1/2 -translate-x-1/2 pt-10 ${isProducts ? "w-[700px]" : "w-[300px]"}`}
               >
-                <div className={`bg-background/95 backdrop-blur-3xl border border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden ${isMarine ? "grid grid-cols-2 gap-x-8 gap-y-6" : "flex flex-col gap-6"}`}>
+                <div className={`bg-background/95 backdrop-blur-3xl border border-white/10 rounded-2xl p-8 shadow-2xl overflow-hidden ${isProducts ? "grid grid-cols-2 gap-x-12 gap-y-8" : "flex flex-col gap-6"}`}>
                   {link.divisions.map((div: any) => (
-                    <div key={div._id} className="space-y-4">
-                      <h3 className="label-tech text-accent !text-[11px] mb-2">{div.name}</h3>
-                      <div className="flex flex-col gap-2">
+                    <div key={div._id} className="space-y-6">
+                      <div className="flex items-center gap-3 pb-3 border-b border-white/10">
+                        <div className="w-2 h-2 bg-accent-blue rounded-full"></div>
+                        <h3 className="label-tech text-white !text-[12px]">{div.name}</h3>
+                      </div>
+                      <div className="flex flex-col gap-3">
                         {div.categories.map((cat: any) => (
                           <Link
                             key={cat._id}
                             href={`/products?categoryId=${cat._id}`}
-                            className="group/item flex items-center justify-between text-sm py-1 transition-all hover:text-primary text-muted-foreground hover:translate-x-1"
+                            className="group/item flex items-center justify-between text-sm py-2 px-3 rounded-lg transition-all hover:bg-white/5 hover:text-white text-white/70 hover:translate-x-1"
                           >
-                            <span>{cat.name}</span>
-                            <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-40 transition-opacity" />
+                            <span className="font-medium">{cat.name}</span>
+                            <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-60 transition-opacity text-accent-blue" />
                           </Link>
                         ))}
                       </div>
@@ -209,7 +205,7 @@ export function Header() {
               }`;
 
               if (link.dropdownId) {
-                const isMarine = link.dropdownId === "marine";
+                const isProducts = link.dropdownId === "products";
                 return (
                   <div 
                     key={link.dropdownId}
@@ -217,7 +213,7 @@ export function Header() {
                     onMouseLeave={() => setActiveDropdown(null)}
                     className="relative group"
                   >
-                    <Link href={`/products?divisionSlug=${link.slug}`} className={linkClasses}>
+                    <Link href="/products" className={linkClasses}>
                       <span className="flex items-center gap-2">
                         {link.label}
                         <ChevronDown size={12} className={`transition-transform duration-300 ${activeDropdown === link.dropdownId ? "rotate-180" : ""}`} />
@@ -232,34 +228,47 @@ export function Header() {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 15, scale: 0.95 }}
                           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                          className={`absolute top-full left-1/2 -translate-x-1/2 pt-10 ${isMarine ? "w-[600px]" : "w-[300px]"}`}
+                          className={`absolute top-full left-1/2 -translate-x-1/2 pt-10 z-50 ${isProducts ? "w-[700px]" : "w-[300px]"}`}
                         >
                           <div 
                             className="max-h-[70vh] overflow-y-auto custom-scrollbar pr-4 overscroll-contain"
                             data-lenis-prevent
                             onWheel={(e) => e.stopPropagation()}
                           >
-                            <div className={`bg-dark-base relative overflow-hidden border border-white/10 rounded-2xl p-8 shadow-2xl ${isMarine ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
+                            <div className={`bg-dark-base relative overflow-hidden border border-white/10 rounded-2xl p-8 shadow-2xl ${isProducts ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
                               {/* Dropdown Dot Pattern */}
                               <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.4) 1px, transparent 0)', backgroundSize: '1.5rem 1.5rem' }} />
                               <div className="relative z-10 flex flex-col gap-8 w-full">
-                                {link.divisions.map((div: any) => (
-                                <div key={div._id} className="space-y-6">
-                                  <h3 className="label-tech text-white !text-[11px] mb-4 border-b border-white/10 pb-2">{div.name}</h3>
-                                  <div className="flex flex-col gap-3">
-                                    {div.categories.map((cat: any) => (
-                                      <Link
-                                        key={cat._id}
-                                        href={`/products?categoryId=${cat._id}`}
-                                        className="group/item flex items-center justify-between text-sm py-1 transition-all hover:translate-x-1 text-white/70 hover:text-white"
-                                      >
-                                        <span>{cat.name}</span>
-                                        <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-40 transition-opacity" />
-                                      </Link>
-                                    ))}
+                                {link.divisions && link.divisions.length > 0 ? (
+                                  link.divisions.map((div: any) => (
+                                    <div key={div._id} className="space-y-6">
+                                      <div className="flex items-center gap-3 pb-3 border-b border-white/10">
+                                        <div className="w-2 h-2 bg-accent-blue rounded-full"></div>
+                                        <h3 className="label-tech text-white !text-[12px]">{div.name}</h3>
+                                      </div>
+                                      <div className="flex flex-col gap-3">
+                                        {div.categories && div.categories.length > 0 ? (
+                                          div.categories.map((cat: any) => (
+                                            <Link
+                                              key={cat._id}
+                                              href={`/products?categoryId=${cat._id}`}
+                                              className="group/item flex items-center justify-between text-sm py-2 px-3 rounded-lg transition-all hover:bg-white/5 hover:text-white text-white/70 hover:translate-x-1"
+                                            >
+                                              <span className="font-medium">{cat.name}</span>
+                                              <ChevronRight size={12} className="opacity-0 group-hover/item:opacity-60 transition-opacity text-accent-blue" />
+                                            </Link>
+                                          ))
+                                        ) : (
+                                          <p className="text-white/50 text-sm">No categories available</p>
+                                        )}
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <div className="text-center py-8">
+                                    <p className="text-white/50 text-sm">Loading categories...</p>
                                   </div>
-                                </div>
-                              ))}
+                                )}
                               </div>
                             </div>
                           </div>

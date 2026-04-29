@@ -11,6 +11,7 @@ import { DivisionSwitcher } from "@/components/admin/division-switcher";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { removeBackgroundClient } from "@/lib/background-removal-client";
 
 export function CategoriesContent() {
   const searchParams = useSearchParams();

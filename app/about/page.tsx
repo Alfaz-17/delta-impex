@@ -251,13 +251,131 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Section 02: Why Choose Us */}
+      {/* Section 02: ENGINE PARTS */}
+      <section className="relative py-24 md:py-32 bg-gradient-to-b from-background via-white/[0.01] to-white/[0.02] overflow-hidden">
+        {/* Background Grid Pattern */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ 
+          backgroundImage: `
+            linear-gradient(to right, rgba(91,155,213,0.4) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(91,155,213,0.4) 1px, transparent 1px)
+          `,
+          backgroundSize: '3rem 3rem'
+        }} />
+        
+        <div className="section-container relative z-10">
+          <FadeInOnScroll>
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-16">
+              <div>
+                <div className="flex items-center gap-4 mb-4">
+                  <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-accent-blue">02. ENGINE PARTS</p>
+                  <div className="h-px w-32 bg-accent-blue/10" />
+                </div>
+                <h2 className="heading-display mb-4">
+                  Engine <span className="text-accent-blue italic">Solutions.</span>
+                </h2>
+                <p className="max-w-md text-slate-600 leading-relaxed text-sm font-medium">
+                  Extensive inventory of New / Recondition / Second-hand main components available for immediate delivery from ready stock.
+                </p>
+              </div>
+              
+              {/* Condition Badges */}
+              <div className="flex flex-wrap gap-4">
+                <span className="text-accent-blue font-tech text-[10px] uppercase tracking-widest px-4 py-2 border border-accent-blue/20 rounded-full bg-accent-blue/5">New</span>
+                <span className="text-accent-blue font-tech text-[10px] uppercase tracking-widest px-4 py-2 border border-accent-blue/20 rounded-full bg-accent-blue/5">Recondition</span>
+                <span className="text-accent-blue font-tech text-[10px] uppercase tracking-widest px-4 py-2 border border-accent-blue/20 rounded-full bg-accent-blue/5">Re-usable</span>
+              </div>
+            </div>
+          </FadeInOnScroll>
+
+          <FadeInOnScroll delay={0.2}>
+            <div className="p-8 rounded-[2rem] bg-dark-card border border-white/[0.08] mb-16">
+              <p className="text-slate-300 leading-relaxed text-lg mb-8">
+                Every component is stocked after complete inspection and N.D. Test. New and Recondition surplus parts obtained from stores of recycled ships, the most economical availability of genuine parts.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <h4 className="text-accent-blue font-tech text-xs uppercase tracking-widest mb-3">Complete Engine Systems</h4>
+                  <ul className="space-y-2 text-slate-300 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Complete Engine & D.G. Set</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Crankshaft</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Engine Frame</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Cylinder Cover</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="space-y-2">
+                  <h4 className="text-accent-blue font-tech text-xs uppercase tracking-widest mb-3">Cylinder Components</h4>
+                  <ul className="space-y-2 text-slate-300 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Cylinder Liner</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Piston</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Connecting Rod</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Piston Rod</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="space-y-2">
+                  <h4 className="text-accent-blue font-tech text-xs uppercase tracking-widest mb-3">Control Systems</h4>
+                  <ul className="space-y-2 text-slate-300 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Exhaust Valve and Seat</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Fuel Pump</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Camshaft</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Water & Oil Pump</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Governor</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </FadeInOnScroll>
+        </div>
+      </section>
+
+      {/* Section 03: Why Choose Us */}
       <section className="bg-white/[0.02] py-24 md:py-32 border-y border-white/[0.06]">
         <div className="section-container">
           <FadeInOnScroll>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
               <div className="max-w-2xl">
-                <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-accent-blue mb-4">02. Core Capabilities</p>
+                <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-accent-blue mb-4">03. Core Capabilities</p>
                 <h2 className="heading-display">
                   Why Choose <span className="text-accent-blue italic">Us.</span>
                 </h2>
@@ -334,7 +452,211 @@ export default function AboutPage() {
         </div>
       </section>
 
- 
+      {/* Section 04: MACHINERY */}
+      <section className="py-24 md:py-32 bg-white/[0.02] border-y border-white/[0.06] overflow-hidden">
+        <div className="section-container">
+          <FadeInOnScroll>
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-16">
+              <div>
+                <div className="flex items-center gap-4 mb-4">
+                  <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-accent-blue">04. MACHINERY</p>
+                  <div className="h-px w-32 bg-accent-blue/10" />
+                </div>
+                <h2 className="heading-display mb-4">
+                  Ship <span className="text-accent-blue italic">Machinery.</span>
+                </h2>
+                <p className="max-w-md text-slate-600 leading-relaxed text-sm font-medium">
+                  Large stock of complete equipment available with test report and guaranteed performance.
+                </p>
+              </div>
+              
+              {/* Performance Stats */}
+              <div className="text-center lg:text-right">
+                <div className="text-4xl md:text-5xl font-black text-accent-blue mb-2">1000+</div>
+                <div className="text-xs font-tech uppercase tracking-widest text-slate-500">Machinery Supplied</div>
+              </div>
+            </div>
+          </FadeInOnScroll>
+
+          <FadeInOnScroll delay={0.2}>
+            <div className="p-8 rounded-[2rem] bg-dark-card border border-white/[0.08] mb-16">
+              <p className="text-slate-300 leading-relaxed text-lg mb-8">
+                Machinery reconditioned and tested with high quality standards and performance checked on test bench. 1000's of complete machinery supplied so far with successful performance in ships and industries.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="space-y-2">
+                  <h4 className="text-accent-blue font-tech text-xs uppercase tracking-widest mb-3">Air Systems</h4>
+                  <ul className="space-y-2 text-slate-300 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Air Compressor</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Air Starter</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="space-y-2">
+                  <h4 className="text-accent-blue font-tech text-xs uppercase tracking-widest mb-3">Hydraulic Systems</h4>
+                  <ul className="space-y-2 text-slate-300 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Hydraulic Equipment</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Pump</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Governor</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="space-y-2">
+                  <h4 className="text-accent-blue font-tech text-xs uppercase tracking-widest mb-3">Processing Systems</h4>
+                  <ul className="space-y-2 text-slate-300 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Purifier</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Refrigeration Compressor</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Heat Exchanger</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="space-y-2">
+                  <h4 className="text-accent-blue font-tech text-xs uppercase tracking-widest mb-3">Power Systems</h4>
+                  <ul className="space-y-2 text-slate-300 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Turbocharger</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Fresh Water Generator</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Turbine</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </FadeInOnScroll>
+        </div>
+      </section>
+
+      {/* Section 05: WORKSHOP */}
+      <section className="py-24 md:py-32 bg-gradient-to-b from-white/[0.02] to-background overflow-hidden">
+        <div className="section-container">
+          <FadeInOnScroll>
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-16">
+              <div>
+                <div className="flex items-center gap-4 mb-4">
+                  <p className="font-tech text-xs font-bold uppercase tracking-[0.4em] text-accent-blue">05. WORKSHOP</p>
+                  <div className="h-px w-32 bg-accent-blue/10" />
+                </div>
+                <h2 className="heading-display mb-4">
+                  Technical <span className="text-accent-blue italic">Services.</span>
+                </h2>
+                <p className="max-w-md text-slate-600 leading-relaxed text-sm font-medium">
+                  The most experienced workshop near Alang ship breaking yards in India with abundant knowledge of marine and industrial engineering since 1965.
+                </p>
+              </div>
+              
+              {/* Experience Badge */}
+              <div className="text-center lg:text-right">
+                <div className="text-4xl md:text-5xl font-black text-accent-blue mb-2">1965</div>
+                <div className="text-xs font-tech uppercase tracking-widest text-slate-500">Since</div>
+              </div>
+            </div>
+          </FadeInOnScroll>
+
+          <FadeInOnScroll delay={0.2}>
+            <div className="p-8 rounded-[2rem] bg-dark-card border border-white/[0.08] mb-16">
+              <p className="text-slate-300 leading-relaxed text-lg mb-8">
+                Pioneer to implement in house N.D. test facility, qualified engineers, certified instruments and verified process, fulfill norms of Class Inspection for second-hand parts in our workshop.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <h4 className="text-accent-blue font-tech text-xs uppercase tracking-widest mb-3">Testing Services</h4>
+                  <ul className="space-y-2 text-slate-300 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Laser Alignment</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Magnaflux Crack Test</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Hardness Test</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Alignment Test</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="space-y-2">
+                  <h4 className="text-accent-blue font-tech text-xs uppercase tracking-widest mb-3">Inspection Services</h4>
+                  <ul className="space-y-2 text-slate-300 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Ultrasonic Test</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Roughness Test</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Hydraulic Pressure Test</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Calibration & Tolerance Check</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="space-y-2">
+                  <h4 className="text-accent-blue font-tech text-xs uppercase tracking-widest mb-3">Maintenance Services</h4>
+                  <ul className="space-y-2 text-slate-300 text-sm">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Sand Blast & Chemical Clean</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Performance Test of Machinery</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 bg-accent-blue rounded-full mt-2 flex-shrink-0" />
+                      <span>Class Inspection</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </FadeInOnScroll>
+        </div>
+      </section>
 
       <TestimonialsSection />
       <FooterSection />

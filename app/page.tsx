@@ -1,5 +1,6 @@
 ﻿import { Header } from "@/components/header";
 import { CategoryHeroSection } from "@/components/sections/category-hero-section";
+import { WhyChooseUsSection } from "@/components/sections/why-choose-us-section";
 import { SectionWrapper } from "@/components/section-wrapper";
 import dynamic from "next/dynamic";
 import type { Metadata } from 'next'
@@ -49,9 +50,6 @@ export default function Home() {
         subtitle="Featured Inventory."
       />
 
-      <SectionWrapper>
-        <PhilosophySection />
-      </SectionWrapper>
       
       <SectionWrapper>
         <AboutPreviewSection />

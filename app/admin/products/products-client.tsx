@@ -8,6 +8,7 @@ import { Plus, Package, Star, Edit, CheckSquare } from "lucide-react";
 import { DivisionSwitcher } from "@/components/admin/division-switcher";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { removeBackgroundClient } from "@/lib/background-removal-client";
 
 export function ProductsContent() {
   const searchParams = useSearchParams();
