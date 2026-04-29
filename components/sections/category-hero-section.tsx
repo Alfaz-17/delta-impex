@@ -179,8 +179,8 @@ export function CategoryHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="relative w-full mt-[-3.5rem]"
-          style={{ height: "30vh" }}
+          className="relative w-full mt-[-3rem]"
+          style={{ height: "32vh" }}
         >
           <div className="h-full flex flex-col items-center justify-start px-6">
             <div className="flex items-center gap-3 mb-[-2]">
@@ -269,15 +269,7 @@ export function CategoryHeroSection() {
           }} 
         />
         
-        {/* Back Link */}
-        <Link
-          href="/"
-          className="absolute top-4 left-4 z-20 flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-all"
-        >
-          <ArrowLeft className="w-4 h-4 text-slate-700" />
-          <span className="text-sm font-medium text-slate-700">Back</span>
-        </Link>
-
+        
         {/* Ship image — compact */}
         <motion.div
           initial={{ opacity: 0, y: -16 }}
@@ -343,7 +335,7 @@ export function CategoryHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="px-4 py-5 mt-[-2rem]"
+          className="px-4 py-5"
         >
           <div className="flex items-center gap-3 mb-4">
             <p className="text-[9px] mb-[-1rem] font-black uppercase tracking-[0.4em] text-accent-blue/80">

@@ -221,6 +221,19 @@ export default function ContactPage() {
                     </a>
                   </div>
                 </div>
+
+                <div className="relative overflow-hidden p-8 rounded-[2.5rem] border border-white/[0.06] bg-dark-card shadow-lg">
+                  <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.5) 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
+                  <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-primary/20 blur-[50px]" />
+                  <div className="relative z-10">
+                    <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-accent-blue !mb-4">Owner</p>
+                    <p className="font-display text-lg font-bold text-white mb-2">Anas Malek</p>
+                    <p className="text-sm text-slate-400 mb-4">Managing Director & Owner</p>
+                    <a href="https://wa.me/91992599945" target="_blank" rel="noopener noreferrer" className="text-accent-blue font-tech text-xs font-bold tracking-[0.2em] flex items-center gap-2 hover:underline">
+                      Contact Owner <ChevronRight size={14} />
+                    </a>
+                  </div>
+                </div>
               </div>
             </FadeInOnScroll>
           </div>

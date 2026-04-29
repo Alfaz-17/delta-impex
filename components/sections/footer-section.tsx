@@ -93,6 +93,12 @@ export function FooterSection() {
                 View on Google Maps
               </a>
             </div>
+            <div className="mt-6 text-sm text-slate-400">
+              <p className="font-medium text-white">Owner</p>
+              <p className="mt-1">
+                Anas Malek
+              </p>
+            </div>
           </div>
 
           <div>
