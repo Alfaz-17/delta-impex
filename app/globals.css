@@ -135,6 +135,49 @@ html.lenis, html.lenis body {
   --color-accent-glow: var(--accent-glow);
 }
 
+/* ── 3D Effects for Category Hero ── */
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.category-card-3d {
+  transform: perspective(1000px) rotateX(5deg) rotateY(0deg);
+  transition: transform 0.3s ease;
+}
+
+.category-card-3d:hover {
+  transform: perspective(1000px) rotateX(0deg) rotateY(5deg) scale(1.05);
+}
+
+.image-3d-effect {
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
+  transition: all 0.3s ease;
+}
+
+.image-3d-effect:hover {
+  filter: drop-shadow(0 25px 50px rgba(0,0,0,0.2));
+  transform: scale(1.1) rotate(3deg);
+}
+
+/* ── Responsive Grid Fixes ── */
+@media (max-width: 640px) {
+  .category-grid-mobile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .category-grid-tablet {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -397,9 +440,32 @@ html.lenis, html.lenis body {
   @apply backdrop-blur-2xl bg-white/5 border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
 }
 
-.text-gradient-silver {
-  background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+/* ── Scrollytelling Enhancements ── */
+.canvas-container {
+  mask-image: linear-gradient(to bottom, 
+    transparent, 
+    black 10%, 
+    black 90%, 
+    transparent
+  );
+}
+
+@keyframes subtle-zoom {
+  from { transform: scale(1.05); }
+  to { transform: scale(1); }
+}
+
+.animate-subtle-zoom {
+  animation: subtle-zoom 20s ease-out forwards;
+}
+
+.text-shadow-premium {
+  text-shadow: 0 0 40px rgba(30, 95, 166, 0.3), 0 0 80px rgba(30, 95, 166, 0.1);
+}
+
+.scrolly-text-mask {
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
   -webkit-background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+

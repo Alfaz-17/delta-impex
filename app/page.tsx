@@ -1,5 +1,5 @@
 ﻿import { Header } from "@/components/header";
-import { HeroSection } from "@/components/sections/hero-section";
+import { CategoryHeroSection } from "@/components/sections/category-hero-section";
 import { SectionWrapper } from "@/components/section-wrapper";
 import dynamic from "next/dynamic";
 import type { Metadata } from 'next'
@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
-      <HeroSection />
+      <CategoryHeroSection />
 
       {/* Dynamic Marine Featured Section - Moved Up */}
       <FeaturedProductsSection 

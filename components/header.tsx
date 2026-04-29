@@ -165,21 +165,22 @@ export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-[100]">
       <nav 
-        className={`max-w-full mx-auto px-6 lg:px-12 transition-all duration-500 border-b relative overflow-hidden ${
-          isScrolled || !isHome
-            ? "bg-dark-base/98 backdrop-blur-2xl py-4 shadow-md border-white/10" 
-            : "bg-transparent border-transparent py-8"
-        }`}
+        className="max-w-full mx-auto px-6 lg:px-12 transition-all duration-500 border-b relative overflow-hidden bg-dark-base/95 backdrop-blur-xl py-6 shadow-md border-white/10"
       >
-        {/* Subtle Horizontal Glow for Sticky Header */}
+        {/* Enhanced Scrolling Effects */}
         <div 
-          className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-blue/30 to-transparent transition-opacity duration-500 ${isScrolled || !isHome ? "opacity-100" : "opacity-0"}`}
+          className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-60"}`}
         />
         <div 
-          className={`absolute inset-0 bg-gradient-to-b from-accent-blue/5 to-transparent pointer-events-none transition-opacity duration-500 ${isScrolled || !isHome ? "opacity-100" : "opacity-0"}`}
+          className={`absolute inset-0 bg-gradient-to-b from-accent-blue/8 to-transparent pointer-events-none transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-40"}`}
+        />
+        {/* Scroll Progress Indicator */}
+        <div
+          className="absolute bottom-0 left-0 h-2 bg-linear-to-r from-accent-blue to-primary transition-all duration-300 ease-out"
+          style={{ width: `${scrollProgress * 100}%` }}
         />
         
-        <div className="flex items-center justify-between h-[50px] relative z-10">
+        <div className="flex items-center justify-between h-[60px] relative z-10">
           
           {/* Logo - Left */}
           <div className="flex items-center">
@@ -192,7 +193,7 @@ export function Header() {
                   src="/logo.png"
                   alt="Delta Impex Logo"
                   fill
-                  className={`object-contain object-left transition-all duration-500 ${!(isScrolled || !isHome) ? "brightness-0 invert" : ""}`}
+                  className="object-contain object-left transition-all duration-500"
                   priority
                 />
               </div>
@@ -303,8 +304,8 @@ export function Header() {
         </div>
 
         {/* Scroll Progress Line - Updated to Dark */}
-        <motion.div 
-          className="absolute bottom-0 left-0 right-0 h-[2px] origin-left z-[60] bg-white"
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-[4px] origin-left z-[60] bg-white"
           style={{ scaleX: scrollProgress }}
         />
       </nav>
