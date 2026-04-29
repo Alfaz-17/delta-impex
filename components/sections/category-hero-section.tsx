@@ -179,7 +179,7 @@ export function CategoryHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="relative w-full"
+          className="relative w-full mt-[-3.5rem]"
           style={{ height: "30vh" }}
         >
           <div className="h-full flex flex-col items-center justify-start px-6">
@@ -334,7 +334,7 @@ export function CategoryHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="px-4 py-5"
+          className="px-4 py-5 mt-[-2rem]"
         >
           <div className="flex items-center gap-3 mb-4">
             <p className="text-[9px] mb-[-1rem] font-black uppercase tracking-[0.4em] text-accent-blue/80">
