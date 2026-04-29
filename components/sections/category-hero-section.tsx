@@ -170,7 +170,7 @@ export function CategoryHeroSection() {
       </section>
 
       {/* ═════════════════════════════════════════
-          MOBILE HERO  — below md only
+          MOBILE SECTIONS — below md only
       ═══════════════════════════════════════ */}
       <section
         className="md:hidden relative w-full mt-20 overflow-hidden"
@@ -200,6 +200,7 @@ export function CategoryHeroSection() {
             backgroundSize: '0.75rem 0.75rem' 
           }} 
         />
+        
         {/* Ship image — compact */}
         <motion.div
           initial={{ opacity: 0, y: -16 }}
@@ -260,17 +261,56 @@ export function CategoryHeroSection() {
           </div>
         </motion.div>
 
-        {/* Check pattern overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.01]"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(91,155,213,0.05) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(91,155,213,0.05) 1px, transparent 1px)
-            `,
-            backgroundSize: '2rem 2rem'
-          }}
-        />
+        {/* Categories Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="px-4 py-5"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <p className="text-[9px] mb-[-1rem] font-black uppercase tracking-[0.4em] text-accent-blue/80">
+              Categories
+            </p>
+          </div>
+
+          {isLoading ? (
+            <div className="grid grid-cols-4 gap-5">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="w-24 h-24 bg-slate-100 rounded-lg animate-pulse" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-4 gap-5">
+              {categories.slice(0, 6).map((category) => (
+                <Link
+                  key={category._id}
+                  href={`/products?category=${category.slug}`}
+                  className="flex flex-col items-center gap-2 py-3 px-1 rounded-lg border border-slate-100 active:scale-95 transition-transform"
+                >
+                  <div className="w-24 h-24 flex items-center justify-center overflow-hidden">
+                    {category.imageUrl ? (
+                      <img
+                        src={category.imageUrl}
+                        alt={category.name}
+                        className="w-full h-full object-contain transition-transform group-hover:scale-110"
+                        onError={(e) => {
+                          const t = e.target as HTMLImageElement;
+                          t.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <Globe className="w-8 h-8 text-accent-blue/50" />
+                    )}
+                  </div>
+                  <span className="text-[13px] font-bold uppercase tracking-wide text-slate-700 text-center leading-tight">
+                    {category.name}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          )}
+        </motion.div>
       </section>
 
       {/* ═══════════════════════════════════════
@@ -362,81 +402,6 @@ export function CategoryHeroSection() {
             </div>
           )}
         </motion.div>
-      </section>
-
-      {/* ═══════════════════════════════════════
-          MOBILE CATEGORIES  — below md only
-      ═══════════════════════════════════════ */}
-      <section
-        className="md:hidden relative mt-[-1rem] w-full px-4 py-5"
-        style={{
-          background: "linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e6f2ff 100%)",
-        }}
-      >
-        {/* Square Grid Pattern like Hero */}
-        <div 
-          className="absolute inset-0 opacity-[0.15]" 
-          style={{ 
-            backgroundImage: `
-              linear-gradient(to right, rgba(91,155,213,0.4) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(91,155,213,0.4) 1px, transparent 1px)
-            `,
-            backgroundSize: '3rem 3rem' 
-          }} 
-        />
-        {/* Secondary Fine Grid */}
-        <div 
-          className="absolute inset-0 opacity-[0.08]" 
-          style={{ 
-            backgroundImage: `
-              linear-gradient(to right, rgba(91,155,213,0.2) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(91,155,213,0.2) 1px, transparent 1px)
-            `,
-            backgroundSize: '0.75rem 0.75rem' 
-          }} 
-        />
-        <div className="flex items-center gap-3 mb-4">
-          <p className="text-[9px] mb-[-1rem] font-black uppercase tracking-[0.4em] text-accent-blue/80">
-            Categories
-          </p>
-        </div>
-
-        {isLoading ? (
-          <div className="grid grid-cols-4 gap-5">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="w-24 h-24 bg-slate-100 rounded-lg animate-pulse" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-4 gap-5">
-            {categories.slice(0, 6).map((category) => (
-              <Link
-                key={category._id}
-                href={`/products?category=${category.slug}`}
-                className="flex flex-col items-center gap-2 py-3 px-1 rounded-lg border border-slate-100 active:scale-95 transition-transform"
-              >
-                <div className="w-20 h-23 flex items-center justify-center overflow-hidden">
-                  {category.imageUrl ? (
-                    <img
-                      src={category.imageUrl}
-                      alt={category.name}
-                      className="w-full h-full object-contain"
-                      onError={(e) => {
-                        const t = e.target as HTMLImageElement;
-                        t.style.display = "none";
-                      }}
-                    />
-                  ) : (
-                    <Globe className="w-10 h-10 text-accent-blue/50" />
-                  )}
-                </div>
-                <span className="text-[11px] font-bold uppercase tracking-wide text-slate-600 text-center leading-tight px-1">
-                  {category.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-        )}
       </section>
     </>
   );
