@@ -91,8 +91,8 @@ export function Header() {
 
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="relative h-10 w-48 md:w-56 transition-transform hover:scale-105 duration-300">
-              <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[450px] h-[200px] mt-2 pointer-events-none">
+            <Link href="/" className="relative h-10 w-32 md:w-48 lg:w-56 transition-transform hover:scale-105 duration-300">
+              <div className="absolute top-1/2 -translate-y-1/2 left-0 w-[300px] h-[150px] md:w-[450px] md:h-[200px] mt-2 pointer-events-none">
                 <Image
                   src="/logo.png"
                   alt="Delta Impex Logo"
