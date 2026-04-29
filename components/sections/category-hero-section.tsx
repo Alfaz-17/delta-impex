@@ -140,7 +140,7 @@ export function CategoryHeroSection() {
           MOBILE HERO  — below md only
       ═══════════════════════════════════════ */}
       <section
-        className="md:hidden relative w-full mt-25 overflow-hidden"
+        className="md:hidden relative w-full mt-20 overflow-hidden"
         style={{
           background: "linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e6f2ff 100%)",
         }}
@@ -172,35 +172,35 @@ export function CategoryHeroSection() {
         >
           <div className="flex items-center gap-2">
             <span className="h-[2px] w-6 bg-accent-blue rounded-full" />
-            <p className="label-tech text-[10px] tracking-widest">Delta Impex Global</p>
+            <p className="label-tech text-[10px] tracking-widest font-sans">Delta Impex Global</p>
           </div>
 
           <h1
-            className="text-slate-900 uppercase font-black leading-[1.1]"
-            style={{ fontSize: "clamp(1.75rem, 8vw, 2.4rem)", letterSpacing: "-0.02em" }}
+            className="text-slate-900 uppercase font-sans leading-[1.1]"
+            style={{ fontSize: "clamp(1.75rem, 6vw, 2.4rem)", letterSpacing: "-0.02em" }}
           >
             Marine &amp;{" "}
             <span className="text-accent-blue italic">Industrial</span>{" "}
             Suppliers.
           </h1>
 
-          <p className="text-slate-500 text-sm leading-snug max-w-xs">
+          <p className="text-slate-500 text-sm leading-snug max-w-xs font-sans">
             Precision sourcing for mission-critical engine components and industrial machinery.
           </p>
 
           <div className="flex flex-col gap-2 pt-1">
             <Link
               href="/products"
-              className="flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 text-white rounded-full font-bold active:scale-95 transition-transform shadow-md"
+              className="flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 text-white rounded-full font-bold active:scale-95 transition-transform shadow-md font-sans"
             >
-              <span className="text-sm font-bold tracking-wide">Explore Catalog</span>
+              <span className="text-sm font-bold tracking-wide font-sans">Explore Catalog</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/contact"
-              className="flex items-center justify-center px-5 py-3 border-2 border-slate-200 text-slate-900 rounded-full font-bold active:scale-95 transition-transform text-sm bg-white/70"
+              className="flex items-center justify-center px-5 py-3 border-2 border-slate-200 text-slate-900 rounded-full font-bold hover:border-accent-blue/40 hover:text-accent-blue transition-all active:scale-95 btn-text bg-white/60 backdrop-blur-sm font-sans"
             >
-              Contact Expert
+              <span className="font-sans">Contact Expert</span>
             </Link>
           </div>
         </motion.div>
@@ -264,7 +264,7 @@ export function CategoryHeroSection() {
                         <Globe className="w-8 h-8 text-accent-blue/50" />
                       )}
                     </div>
-                    <span className="text-[8px] font-bold uppercase tracking-wide text-slate-700 text-center leading-tight">
+                    <span className="text-[13px] font-bold uppercase tracking-wide text-slate-700 text-center leading-tight">
                       {category.name}
                     </span>
                   </Link>
@@ -293,13 +293,13 @@ export function CategoryHeroSection() {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-5 gap-5">
-            {[...Array(10)].map((_, i) => (
+          <div className="grid grid-cols-4 gap-5">
+            {[...Array(8)].map((_, i) => (
               <div key={i} className="w-24 h-24 bg-slate-100 rounded-lg animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-5 gap-5">
+          <div className="grid grid-cols-4 gap-5">
             {categories.slice(0, 6).map((category) => (
               <Link
                 key={category._id}
