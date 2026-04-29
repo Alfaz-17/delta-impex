@@ -41,12 +41,11 @@ export function CategoryHeroSection() {
   return (
     <>
       {/* ═══════════════════════════════════════
-          DESKTOP HERO  — md and above only
+          DESKTOP SECTIONS — md and above only
       ═══════════════════════════════════════ */}
       <section
         className="hidden md:block relative w-full mt-7 mb-[-3rem] overflow-hidden"
         style={{
-          height: "80vh",
           background: "linear-gradient(135deg, #ffffff 0%, #e0f4ff 50%, #d1e7ff 100%)",
         }}
       >
@@ -72,99 +71,168 @@ export function CategoryHeroSection() {
             backgroundSize: '0.75rem 0.75rem' 
           }} 
         />
-        {/* Decorative elements */}
-        <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-br from-accent-blue/10 to-transparent rounded-full blur-2xl opacity-60" />
-        <div className="absolute bottom-10 right-10 w-40 h-40 bg-gradient-to-tl from-accent-blue/8 to-transparent rounded-full blur-2xl opacity-50" />
-        <div className="absolute top-20 left-20 w-24 h-24 opacity-20">
-          <Check className="w-full h-full text-accent-blue" strokeWidth={1} />
-        </div>
-        <div className="absolute top-32 right-32 w-20 h-20 opacity-15">
-          <Circle className="w-full h-full text-accent-blue" strokeWidth={1} />
-        </div>
-        <div className="absolute bottom-32 left-32 w-32 h-32 opacity-12">
-          <Square className="w-full h-full text-accent-blue" strokeWidth={1} />
-        </div>
+        
+        {/* Hero Section */}
         <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `linear-gradient(to right, rgba(91,155,213,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(91,155,213,0.1) 1px, transparent 1px)`,
-            backgroundSize: "3rem 3rem",
-          }}
-        />
-        {/* Check pattern overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.01]"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(91,155,213,0.05) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(91,155,213,0.05) 1px, transparent 1px)
-            `,
-            backgroundSize: '2rem 2rem'
-          }}
-        />
-        <div className="absolute top-8 left-8 w-8 h-8 border-t border-l border-accent-blue/30" />
-        <div className="absolute top-8 right-8 w-8 h-8 border-t border-r border-accent-blue/30" />
-        <div className="absolute bottom-8 left-8 w-8 h-8 border-b border-l border-accent-blue/30" />
-        <div className="absolute bottom-8 right-8 w-8 h-8 border-b border-r border-accent-blue/30" />
-
-        {/* Left: Ship image */}
-        <motion.div
-          initial={{ opacity: 0, x: -80, scale: 0.95 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute inset-y-0 left-0 flex items-center justify-center"
-          style={{ width: "55%" }}
+          className="relative w-full"
+          style={{ height: "80vh" }}
         >
-          <div className="relative w-full h-full max-w-4xl">
-            <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/5 via-transparent to-accent-blue/3 rounded-2xl" />
-            <Image
-              src="/hero.png"
-              alt="Marine Supply Ship"
-              fill
-              sizes="55vw"
-              className="object-contain object-center relative z-10"
-              priority
-            />
+          {/* Decorative elements */}
+          <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-br from-accent-blue/10 to-transparent rounded-full blur-2xl opacity-60" />
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-gradient-to-tl from-accent-blue/8 to-transparent rounded-full blur-2xl opacity-50" />
+          <div className="absolute top-20 left-20 w-24 h-24 opacity-20">
+            <Check className="w-full h-full text-accent-blue" strokeWidth={1} />
           </div>
-        </motion.div>
+          <div className="absolute top-32 right-32 w-20 h-20 opacity-15">
+            <Circle className="w-full h-full text-accent-blue" strokeWidth={1} />
+          </div>
+          <div className="absolute bottom-32 left-32 w-32 h-32 opacity-12">
+            <Square className="w-full h-full text-accent-blue" strokeWidth={1} />
+          </div>
+          <div
+            className="absolute inset-0 opacity-[0.02]"
+            style={{
+              backgroundImage: `linear-gradient(to right, rgba(91,155,213,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(91,155,213,0.1) 1px, transparent 1px)`,
+              backgroundSize: "3rem 3rem",
+            }}
+          />
+          {/* Check pattern overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.01]"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, rgba(91,155,213,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(91,155,213,0.05) 1px, transparent 1px)
+              `,
+              backgroundSize: '2rem 2rem'
+            }}
+          />
+          <div className="absolute top-8 left-8 w-8 h-8 border-t border-l border-accent-blue/30" />
+          <div className="absolute top-8 right-8 w-8 h-8 border-t border-r border-accent-blue/30" />
+          <div className="absolute bottom-8 left-8 w-8 h-8 border-b border-l border-accent-blue/30" />
+          <div className="absolute bottom-8 right-8 w-8 h-8 border-b border-r border-accent-blue/30" />
 
-        {/* Right: Content */}
+          {/* Left: Ship image */}
+          <motion.div
+            initial={{ opacity: 0, x: -80, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-y-0 left-0 flex items-center justify-center"
+            style={{ width: "55%" }}
+          >
+            <div className="relative w-full h-full max-w-4xl">
+              <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/5 via-transparent to-accent-blue/3 rounded-2xl" />
+              <Image
+                src="/hero.png"
+                alt="Marine Supply Ship"
+                fill
+                sizes="55vw"
+                className="object-contain object-center relative z-10"
+                priority
+              />
+            </div>
+          </motion.div>
+
+          {/* Right: Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-y-0 right-0 flex mt-7 items-center justify-center pr-10 lg:pr-16"
+            style={{ width: "45%", paddingLeft: "2rem" }}
+          >
+            <div className="w-full max-w-lg space-y-4">
+              <div className="flex items-center gap-3">
+                <span className="h-[2px] w-8 bg-accent-blue rounded-full" />
+                <p className="label-tech">Delta Impex Global</p>
+              </div>
+              <h1 className="heading-display !text-slate-900 uppercase">
+                Marine &amp; <br />
+                <span className="text-accent-blue italic">Industrial</span>
+                <br />
+                Suppliers.
+              </h1>
+              <p className="body-premium">
+                Precision sourcing for mission-critical engine components and industrial machinery.
+              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  href="/products"
+                  className="px-6 py-3 bg-slate-900 text-white rounded-full font-bold flex items-center gap-2 transition-all hover:scale-105 hover:bg-accent shadow-lg"
+                >
+                  <span className="btn-text">Explore Catalog</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="px-6 py-3 border-2 border-slate-200 text-slate-900 rounded-full font-bold hover:border-accent-blue/40 hover:text-accent-blue transition-all active:scale-95 btn-text bg-white/60 backdrop-blur-sm"
+                >
+                  Contact Expert
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Categories Section */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute inset-y-0 right-0 flex mt-7 items-center justify-center pr-10 lg:pr-16"
-          style={{ width: "45%", paddingLeft: "2rem" }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="relative w-full"
+          style={{ height: "30vh" }}
         >
-          <div className="w-full max-w-lg space-y-4">
-            <div className="flex items-center gap-3">
-              <span className="h-[2px] w-8 bg-accent-blue rounded-full" />
-              <p className="label-tech">Delta Impex Global</p>
+          <div className="h-full flex flex-col items-center justify-start px-6">
+            <div className="flex items-center gap-3 mb-[-2]">
+              <span className="h-px w-6 bg-accent-blue/50 rounded-full" />
+              <p className="text-[8px] font-black uppercase tracking-[0.45em] text-accent-blue/80">
+                Categories
+              </p>
+              <span className="flex-1 h-px bg-slate-200 rounded-full" />
             </div>
-            <h1 className="heading-display !text-slate-900 uppercase">
-              Marine &amp; <br />
-              <span className="text-accent-blue italic">Industrial</span>
-              <br />
-              Suppliers.
-            </h1>
-            <p className="body-premium">
-              Precision sourcing for mission-critical engine components and industrial machinery.
-            </p>
-            <div className="flex flex-wrap items-center gap-2">
-              <Link
-                href="/products"
-                className="px-6 py-3 bg-slate-900 text-white rounded-full font-bold flex items-center gap-2 transition-all hover:scale-105 hover:bg-accent shadow-lg"
-              >
-                <span className="btn-text">Explore Catalog</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-              <Link
-                href="/contact"
-                className="px-6 py-3 border-2 border-slate-200 text-slate-900 rounded-full font-bold hover:border-accent-blue/40 hover:text-accent-blue transition-all active:scale-95 btn-text bg-white/60 backdrop-blur-sm"
-              >
-                Contact Expert
-              </Link>
-            </div>
+
+            {isLoading ? (
+              <div className="grid grid-cols-5 gap-5 max-w-5xl">
+                {[...Array(10)].map((_, i) => (
+                  <div key={i} className="w-24 h-24 bg-slate-100 rounded-lg animate-pulse" />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-5 gap-5 max-w-5xl">
+                {categories.slice(0, 6).map((category) => (
+                  <motion.div
+                    key={category._id}
+                    whileHover={{ y: -3, scale: 1.08 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex flex-col items-center"
+                  >
+                    <Link
+                      href={`/products?category=${category.slug}`}
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <div className="w-28 h-28 flex items-center justify-center overflow-hidden">
+                        {category.imageUrl ? (
+                          <img
+                            src={category.imageUrl}
+                            alt={category.name}
+                            className="w-full h-full object-contain transition-transform group-hover:scale-110"
+                            onError={(e) => {
+                              const t = e.target as HTMLImageElement;
+                              t.style.display = "none";
+                            }}
+                          />
+                        ) : (
+                          <Globe className="w-8 h-8 text-accent-blue/50" />
+                        )}
+                      </div>
+                      <span className="text-[13px] font-bold uppercase tracking-wide text-slate-700 text-center leading-tight">
+                        {category.name}
+                      </span>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </div>
         </motion.div>
       </section>
@@ -288,7 +356,7 @@ export function CategoryHeroSection() {
                   href={`/products?category=${category.slug}`}
                   className="flex flex-col items-center gap-2 py-3 px-1 rounded-lg border border-slate-100 active:scale-95 transition-transform"
                 >
-                  <div className="w-24 h-24 flex items-center justify-center overflow-hidden">
+                  <div className="w-20 h-24 flex items-center justify-center overflow-hidden">
                     {category.imageUrl ? (
                       <img
                         src={category.imageUrl}
@@ -303,101 +371,10 @@ export function CategoryHeroSection() {
                       <Globe className="w-8 h-8 text-accent-blue/50" />
                     )}
                   </div>
-                  <span className="text-[13px] font-bold uppercase tracking-wide text-slate-700 text-center leading-tight">
+                  <span className="text-[11px] font-bold uppercase tracking-wide text-slate-700 text-center leading-tight">
                     {category.name}
                   </span>
                 </Link>
-              ))}
-            </div>
-          )}
-        </motion.div>
-      </section>
-
-      {/* ═══════════════════════════════════════
-          DESKTOP CATEGORIES  — md and above only
-      ═══════════════════════════════════════ */}
-      <section
-        className="hidden md:block relative w-full overflow-hidden"
-        style={{
-          height: "30vh",
-          background: "linear-gradient(135deg, #ffffff 0%, #e0f4ff 50%, #d1e7ff 100%)",
-        }}
-      >
-        {/* Square Grid Pattern like Hero */}
-        <div 
-          className="absolute inset-0 opacity-[0.15]" 
-          style={{ 
-            backgroundImage: `
-              linear-gradient(to right, rgba(91,155,213,0.4) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(91,155,213,0.4) 1px, transparent 1px)
-            `,
-            backgroundSize: '3rem 3rem' 
-          }} 
-        />
-        {/* Secondary Fine Grid */}
-        <div 
-          className="absolute inset-0 opacity-[0.08]" 
-          style={{ 
-            backgroundImage: `
-              linear-gradient(to right, rgba(91,155,213,0.2) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(91,155,213,0.2) 1px, transparent 1px)
-            `,
-            backgroundSize: '0.75rem 0.75rem' 
-          }} 
-        />
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="h-full flex flex-col items-center justify-start px-6"
-        >
-          <div className="flex items-center gap-3 mb-[-2]">
-            <span className="h-px w-6 bg-accent-blue/50 rounded-full" />
-            <p className="text-[8px] font-black uppercase tracking-[0.45em] text-accent-blue/80">
-              Categories
-            </p>
-            <span className="flex-1 h-px bg-slate-200 rounded-full" />
-          </div>
-
-          {isLoading ? (
-            <div className="grid grid-cols-5 gap-5 max-w-5xl">
-              {[...Array(10)].map((_, i) => (
-                <div key={i} className="w-24 h-24 bg-slate-100 rounded-lg animate-pulse" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-5 gap-5 max-w-5xl">
-              {categories.slice(0, 6).map((category) => (
-                <motion.div
-                  key={category._id}
-                  whileHover={{ y: -3, scale: 1.08 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex flex-col items-center"
-                >
-                  <Link
-                    href={`/products?category=${category.slug}`}
-                    className="flex flex-col items-center gap-2"
-                  >
-                    <div className="w-28 h-28 flex items-center justify-center overflow-hidden">
-                      {category.imageUrl ? (
-                        <img
-                          src={category.imageUrl}
-                          alt={category.name}
-                          className="w-full h-full object-contain transition-transform group-hover:scale-110"
-                          onError={(e) => {
-                            const t = e.target as HTMLImageElement;
-                            t.style.display = "none";
-                          }}
-                        />
-                      ) : (
-                        <Globe className="w-8 h-8 text-accent-blue/50" />
-                      )}
-                    </div>
-                    <span className="text-[13px] font-bold uppercase tracking-wide text-slate-700 text-center leading-tight">
-                      {category.name}
-                    </span>
-                  </Link>
-                </motion.div>
               ))}
             </div>
           )}
