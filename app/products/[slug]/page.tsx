@@ -127,7 +127,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <div className="min-h-screen bg-background mt-10 text-foreground flex flex-col">
        <Header />
        <script
          type="application/ld+json"
@@ -137,7 +137,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
          type="application/ld+json"
          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
        />
-       <main className="flex-1 pt-24 pb-16 md:pt-32 md:pb-24 section-container">
+       <main className="flex-1 pt-24  pb-16 md:pt-32 md:pb-24 section-container">
           {/* Back button */}
           <Link href={`/products?divisionSlug=${product.division?.slug || 'marine-industrial'}`} className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-8 md:mb-12">
             <ArrowLeft className="w-4 h-4 mr-2" />

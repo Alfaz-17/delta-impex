@@ -178,7 +178,7 @@ export function NewArrivalsClient() {
           backgroundSize: '3rem 3rem'
         }} />
         
-        <div className="section-container px-4 md:px-0 relative z-10">
+        <div className="section-container mt-17 px-4 md:px-0 relative z-10">
           <FadeInOnScroll>
             <div className="text-center max-w-4xl mx-auto">
               <div className="flex items-center justify-center gap-4 mb-6">
@@ -193,7 +193,7 @@ export function NewArrivalsClient() {
                 New <span className="text-accent-blue italic">Arrivals.</span>
               </h1>
               
-              <p className="max-w-2xl mx-auto text-slate-600 leading-relaxed text-sm md:text-lg font-medium mb-4 md:mb-8 px-4">
+              <p className="max-w-2xl mx-auto text-slate-600 leading-relaxed text-sm md:text-lg font-medium  mb-2 md:mb-2 px-2">
                 Discover our latest marine engine parts, machinery, and equipment. 
                 Fresh inventory added weekly with immediate availability from our ready stock.
               </p>
