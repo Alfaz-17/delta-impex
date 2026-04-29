@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Globe, Check, Circle, Square } from "lucide-react";
+import { ArrowRight, ArrowLeft, Globe, Check, Circle, Square, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -269,6 +269,15 @@ export function CategoryHeroSection() {
           }} 
         />
         
+        {/* Back Link */}
+        <Link
+          href="/"
+          className="absolute top-4 left-4 z-20 flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-all"
+        >
+          <ArrowLeft className="w-4 h-4 text-slate-700" />
+          <span className="text-sm font-medium text-slate-700">Back</span>
+        </Link>
+
         {/* Ship image — compact */}
         <motion.div
           initial={{ opacity: 0, y: -16 }}
@@ -380,6 +389,16 @@ export function CategoryHeroSection() {
           )}
         </motion.div>
       </section>
+
+      {/* WhatsApp Floating Button */}
+      <Link
+        href="https://wa.me/91992599945"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-all duration-300 hover:scale-110"
+      >
+        <MessageCircle className="w-6 h-6" />
+      </Link>
     </>
   );
 }
