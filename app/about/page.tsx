@@ -8,11 +8,6 @@ import Image from "next/image";
 import { useRef } from "react";
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 
-const focusPoints = [
-  "High-quality, reliable parts",
-  "Honest and clear communication",
-  "Long-term partnerships you can trust",
-];
 
 
 const whyChooseUsPoints = [
@@ -34,7 +29,7 @@ const whyChooseUsPoints = [
   },
 ];
 
-const productConditions = ["New", "Used", "Reconditioned"];
+const productConditions = ["New"];
 
 const roSteps = [
   {
@@ -174,7 +169,7 @@ export default function AboutPage() {
             src="/warehouse.png"
             alt="Delta Impex warehouse inventory"
             fill
-            className="object-cover opacity-80 contrast-125 saturate-50"
+            className="object-cover "
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-background" />
@@ -184,14 +179,15 @@ export default function AboutPage() {
           <div className="max-w-4xl">
             <FadeInOnScroll>
               <div className="inline-flex items-center gap-3 mb-8">
-                <span className="h-px w-12 bg-accent-blue" />
-                <p className="label-tech !text-accent-blue tracking-[0.4em]">ABOUT US</p>
+                <span className="h-px w-16 bg-gradient-to-r from-cyan-400 via-blue-500 to-accent-blue" />
+                <p className="label-tech !text-white tracking-[0.4em] bg-accent-blue/10 px-6 py-2 rounded-full border border-cyan-400/30 backdrop-blur-sm">ABOUT US</p>
+                <span className="h-px w-16 bg-gradient-to-r from-cyan-400 via-blue-500 to-accent-blue" />
               </div>
-              <h1 className="heading-display !text-white text-5xl md:text-7xl lg:text-8xl !leading-[0.9] uppercase">
+              <h1 className="heading-display !text-white text-5xl md:text-7xl lg:text-8xl !leading-[0.9] uppercase drop-shadow-2xl">
                 Marine & industrial <br />
-                supply <span className="text-accent-blue italic">solutions.</span>
+                supply <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-accent-blue">solutions.</span>
               </h1>
-              <p className="mt-10 max-w-2xl text-lg md:text-xl leading-relaxed text-slate-100/80 font-light">
+              <p className="mt-10 max-w-2xl text-lg md:text-xl leading-relaxed text-white/90 font-light backdrop-blur-sm">
                 Delta Impex is your trusted supplier for marine machinery and industrial spare parts. We make it easy, fast, and secure to get exactly what you need, wherever you are in the world.
               </p>
             </FadeInOnScroll>
@@ -214,39 +210,11 @@ export default function AboutPage() {
               
               <div className="space-y-10">
                 <ScrollRevealText text="We know how important it is to keep your ships sailing and factories running. Our goal is to make ordering spare parts and equipment as simple, fast, and stress-free as possible." />
-                
-                <div className="p-8 rounded-[2rem] bg-white/[0.02] border-l-4 border-l-accent-blue border-y border-r border-white/10 backdrop-blur-sm">
-                   <p className="text-lg md:text-xl leading-relaxed text-slate-600 font-medium italic">
-                    "We promise honest communication, fair prices, and reliable parts so you never have to worry about quality or delays."
-                   </p>
-                </div>
               </div>
             </FadeInOnScroll>
           </div>
 
-          <div className="lg:col-span-5 space-y-6">
-             <FadeInOnScroll delay={0.2}>
-                <div className="relative overflow-hidden rounded-[2rem] bg-accent-blue/[0.03] border border-accent-blue/20 p-10">
-                   <div className="absolute top-0 right-0 p-8">
-                      <span className="text-[4rem] font-tech text-accent-blue/10 leading-none select-none">TRUST</span>
-                   </div>
-                   <h3 className="heading-sub !mb-6 text-white text-2xl">Global Network</h3>
-                   <p className="text-slate-600 leading-relaxed text-lg">
-                      Thanks to our strong global connections, we can find exactly what you need—whether it's brand-new parts, used equipment, or complete systems—and deliver it to you securely.
-                   </p>
-                </div>
-             </FadeInOnScroll>
-             
-             <div className="grid grid-cols-1 gap-4">
-                {focusPoints.map((point, i) => (
-                  <FadeInOnScroll key={point} delay={0.3 + (i * 0.1)}>
-                    <div className="flex items-center gap-4 p-5 rounded-2xl bg-white/[0.01] border border-white/10 transition-colors hover:bg-white/[0.04]">
-                       <div className="h-2 w-2 rounded-full bg-accent-blue" />
-                       <span className="text-slate-600 font-tech text-xs uppercase tracking-widest">{point}</span>
-                    </div>
-                  </FadeInOnScroll>
-                ))}
-             </div>
+          <div className="lg:col-span-5">
           </div>
         </div>
       </section>

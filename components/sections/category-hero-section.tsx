@@ -179,7 +179,7 @@ export function CategoryHeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="relative w-full mt-8"
+          className="relative w-full mt-[-3rem]"
           style={{ height: "32vh" }}
         >
           <div className="h-full flex flex-col items-center justify-start px-6">
