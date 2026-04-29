@@ -47,7 +47,7 @@ export function CategoryHeroSection() {
         className="hidden md:block relative w-full mt-7 mb-[-3rem] overflow-hidden"
         style={{
           height: "80vh",
-          background: "linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e6f2ff 100%)",
+          background: "linear-gradient(135deg, #ffffff 0%, #e0f4ff 50%, #d1e7ff 100%)",
         }}
       >
         {/* Square Grid Pattern like Footer */}
@@ -175,7 +175,7 @@ export function CategoryHeroSection() {
       <section
         className="md:hidden relative w-full mt-20 overflow-hidden"
         style={{
-          background: "linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e6f2ff 100%)",
+          background: "linear-gradient(135deg, #ffffff 0%, #e0f4ff 50%, #d1e7ff 100%)",
         }}
       >
         {/* Square Grid Pattern like Hero */}
@@ -280,7 +280,7 @@ export function CategoryHeroSection() {
         className="hidden md:block relative w-full overflow-hidden"
         style={{
           height: "30vh",
-          background: "linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #e6f2ff 100%)",
+          background: "linear-gradient(135deg, #ffffff 0%, #e0f4ff 50%, #d1e7ff 100%)",
         }}
       >
         {/* Square Grid Pattern like Hero */}
@@ -415,7 +415,7 @@ export function CategoryHeroSection() {
                 href={`/products?category=${category.slug}`}
                 className="flex flex-col items-center gap-2 py-3 px-1 rounded-lg border border-slate-100 active:scale-95 transition-transform"
               >
-                <div className="w-28 h-28 flex items-center justify-center overflow-hidden">
+                <div className="w-20 h-23 flex items-center justify-center overflow-hidden">
                   {category.imageUrl ? (
                     <img
                       src={category.imageUrl}
