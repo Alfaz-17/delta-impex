@@ -97,7 +97,7 @@ export function Header() {
                   src="/logo.png"
                   alt="Delta Impex Logo"
                   fill
-                  className="object-contain object-left transition-all duration-500"
+                  className="object-contain object-left transition-all duration-500 brightness-0 invert"
                   priority
                 />
               </div>

@@ -71,7 +71,7 @@ export function FooterSection() {
                 src="/logo.png"
                 alt="Delta Impex Logo"
                 fill
-                className="object-contain object-left"
+                className="object-contain object-left brightness-0 invert"
               />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
