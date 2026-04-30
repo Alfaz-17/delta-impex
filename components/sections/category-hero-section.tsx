@@ -24,20 +24,10 @@ import { getCategories, getCachedCategories } from "@/lib/categories";
 
 export function CategoryHeroSection() {
   const [categories, setCategories] = useState<Category[]>(getCachedCategories() || []);
-  const [isLoading, setIsLoading] = useState(!getCachedCategories());
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data = await getCategories();
-        setCategories(data.slice(0, 6));
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchCategories();
+    // Categories are now static, no need for fetch
+    setCategories(getCachedCategories()?.slice(0, 6) || []);
   }, []);
 
   return (
@@ -165,18 +155,8 @@ export function CategoryHeroSection() {
               <span className="h-px flex-1 bg-primary/5" />
             </div>
 
-            {isLoading ? (
-              <div className="grid grid-cols-6 gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="flex flex-col items-center gap-4">
-                    <div className="aspect-square w-full bg-white border border-primary/5 animate-pulse" />
-                    <div className="h-2 w-12 bg-primary/10 animate-pulse" />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-6 gap-5 lg:gap-8">
-                {categories.slice(0, 6).map((category) => (
+            <div className="grid grid-cols-6 gap-5 lg:gap-8">
+              {categories.slice(0, 6).map((category) => (
                   <div key={category._id} className="group">
                     <Link
                       href={`/products?category=${category.slug}`}
@@ -200,8 +180,7 @@ export function CategoryHeroSection() {
                   </div>
                 ))}
               </div>
-            )}
-          </div>
+            </div>
         </motion.div>
       </InfiniteGrid>
 
@@ -215,17 +194,51 @@ export function CategoryHeroSection() {
         
         <div className="px-6 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { 
+                opacity: 1,
+                transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+              }
+            }}
             className="space-y-6"
           >
-            <p className="label-tech text-accent text-[10px]">Technical Sourcing Leaders</p>
-            <h1 className="heading-display text-primary text-4xl uppercase tracking-tighter leading-none">
+            {/* Background Floating Orbs (Mobile) */}
+            <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
+              <motion.div 
+                animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
+                transition={{ duration: 5, repeat: Infinity }}
+                className="absolute top-10 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl" 
+              />
+              <motion.div 
+                animate={{ y: [0, 20, 0], x: [0, -10, 0] }}
+                transition={{ duration: 7, repeat: Infinity }}
+                className="absolute bottom-40 left-0 w-40 h-40 bg-primary/5 rounded-full blur-3xl" 
+              />
+            </div>
+
+            <motion.p 
+              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+              className="label-tech text-accent text-[10px]"
+            >
+              Technical Sourcing Leaders
+            </motion.p>
+            
+            <motion.h1 
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+              className="heading-display text-primary text-4xl uppercase tracking-tighter leading-none"
+            >
               Marine & <br />
               <span className="text-accent italic font-medium">Industrial</span> <br />
               Suppliers.
-            </h1>
-            <div className="relative aspect-video w-full">
+            </motion.h1>
+
+            <motion.div 
+              variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1 } }}
+              className="relative aspect-video w-full"
+            >
               <motion.div
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ 
@@ -237,16 +250,8 @@ export function CategoryHeroSection() {
                 transition={{
                   duration: 1.2,
                   ease: [0.16, 1, 0.3, 1],
-                  y: {
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  },
-                  rotate: {
-                    duration: 6,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }
+                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                  rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" }
                 }}
                 className="relative w-full h-full flex items-center justify-center"
               >
@@ -258,24 +263,35 @@ export function CategoryHeroSection() {
                 />
                 <motion.div
                   className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[50%] h-3 bg-accent/20 blur-xl rounded-full z-0"
-                  animate={{
-                    scaleX: [1, 1.1, 1],
-                    opacity: [0.1, 0.3, 0.1]
-                  }}
+                  animate={{ scaleX: [1, 1.1, 1], opacity: [0.1, 0.3, 0.1] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 />
               </motion.div>
-            </div>
-            <p className="body-text text-slate-500 text-sm leading-snug">
+            </motion.div>
+
+            <motion.p 
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+              className="body-text text-slate-500 text-sm leading-snug"
+            >
               Precision sourcing for mission-critical engine components and industrial machinery.
-            </p>
-            <div className="flex flex-col gap-3">
+            </motion.p>
+
+            <motion.div 
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+              className="flex flex-col gap-3"
+            >
               <Link
                 href="/products"
-                className="flex items-center justify-center gap-3 px-8 py-4 bg-primary text-white font-bold uppercase text-[10px] tracking-widest"
+                className="flex items-center justify-center gap-3 px-8 py-4 bg-primary text-white font-bold uppercase text-[10px] tracking-widest relative overflow-hidden group"
               >
-                Explore Catalog
-                <ArrowRight size={16} />
+                <span className="relative z-10">Explore Catalog</span>
+                <ArrowRight size={16} className="relative z-10" />
+                <motion.div 
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "100%" }}
+                  className="absolute inset-0 bg-accent/20"
+                  transition={{ duration: 0.5 }}
+                />
               </Link>
               <Link
                 href="/contact"
@@ -283,7 +299,7 @@ export function CategoryHeroSection() {
               >
                 Contact Expert
               </Link>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Mobile Categories Grid */}
@@ -294,18 +310,8 @@ export function CategoryHeroSection() {
             className="mt-12 pt-12 border-t border-primary/5"
           >
             <p className="font-tech text-[9px] font-bold uppercase tracking-[0.3em] text-accent mb-6 text-center">Our Categories</p>
-            {isLoading ? (
-              <div className="grid grid-cols-3 gap-4">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="flex flex-col items-center gap-2">
-                    <div className="aspect-square w-full bg-slate-50 border border-primary/5 animate-pulse" />
-                    <div className="h-2 w-10 bg-primary/10 animate-pulse" />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-3 gap-4">
-                {categories.slice(0, 6).map((category) => (
+            <div className="grid grid-cols-3 gap-4">
+              {categories.slice(0, 6).map((category) => (
                   <Link
                     key={category._id}
                     href={`/products?category=${category.slug}`}
@@ -328,7 +334,6 @@ export function CategoryHeroSection() {
                   </Link>
                 ))}
               </div>
-            )}
           </motion.div>
         </div>
       </InfiniteGrid>
