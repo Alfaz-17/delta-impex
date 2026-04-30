@@ -200,7 +200,7 @@ export function CategoryHeroSection() {
               hidden: { opacity: 0 },
               visible: { 
                 opacity: 1,
-                transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+                transition: { staggerChildren: 0.1, delayChildren: 0.1 }
               }
             }}
             className="space-y-6"
@@ -208,19 +208,19 @@ export function CategoryHeroSection() {
             {/* Background Floating Orbs (Mobile) */}
             <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
               <motion.div 
-                animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
-                transition={{ duration: 5, repeat: Infinity }}
-                className="absolute top-10 right-0 w-32 h-32 bg-accent/5 rounded-full blur-3xl" 
+                animate={{ y: [0, -30, 0], x: [0, 15, 0] }}
+                transition={{ duration: 6, repeat: Infinity }}
+                className="absolute top-10 right-0 w-48 h-48 bg-accent/15 rounded-full blur-[100px]" 
               />
               <motion.div 
-                animate={{ y: [0, 20, 0], x: [0, -10, 0] }}
-                transition={{ duration: 7, repeat: Infinity }}
-                className="absolute bottom-40 left-0 w-40 h-40 bg-primary/5 rounded-full blur-3xl" 
+                animate={{ y: [0, 30, 0], x: [0, -15, 0] }}
+                transition={{ duration: 8, repeat: Infinity }}
+                className="absolute bottom-40 left-0 w-56 h-56 bg-primary/15 rounded-full blur-[120px]" 
               />
             </div>
 
             <motion.p 
-              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
               className="label-tech text-accent text-[10px]"
             >
               Technical Sourcing Leaders

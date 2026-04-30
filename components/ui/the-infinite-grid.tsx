@@ -15,10 +15,12 @@ export const InfiniteGrid = ({ className, children, bgClassName }: { className?:
   const mouseX = useMotionValue(200);
   const mouseY = useMotionValue(200);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     const { left, top } = e.currentTarget.getBoundingClientRect();
-    mouseX.set(e.clientX - left);
-    mouseY.set(e.clientY - top);
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
   };
 
   const gridOffsetX = useMotionValue(0);
@@ -40,8 +42,10 @@ export const InfiniteGrid = ({ className, children, bgClassName }: { className?:
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
+      onTouchMove={handleMouseMove}
+      onTouchStart={handleMouseMove}
       className={cn(
-        "relative w-full h-full overflow-hidden",
+        "relative w-full overflow-hidden",
         bgClassName || "bg-background",
         className
       )}
@@ -62,7 +66,7 @@ export const InfiniteGrid = ({ className, children, bgClassName }: { className?:
         <div className="absolute left-[-10%] bottom-[-20%] w-[40%] h-[40%] rounded-full bg-accent-blue/10 blur-[120px]" />
       </div>
 
-      <div className="relative z-10 w-full h-full">
+      <div className="relative z-10 w-full">
         {children ? children : (
           <div className="flex flex-col items-center text-center px-4 max-w-3xl mx-auto space-y-6 pointer-events-none pt-20">
             <div className="space-y-2">
