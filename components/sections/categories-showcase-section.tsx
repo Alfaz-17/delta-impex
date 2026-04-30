@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Loader2, Anchor, Droplet, ArrowRight } from "lucide-react";
+import { Anchor, Droplet, ArrowRight } from "lucide-react";
+import { BusinessLoader } from "@/components/ui/business-loader";
 import Link from "next/link";
 
 const divisionMeta: Record<string, { description: string; tag: string; image: string }> = {

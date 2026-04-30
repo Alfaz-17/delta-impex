@@ -20,15 +20,16 @@ interface Category {
   productCount?: number;
 }
 
+import { getCategories, getCachedCategories } from "@/lib/categories";
+
 export function CategoryHeroSection() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState<Category[]>(getCachedCategories() || []);
+  const [isLoading, setIsLoading] = useState(!getCachedCategories());
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("/api/categories?includeCounts=true");
-        const data = await response.json();
+        const data = await getCategories();
         setCategories(data.slice(0, 6));
       } catch (error) {
         console.error("Failed to fetch categories:", error);
@@ -167,7 +168,10 @@ export function CategoryHeroSection() {
             {isLoading ? (
               <div className="grid grid-cols-6 gap-6">
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className="aspect-square bg-white border border-primary/5 animate-pulse" />
+                  <div key={i} className="flex flex-col items-center gap-4">
+                    <div className="aspect-square w-full bg-white border border-primary/5 animate-pulse" />
+                    <div className="h-2 w-12 bg-primary/10 animate-pulse" />
+                  </div>
                 ))}
               </div>
             ) : (
@@ -290,30 +294,41 @@ export function CategoryHeroSection() {
             className="mt-12 pt-12 border-t border-primary/5"
           >
             <p className="font-tech text-[9px] font-bold uppercase tracking-[0.3em] text-accent mb-6 text-center">Our Categories</p>
-            <div className="grid grid-cols-3 gap-4">
-              {categories.slice(0, 6).map((category) => (
-                <Link
-                  key={category._id}
-                  href={`/products?category=${category.slug}`}
-                  className="flex flex-col items-center gap-2 group active:scale-95 transition-transform"
-                >
-                  <div className="relative w-full aspect-square flex items-center justify-center p-2 bg-slate-50 border border-primary/5">
-                    {category.imageUrl ? (
-                      <img
-                        src={category.imageUrl}
-                        alt={category.name}
-                        className="w-full h-full object-contain"
-                      />
-                    ) : (
-                      <Globe className="w-6 h-6 text-primary/10" />
-                    )}
+            {isLoading ? (
+              <div className="grid grid-cols-3 gap-4">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="flex flex-col items-center gap-2">
+                    <div className="aspect-square w-full bg-slate-50 border border-primary/5 animate-pulse" />
+                    <div className="h-2 w-10 bg-primary/10 animate-pulse" />
                   </div>
-                  <span className="font-tech text-[8px] font-bold uppercase tracking-wider text-primary/60 text-center leading-tight px-1">
-                    {category.name}
-                  </span>
-                </Link>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-3 gap-4">
+                {categories.slice(0, 6).map((category) => (
+                  <Link
+                    key={category._id}
+                    href={`/products?category=${category.slug}`}
+                    className="flex flex-col items-center gap-2 group active:scale-95 transition-transform"
+                  >
+                    <div className="relative w-full aspect-square flex items-center justify-center p-2 bg-slate-50 border border-primary/5">
+                      {category.imageUrl ? (
+                        <img
+                          src={category.imageUrl}
+                          alt={category.name}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <Globe className="w-6 h-6 text-primary/10" />
+                      )}
+                    </div>
+                    <span className="font-tech text-[8px] font-bold uppercase tracking-wider text-primary/60 text-center leading-tight px-1">
+                      {category.name}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            )}
           </motion.div>
         </div>
       </InfiniteGrid>

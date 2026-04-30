@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 import { ProductCatalog } from "@/components/product-catalog";
-import { Loader2 } from "lucide-react";
+import { BusinessLoader } from "@/components/ui/business-loader";
 
 type DivisionRecord = {
   _id: string;
@@ -97,7 +97,7 @@ function ProductsListingContent() {
   if (!isReady) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
-        <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
+        <BusinessLoader size="md" />
       </div>
     );
   }
@@ -113,7 +113,7 @@ export default function ProductsPage() {
   return (
     <>
       <Header />
-      <Suspense fallback={<div className="h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary/40" /></div>}>
+      <Suspense fallback={<div className="h-screen flex items-center justify-center"><BusinessLoader size="lg" /></div>}>
         <main className="min-h-screen bg-background">
           <ProductsListingContent />
         </main>

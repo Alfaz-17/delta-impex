@@ -196,8 +196,16 @@ export function FeaturedProductsSection({
           style={{ scrollSnapType: 'x mandatory' }}
         >
           {isLoading ? (
-            <div className="flex justify-center items-center h-[400px] w-full">
-              <Loader2 className={`w-8 h-8 animate-spin ${isDark ? "text-white/20" : "text-primary/40"}`} />
+            <div className="flex gap-8 md:gap-12 w-full">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="flex-none w-[280px] md:w-[320px] space-y-8">
+                  <div className={`aspect-[4/5] w-full ${isDark ? "bg-white/5" : "bg-slate-100"} animate-pulse rounded-none`} />
+                  <div className="space-y-4 px-2">
+                    <div className={`h-3 w-24 ${isDark ? "bg-white/10" : "bg-slate-100"} animate-pulse`} />
+                    <div className={`h-6 w-full ${isDark ? "bg-white/10" : "bg-slate-100"} animate-pulse`} />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (!Array.isArray(products) || products.length === 0) ? (
             <div className={`w-full text-center py-24 border border-dashed rounded-none opacity-40 ${isDark ? "border-white/20" : "border-border/50"}`}>

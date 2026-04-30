@@ -13,12 +13,15 @@ interface ProductCatalogProps {
 
 const ITEMS_PER_PAGE = 12;
 
+import { getCategories, getCachedCategories } from "@/lib/categories";
+
 export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogProps) {
   const [products, setProducts] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>(getCachedCategories() || []);
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(!getCachedCategories());
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -30,9 +33,15 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
         const division = Array.isArray(divisions) ? divisions.find((d: any) => d.slug === divisionSlug) : null;
         
         if (division) {
-          const catRes = await fetch(`/api/categories?divisionId=${division._id}`);
-          const catData = await catRes.json();
-          setCategories(Array.isArray(catData) ? catData : []);
+          // Use global cache/fetcher
+          const allCategories = await getCategories();
+          const filteredCats = allCategories.filter((cat: any) => 
+            cat.division?._id === division._id || 
+            cat.division === division._id ||
+            cat.division?.slug === divisionSlug
+          );
+          setCategories(filteredCats);
+          setIsLoadingCategories(false);
 
           const prodRes = await fetch(`/api/products?divisionId=${division._id}`);
           const prodData = await prodRes.json();
@@ -45,6 +54,7 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
         console.error("Error fetching catalog data:", error);
       } finally {
         setIsLoading(false);
+        setIsLoadingCategories(false);
       }
     }
     fetchData();
@@ -96,40 +106,83 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
         </div>
       </section>
 
-      {/* 02. SEARCH & FILTER CONTROLS (Floating Bar) */}
-      <section className="relative z-20 -mt-8">
+      {/* 02. VISUAL CATEGORY FILTER & SEARCH */}
+      <section className="relative z-20 -mt-12">
         <div className="section-container">
-          <div className="bg-white border border-border shadow-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 items-center justify-between">
-            <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
-              {/* Category Filter */}
-              <div className="relative group">
-                <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
-                <select
-                  value={activeCategory}
-                  onChange={(e) => setActiveCategory(e.target.value)}
-                  className="pl-11 pr-10 py-3 bg-slate-50 border border-slate-100 font-tech text-[10px] font-bold uppercase tracking-widest text-primary focus:outline-none focus:border-accent appearance-none cursor-pointer min-w-[200px] transition-all"
-                >
-                  <option value="all">All Categories</option>
-                  {categories.map(cat => (
-                    <option key={cat._id} value={cat._id}>{cat.name}</option>
-                  ))}
-                </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-primary/40">
-                  <ChevronRight className="w-4 h-4 rotate-90" />
-                </div>
-              </div>
-            </div>
-
-            {/* Search Box */}
-            <div className="relative w-full md:w-96">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-accent" />
+          <div className="bg-white border border-border shadow-2xl p-6 md:p-10 space-y-10">
+            {/* Search Box (Top) */}
+            <div className="relative w-full max-w-2xl mx-auto">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-accent" />
               <input 
                 type="text" 
-                placeholder="Search by part name or code..."
+                placeholder="Search by part name, engine model, or technical code..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-100 font-tech text-[10px] font-bold uppercase tracking-widest text-primary focus:outline-none focus:border-accent transition-all placeholder:text-slate-300"
+                className="w-full pl-16 pr-6 py-5 bg-slate-50 border border-slate-100 font-sans text-sm font-medium text-primary focus:outline-none focus:border-accent transition-all placeholder:text-slate-300 shadow-inner"
                />
+            </div>
+
+            {/* Visual Category Scroller */}
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h3 className="font-tech text-[10px] font-bold uppercase tracking-[0.3em] text-primary/40">Select Specialty</h3>
+                <div className="h-px flex-1 bg-slate-100 mx-6" />
+              </div>
+
+              <div className="flex overflow-x-auto gap-4 md:gap-8 pb-4 no-scrollbar -mx-2 px-2">
+                {/* 'All' Option */}
+                <button
+                  onClick={() => setActiveCategory("all")}
+                  className={`flex-none flex flex-col items-center gap-3 transition-all opacity-100`}
+                >
+                  <div className={`w-16 h-16 md:w-20 md:h-20 flex items-center justify-center border transition-all duration-500 rounded-none ${
+                    activeCategory === "all" ? "bg-primary border-primary scale-110 shadow-xl" : "bg-slate-50 border-slate-100"
+                  }`}>
+                    <Filter className={`w-6 h-6 md:w-8 md:h-8 ${activeCategory === "all" ? "text-white" : "text-primary"}`} />
+                  </div>
+                  <span className={`font-tech text-[9px] font-bold uppercase tracking-widest ${activeCategory === "all" ? "text-primary" : "text-slate-400"}`}>All Parts</span>
+                </button>
+
+                {isLoadingCategories ? (
+                  [...Array(6)].map((_, i) => (
+                    <div key={i} className="flex-none flex flex-col items-center gap-3 animate-pulse">
+                      <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-50 border border-slate-100" />
+                      <div className="h-2 w-12 bg-slate-100" />
+                    </div>
+                  ))
+                ) : (
+                  categories.map((cat) => (
+                    <button
+                      key={cat._id}
+                      onClick={() => setActiveCategory(cat._id)}
+                      className={`flex-none flex flex-col items-center gap-3 transition-all opacity-100`}
+                    >
+                      <div className={`w-16 h-16 md:w-20 md:h-20 relative p-3 border transition-all duration-500 rounded-none flex items-center justify-center ${
+                        activeCategory === cat._id ? "bg-white border-accent scale-110 shadow-xl" : "bg-slate-50 border-slate-100"
+                      }`}>
+                        {cat.imageUrl ? (
+                          <img 
+                            src={cat.imageUrl} 
+                            alt={cat.name} 
+                            className={`w-full h-full object-contain transition-transform duration-500 ${activeCategory === cat._id ? "scale-110" : ""}`}
+                          />
+                        ) : (
+                          <FileText className={`w-6 h-6 md:w-8 md:h-8 ${activeCategory === cat._id ? "text-accent" : "text-primary/20"}`} />
+                        )}
+                        {/* Selected Indicator Dot */}
+                        {activeCategory === cat._id && (
+                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent border-2 border-white rounded-full" />
+                        )}
+                      </div>
+                      <span className={`font-tech text-[9px] font-bold uppercase tracking-widest text-center max-w-[80px] leading-tight ${
+                        activeCategory === cat._id ? "text-primary" : "text-slate-400"
+                      }`}>
+                        {cat.name}
+                      </span>
+                    </button>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -139,9 +192,17 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
       <section className="py-20 md:py-32">
         <div className="section-container">
           {isLoading ? (
-            <div className="h-[60vh] flex flex-col items-center justify-center gap-4">
-              <Loader2 className="w-12 h-12 animate-spin text-accent" />
-              <p className="font-tech text-[10px] uppercase tracking-widest text-slate-400">Syncing Catalog...</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="space-y-6">
+                  <div className="aspect-square w-full bg-slate-50 border border-slate-100 animate-pulse" />
+                  <div className="space-y-3">
+                    <div className="h-2 w-24 bg-slate-100 animate-pulse" />
+                    <div className="h-6 w-full bg-slate-100 animate-pulse" />
+                    <div className="h-4 w-1/2 bg-slate-100 animate-pulse" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="py-32 text-center border-2 border-dashed border-slate-100 bg-slate-50/50">
@@ -160,21 +221,22 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                   >
                     <Link 
                       href={`/products/${product.slug}`}
-                      className="group block"
+                      className="group block relative"
                     >
                       {/* Premium Card Design */}
-                      <div className="relative aspect-square mb-6 overflow-hidden bg-slate-50 border border-slate-100 group-hover:border-accent transition-all duration-700 shadow-sm hover:shadow-2xl hover:shadow-primary/5">
-                        {/* Background Overlay */}
+                      <div className="relative aspect-square mb-6 overflow-hidden bg-white border border-slate-100 group-hover:border-accent/40 transition-all duration-700 shadow-sm group-hover:shadow-[0_20px_50px_-12px_rgba(30,95,166,0.15)]">
+                        {/* Background Patterns */}
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #1B3A5C 1px, transparent 0)', backgroundSize: '1.5rem 1.5rem' }} />
+                        <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity duration-700" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #1B3A5C 1px, transparent 0)', backgroundSize: '1.5rem 1.5rem' }} />
                         
-                        <div className="relative h-full w-full p-10 flex items-center justify-center transform transition-transform duration-1000 group-hover:scale-110 group-hover:-translate-y-2">
+                        {/* Product Image */}
+                        <div className="relative h-full w-full p-10 flex items-center justify-center transform transition-all duration-1000 group-hover:scale-110 group-hover:-translate-y-4">
                           {product.imageUrl ? (
                             <Image 
                               src={product.imageUrl} 
                               alt={product.name} 
                               fill 
-                              className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.2)]"
+                              className="object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.1)] group-hover:drop-shadow-[0_30px_60px_rgba(0,0,0,0.3)] transition-all duration-700"
                               sizes="(max-width: 768px) 100vw, 25vw"
                             />
                           ) : (
@@ -182,15 +244,18 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                           )}
                         </div>
 
-                        {/* Corner Accents */}
-                        <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-primary/20 transition-all duration-500 group-hover:border-accent" />
-                        <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-primary/20 transition-all duration-500 group-hover:border-accent" />
+                        {/* Corner Accents (Animate on hover) */}
+                        <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-primary/10 transition-all duration-500 group-hover:w-8 group-hover:h-8 group-hover:border-accent" />
+                        <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-primary/10 transition-all duration-500 group-hover:w-8 group-hover:h-8 group-hover:border-accent" />
+                        
+                        {/* Technical Scanning Line */}
+                        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-scanline" />
                       </div>
 
                       {/* Typography Area */}
-                      <div className="space-y-3">
+                      <div className="space-y-3 px-2">
                         <div className="flex items-center gap-3">
-                          <span className="w-6 h-px bg-accent/30 group-hover:w-10 transition-all duration-500" />
+                          <span className="w-6 h-px bg-accent/30 group-hover:w-12 transition-all duration-700" />
                           <p className="font-tech text-[9px] font-bold uppercase tracking-[0.2em] text-accent group-hover:text-primary transition-colors">
                             {product.category?.name || "General Spares"}
                           </p>
@@ -198,9 +263,11 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                         <h3 className="heading-sub !text-lg text-primary line-clamp-2 min-h-[3rem] group-hover:text-accent transition-colors duration-500">
                           {product.name}
                         </h3>
-                        <div className="pt-4 flex items-center justify-between opacity-40 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0 text-primary group-hover:text-accent">
-                          <span className="font-tech text-[10px] font-bold uppercase tracking-[0.3em]">View Technical Data</span>
-                          <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
+                        <div className="pt-2 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-4 group-hover:translate-y-0 text-primary group-hover:text-accent">
+                          <span className="font-tech text-[10px] font-bold uppercase tracking-[0.3em]">Technical Specs</span>
+                          <div className="w-8 h-8 rounded-full border border-accent/20 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-all duration-500">
+                            <ArrowRight size={14} />
+                          </div>
                         </div>
                       </div>
                     </Link>
