@@ -5,6 +5,7 @@ import { ArrowRight, ArrowLeft, Globe, Check, Circle, Square, MessageCircle } fr
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { InfiniteGrid } from "@/components/ui/the-infinite-grid";
 
 interface Category {
   _id: string;
@@ -43,23 +44,10 @@ export function CategoryHeroSection() {
       {/* ═══════════════════════════════════════
           DESKTOP SECTIONS — md and above only
       ═══════════════════════════════════════ */}
-      <section
-        className="hidden md:block relative w-full mt-7 overflow-hidden"
-        style={{
-          background: "linear-gradient(135deg, #ffffff 0%, #f8fcfd 50%, #f0f7ff 100%)",
-        }}
+      <InfiniteGrid 
+        className="hidden md:block w-full mt-7"
+        bgClassName="bg-[linear-gradient(135deg,#ffffff_0%,#f8fcfd_50%,#f0f7ff_100%)]"
       >
-        {/* Square Grid Pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.08]" 
-          style={{ 
-            backgroundImage: `
-              linear-gradient(to right, #1B3A5C 1px, transparent 1px),
-              linear-gradient(to bottom, #1B3A5C 1px, transparent 1px)
-            `,
-            backgroundSize: '4rem 4rem' 
-          }} 
-        />
         
         {/* Hero Section */}
         <div
@@ -80,8 +68,8 @@ export function CategoryHeroSection() {
               opacity: 1, 
               x: 0, 
               scale: 1,
-              y: [0, -8, 0],                
-              rotate: [0, 0.8, 0, -0.8, 0]   
+              y: [0, -15, 0],                
+              rotate: [0, 1.2, 0, -1.2, 0]   
             }}
             transition={{
               duration: 1.2,
@@ -211,20 +199,15 @@ export function CategoryHeroSection() {
             )}
           </div>
         </motion.div>
-      </section>
+      </InfiniteGrid>
 
       {/* ═════════════════════════════════════════
           MOBILE SECTIONS — below md only
       ═══════════════════════════════════════ */}
-      <section
-        className="md:hidden relative w-full pt-20 pb-12 overflow-hidden bg-white"
+      <InfiniteGrid 
+        className="md:hidden w-full pt-20 pb-12"
+        bgClassName="bg-white"
       >
-        <div className="absolute inset-0 opacity-[0.05]" 
-          style={{ 
-            backgroundImage: 'radial-gradient(#1B3A5C 1px, transparent 0)',
-            backgroundSize: '2rem 2rem'
-          }} 
-        />
         
         <div className="px-6 relative z-10">
           <motion.div
@@ -239,12 +222,45 @@ export function CategoryHeroSection() {
               Suppliers.
             </h1>
             <div className="relative aspect-video w-full">
-              <Image
-                src="/hero.png"
-                alt="Marine Supply Ship"
-                fill
-                className="object-contain"
-              />
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ 
+                  opacity: 1, 
+                  y: [0, -12, 0],                
+                  scale: 1,
+                  rotate: [0, 1, 0, -1, 0]   
+                }}
+                transition={{
+                  duration: 1.2,
+                  ease: [0.16, 1, 0.3, 1],
+                  y: {
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  },
+                  rotate: {
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }
+                }}
+                className="relative w-full h-full flex items-center justify-center"
+              >
+                <Image
+                  src="/hero.png"
+                  alt="Marine Supply Ship"
+                  fill
+                  className="object-contain z-10 drop-shadow-[0_20px_40px_rgba(0,0,0,0.2)]"
+                />
+                <motion.div
+                  className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[50%] h-3 bg-accent/20 blur-xl rounded-full z-0"
+                  animate={{
+                    scaleX: [1, 1.1, 1],
+                    opacity: [0.1, 0.3, 0.1]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </motion.div>
             </div>
             <p className="body-text text-slate-500 text-sm leading-snug">
               Precision sourcing for mission-critical engine components and industrial machinery.
@@ -300,7 +316,7 @@ export function CategoryHeroSection() {
             </div>
           </motion.div>
         </div>
-      </section>
+      </InfiniteGrid>
 
     </>
   );
