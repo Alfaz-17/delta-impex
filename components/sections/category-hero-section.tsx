@@ -113,25 +113,74 @@ export function CategoryHeroSection() {
           <div className="absolute bottom-8 right-8 w-8 h-8 border-b border-r border-accent-blue/30" />
 
           {/* Left: Ship image */}
-          <motion.div
-            initial={{ opacity: 0, x: -80, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-y-0 left-0 flex items-center justify-center"
-            style={{ width: "55%" }}
-          >
-            <div className="relative w-full h-full max-w-4xl">
-              <div className="absolute inset-0 bg-gradient-to-tr from-accent-blue/5 via-transparent to-accent-blue/3 rounded-2xl" />
-              <Image
-                src="/hero.png"
-                alt="Marine Supply Ship"
-                fill
-                sizes="55vw"
-                className="object-contain object-center relative z-10"
-                priority
-              />
-            </div>
-          </motion.div>
+         {/* Left: Ship image with wave animation */}
+<motion.div
+  initial={{ opacity: 0, x: -80, scale: 0.95 }}
+  animate={{ 
+    opacity: 1, 
+    x: 0, 
+    scale: 1,
+    y: [0, -12, 0],                // floating
+    rotate: [0, 1.2, 0, -1.2, 0]   // wave tilt
+  }}
+  transition={{
+    duration: 1.2,
+    ease: [0.16, 1, 0.3, 1],
+    y: {
+      duration: 4,
+      repeat: Infinity,
+      ease: "easeInOut"
+    },
+    rotate: {
+      duration: 6,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  }}
+  className="absolute inset-y-0 left-0 flex items-center justify-center"
+  style={{ width: "55%" }}
+>
+  <div className="relative w-full h-full max-w-4xl flex items-center justify-center">
+
+    {/* Ship Image */}
+    <Image
+      src="/hero.png"
+      alt="Marine Supply Ship"
+      fill
+      sizes="55vw"
+      className="object-contain object-center z-10"
+      priority
+    />
+
+    {/* 🌊 Water Ripple Shadow */}
+    <motion.div
+      className="absolute bottom-16 left-1/2 -translate-x-1/2 w-[65%] h-6 bg-accent-blue/70 blur-xl rounded-full"
+      animate={{
+        scaleX: [1, 1.15, 1],
+        opacity: [0.3, 0.6, 0.3]
+      }}
+      transition={{
+        duration: 3,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+    />
+
+    {/* 🌊 Soft Wave Layer (extra realism) */}
+    <motion.div
+      className="absolute bottom-10 left-0 w-full h-10 bg-gradient-to-r from-transparent via-accent-blue to-transparent blur-lg"
+      animate={{
+        x: ["-10%", "10%", "-10%"]
+      }}
+      transition={{
+        duration: 6,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+    />
+
+  </div>
+</motion.div>
 
           {/* Right: Content */}
           <motion.div
