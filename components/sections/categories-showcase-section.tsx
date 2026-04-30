@@ -68,8 +68,8 @@ export function CategoriesShowcaseSection() {
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center items-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+          <div className="flex justify-center items-center py-24">
+            <BusinessLoader size="lg" />
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
