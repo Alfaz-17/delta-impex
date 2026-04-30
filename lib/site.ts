@@ -6,6 +6,8 @@ export const SITE_INFO = {
   phoneIndiaHref: "tel:+919925999945",
   phoneUAE: "+971 52 491 8899",
   phoneUAEHref: "tel:+971524918899",
+  whatsappNumber: "8866114549",
+  whatsappHref: "https://wa.me/8866114549",
   addressLine1: "Office-07, Madina Tenement",
   addressLine2: "Jamnakund Chowk, Bhavnagar - 364001, India",
   fullAddress: "Office-07, Madina Tenement, Jamnakund Chowk, Bhavnagar - 364001, India",
