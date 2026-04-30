@@ -18,21 +18,23 @@ export function LoadingScreen() {
   ];
 
   useEffect(() => {
+    // Smoother progress increment
     const timer = setInterval(() => {
       setProgress((oldProgress) => {
-        if (oldProgress === 100) {
+        if (oldProgress >= 100) {
           clearInterval(timer);
-          setTimeout(() => setLoading(false), 500);
+          setTimeout(() => setLoading(false), 800);
           return 100;
         }
-        const diff = Math.random() * 15;
+        // Consistent but slightly varying increment for a 'real' feel
+        const diff = Math.random() * 2 + 1; 
         return Math.min(oldProgress + diff, 100);
       });
-    }, 200);
+    }, 60); // Faster updates for smoother motion
 
     const statusTimer = setInterval(() => {
       setStatusIndex((prev) => (prev < loadingStatuses.length - 1 ? prev + 1 : prev));
-    }, 800);
+    }, 1200); // Slower status rotation for premium feel
 
     return () => {
       clearInterval(timer);
@@ -78,22 +80,34 @@ export function LoadingScreen() {
             {/* Progress Bar Container */}
             <div className="w-full space-y-4">
               <div className="flex items-center justify-between font-tech text-[8px] uppercase tracking-[0.3em] text-white/40">
-                <motion.span key={statusIndex} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  {loadingStatuses[statusIndex]}
-                </motion.span>
+                <div className="relative h-4 overflow-hidden flex-1">
+                  <AnimatePresence mode="wait">
+                    <motion.span 
+                      key={statusIndex}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute left-0"
+                    >
+                      {loadingStatuses[statusIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </div>
                 <span>{Math.round(progress)}%</span>
               </div>
               
               <div className="h-0.5 w-full bg-white/5 relative overflow-hidden">
                 <motion.div 
                   className="absolute inset-y-0 left-0 bg-accent-blue"
-                  style={{ width: `${progress}%` }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ type: "spring", bounce: 0, duration: 0.8 }}
                 />
                 <motion.div 
-                  className="absolute inset-y-0 left-0 bg-white/40 blur-sm"
-                  style={{ width: `${progress}%` }}
-                  transition={{ duration: 0.3 }}
+                  className="absolute inset-y-0 left-0 bg-white/30 blur-sm"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ type: "spring", bounce: 0, duration: 1.2 }}
                 />
               </div>
             </div>
