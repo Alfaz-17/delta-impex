@@ -205,17 +205,17 @@ export function CategoryHeroSection() {
             }}
             className="space-y-6"
           >
-            {/* Background Floating Orbs (Mobile) */}
+            {/* Background Floating Orbs (Mobile) - Optimized with lower blur for performance */}
             <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
               <motion.div 
                 animate={{ y: [0, -30, 0], x: [0, 15, 0] }}
                 transition={{ duration: 6, repeat: Infinity }}
-                className="absolute top-10 right-0 w-48 h-48 bg-accent/15 rounded-full blur-[100px]" 
+                className="absolute top-10 right-0 w-32 h-32 bg-accent/10 rounded-full blur-[40px]" 
               />
               <motion.div 
                 animate={{ y: [0, 30, 0], x: [0, -15, 0] }}
                 transition={{ duration: 8, repeat: Infinity }}
-                className="absolute bottom-40 left-0 w-56 h-56 bg-primary/15 rounded-full blur-[120px]" 
+                className="absolute bottom-40 left-0 w-40 h-40 bg-primary/10 rounded-full blur-[50px]" 
               />
             </div>
 
@@ -243,28 +243,26 @@ export function CategoryHeroSection() {
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ 
                   opacity: 1, 
-                  y: [0, -12, 0],                
-                  scale: 1,
-                  rotate: [0, 1, 0, -1, 0]   
+                  y: [0, -10, 0],
+                  scale: 1
                 }}
                 transition={{
                   duration: 1.2,
                   ease: [0.16, 1, 0.3, 1],
-                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                  rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+                  y: { duration: 5, repeat: Infinity, ease: "easeInOut" }
                 }}
-                className="relative w-full h-full flex items-center justify-center"
+                className="relative w-full h-full flex items-center justify-center will-change-transform"
               >
                 <Image
                   src="/hero.png"
                   alt="Marine Supply Ship"
                   fill
-                  className="object-contain z-10 drop-shadow-[0_20px_40px_rgba(0,0,0,0.2)]"
+                  className="object-contain z-10 drop-shadow-[0_15px_30px_rgba(0,0,0,0.2)]"
                 />
                 <motion.div
                   className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[50%] h-3 bg-accent/20 blur-xl rounded-full z-0"
-                  animate={{ scaleX: [1, 1.1, 1], opacity: [0.1, 0.3, 0.1] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  animate={{ scaleX: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                 />
               </motion.div>
             </motion.div>

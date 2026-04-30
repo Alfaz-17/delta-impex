@@ -29,14 +29,24 @@ export const InfiniteGrid = ({ className, children, bgClassName }: { className?:
   const speedX = 0.5; 
   const speedY = 0.5;
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+  }, []);
+
   useAnimationFrame(() => {
+    if (isMobile) return; // Disable continuous grid scrolling on mobile for performance
+    
     const currentX = gridOffsetX.get();
     const currentY = gridOffsetY.get();
     gridOffsetX.set((currentX + speedX) % 40);
     gridOffsetY.set((currentY + speedY) % 40);
   });
 
-  const maskImage = useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
+  const maskImageTemplate = useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, black, transparent)`;
+  const staticMask = "radial-gradient(circle at center, black, transparent)";
+  const maskImage = isMobile ? staticMask : maskImageTemplate;
 
   return (
     <div
