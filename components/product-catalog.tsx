@@ -14,11 +14,15 @@ interface ProductCatalogProps {
 const ITEMS_PER_PAGE = 12;
 
 import { getCategories, getCachedCategories } from "@/lib/categories";
+import { useSearchParams } from "next/navigation";
 
 export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogProps) {
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams.get("category") || searchParams.get("categoryId") || "all";
+
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>(getCachedCategories() || []);
-  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingCategories, setIsLoadingCategories] = useState(!getCachedCategories());
@@ -65,7 +69,9 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
   }, [searchQuery, activeCategory]);
 
   const filteredProducts = products.filter((product) => {
-    const matchesCategory = activeCategory === "all" || product.category?._id === activeCategory;
+    const matchesCategory = activeCategory === "all" || 
+                           product.category?._id === activeCategory || 
+                           product.category?.slug === activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           product.description?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
