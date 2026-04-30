@@ -15,6 +15,7 @@ interface FeaturedProductsSectionProps {
   featuredOnly?: boolean;
   title?: string;
   subtitle?: string;
+  isDark?: boolean;
 }
 
 export function FeaturedProductsSection({ 
@@ -23,7 +24,8 @@ export function FeaturedProductsSection({
   hideTabs = false,
   featuredOnly = false,
   title = "Detailed Inventory.",
-  subtitle = "Our newest products."
+  subtitle = "Our newest products.",
+  isDark = true
 }: FeaturedProductsSectionProps) {
   const [activeTab, setActiveTab] = useState<CategoryType>(initialCategory);
   const [products, setProducts] = useState<any[]>([]);
@@ -91,17 +93,30 @@ export function FeaturedProductsSection({
   };
 
   return (
-    <section className="bg-background py-8 md:py-10 lg:py-12 overflow-hidden">
+    <section className={`py-24 md:py-32 overflow-hidden relative ${isDark ? "bg-primary text-white" : "bg-background text-foreground"}`}>
+      {/* Background patterns for dark mode */}
+      {isDark && (
+        <>
+          <div className="absolute inset-0 opacity-5" 
+            style={{ 
+              backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+              backgroundSize: '32px 32px'
+            }} 
+          />
+          <div className="absolute top-0 right-0 w-1/3 h-full bg-accent/10 skew-x-12 translate-x-1/2 pointer-events-none" />
+        </>
+      )}
+
       {/* Editorial Header */}
-      <div className="section-container mb-6 md:mb-8">
+      <div className="section-container mb-12 md:mb-16 relative z-10">
         <FadeInOnScroll>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-border/50 pb-10">
+          <div className={`flex flex-col md:flex-row md:items-end justify-between gap-8 border-b pb-12 ${isDark ? "border-white/10" : "border-border/50"}`}>
             <div className="max-w-xl">
-              <p className="label-tech !text-accent uppercase tracking-[0.3em] mb-4">
+              <p className={`label-tech uppercase tracking-[0.3em] mb-4 ${isDark ? "text-accent" : "text-primary"}`}>
                 {subtitle}
               </p>
-              <h2 className="heading-display">
-                {title.split(' ').slice(0, -1).join(' ')} <span className="text-accent-blue italic">{title.split(' ').slice(-1)}</span>
+              <h2 className="heading-display uppercase tracking-tighter">
+                {title.split(' ').slice(0, -1).join(' ')} <span className={`${isDark ? "text-accent" : "text-accent-blue"} italic font-medium`}>{title.split(' ').slice(-1)}</span>
               </h2>
             </div>
             
@@ -112,7 +127,9 @@ export function FeaturedProductsSection({
                             <button
                                 onClick={() => setActiveTab("marine")}
                                 className={`label-tech !mb-0 transition-all pb-2 border-b-2 ${
-                                    activeTab === "marine" ? "text-primary border-accent" : "text-muted-foreground border-transparent hover:text-foreground"
+                                    activeTab === "marine" 
+                                      ? (isDark ? "text-white border-accent" : "text-primary border-accent") 
+                                      : (isDark ? "text-white/40 border-transparent hover:text-white" : "text-muted-foreground border-transparent hover:text-foreground")
                                 }`}
                             >
                                 Marine
@@ -120,7 +137,9 @@ export function FeaturedProductsSection({
                             <button
                                 onClick={() => setActiveTab("ro")}
                                 className={`label-tech !mb-0 transition-all pb-2 border-b-2 ${
-                                    activeTab === "ro" ? "text-primary border-accent" : "text-muted-foreground border-transparent hover:text-foreground"
+                                    activeTab === "ro" 
+                                      ? (isDark ? "text-white border-accent" : "text-primary border-accent") 
+                                      : (isDark ? "text-white/40 border-transparent hover:text-white" : "text-muted-foreground border-transparent hover:text-foreground")
                                 }`}
                             >
                                 Water
@@ -132,14 +151,22 @@ export function FeaturedProductsSection({
                     <div className="flex items-center gap-3">
                         <button 
                             onClick={() => scroll('left')}
-                            className="w-12 h-12 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+                            className={`w-12 h-12 rounded-none border flex items-center justify-center transition-all duration-300 ${
+                              isDark 
+                                ? "border-white/10 text-white hover:bg-white hover:text-primary" 
+                                : "border-border text-foreground hover:bg-foreground hover:text-background"
+                            }`}
                             aria-label="Scroll Left"
                         >
                             <ArrowLeft size={18} />
                         </button>
                         <button 
                             onClick={() => scroll('right')}
-                            className="w-12 h-12 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+                            className={`w-12 h-12 rounded-none border flex items-center justify-center transition-all duration-300 ${
+                              isDark 
+                                ? "border-white/10 text-white hover:bg-white hover:text-primary" 
+                                : "border-border text-foreground hover:bg-foreground hover:text-background"
+                            }`}
                             aria-label="Scroll Right"
                         >
                             <ArrowRight size={18} />
@@ -149,7 +176,9 @@ export function FeaturedProductsSection({
 
                 <Link 
                     href={`/products?divisionSlug=${divisionSlug || (activeTab === 'marine' ? 'marine-industrial' : 'ro-solutions')}`}
-                    className="group flex items-center gap-3 text-[10px] font-tech font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
+                    className={`group flex items-center gap-3 text-[10px] font-tech font-bold uppercase tracking-widest transition-colors ${
+                      isDark ? "text-white/40 hover:text-accent" : "text-muted-foreground hover:text-primary"
+                    }`}
                 >
                     View Full Directory 
                     <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -160,7 +189,7 @@ export function FeaturedProductsSection({
       </div>
 
       {/* Horizontal Scroller Container */}
-      <div className="relative">
+      <div className="relative z-10">
         <div 
           ref={scrollContainerRef}
           className="flex overflow-x-auto gap-8 md:gap-12 px-[5%] md:px-[6%] pb-12 snap-x snap-mandatory no-scrollbar"
@@ -168,10 +197,10 @@ export function FeaturedProductsSection({
         >
           {isLoading ? (
             <div className="flex justify-center items-center h-[400px] w-full">
-              <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
+              <Loader2 className={`w-8 h-8 animate-spin ${isDark ? "text-white/20" : "text-primary/40"}`} />
             </div>
           ) : (!Array.isArray(products) || products.length === 0) ? (
-            <div className="w-full text-center py-24 border border-dashed border-border/50 rounded-3xl opacity-40">
+            <div className={`w-full text-center py-24 border border-dashed rounded-none opacity-40 ${isDark ? "border-white/20" : "border-border/50"}`}>
               <p className="font-tech text-[10px] uppercase tracking-[0.4em]">Establishing Catalog Sync...</p>
             </div>
           ) : (
@@ -195,18 +224,20 @@ export function FeaturedProductsSection({
                     className="group relative block"
                   >
                     {/* Premium Card Container */}
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-white/[0.02] backdrop-blur-xl border border-white/[0.08] p-8 flex items-center justify-center transition-all duration-700 group-hover:border-accent-blue/30 group-hover:shadow-[0_0_50px_-12px_rgba(91,155,213,0.3)]">
+                    <div className={`relative aspect-[4/5] overflow-hidden rounded-none border p-8 flex items-center justify-center transition-all duration-700 ${
+                      isDark 
+                        ? "bg-white/5 border-white/10 group-hover:border-accent/40 group-hover:shadow-[0_0_50px_-12px_rgba(30,95,166,0.5)]" 
+                        : "bg-slate-50 border-border group-hover:border-accent-blue/30 group-hover:shadow-[0_0_50px_-12px_rgba(91,155,213,0.3)]"
+                    }`}>
                       
                       {/* Technical Background Layer */}
                       <div className="absolute inset-0 opacity-[0.05] group-hover:opacity-[0.08] transition-opacity duration-700" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.4) 1px, transparent 0)', backgroundSize: '1.5rem 1.5rem' }} />
                       
                       {/* Ambient Glows */}
-                      <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-accent-blue/10 blur-[60px] group-hover:bg-accent-blue/20 transition-all duration-700" />
-                      <div className="absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-cyan-500/5 blur-[60px]" />
+                      <div className={`absolute -top-24 -right-24 h-48 w-48 rounded-full blur-[60px] transition-all duration-700 ${
+                        isDark ? "bg-accent/20 group-hover:bg-accent/40" : "bg-accent-blue/10 group-hover:bg-accent-blue/20"
+                      }`} />
                       
-                      {/* Scanline Effect on Hover */}
-                      <div className="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-accent-blue/20 to-transparent top-0 -translate-y-full group-hover:animate-scanline pointer-events-none" />
-
                       {/* Product Image */}
                       <div className="relative w-full h-full transform transition-all duration-1000 group-hover:scale-110 group-hover:-translate-y-2">
                         <Image
@@ -220,28 +251,30 @@ export function FeaturedProductsSection({
                       
                       {/* Glass Bottom Overlay */}
                       <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                      
-                      {/* Corner Accents */}
-                      <div className="absolute top-6 left-6 h-px w-0 bg-accent-blue/40 transition-all duration-700 group-hover:w-8" />
-                      <div className="absolute top-6 left-6 w-px h-0 bg-accent-blue/40 transition-all duration-700 group-hover:h-8" />
                     </div>
 
                     {/* Typography Area */}
                     <div className="mt-8 px-2">
                       <div className="flex items-center gap-3 mb-4">
-                        <span className="h-px w-4 bg-accent-blue/30" />
-                        <p className="font-tech text-[9px] font-bold uppercase tracking-[0.2em] text-accent-blue group-hover:text-cyan-400 transition-colors">
+                        <span className={`h-px w-4 ${isDark ? "bg-accent/40" : "bg-accent-blue/30"}`} />
+                        <p className={`font-tech text-[9px] font-bold uppercase tracking-[0.2em] transition-colors ${
+                          isDark ? "text-accent group-hover:text-white" : "text-accent-blue group-hover:text-primary"
+                        }`}>
                           {product.category?.name || 'Precision Component'}
                         </p>
                       </div>
                       
-                      <h3 className="heading-sub text-xl md:text-2xl text-white group-hover:text-accent-blue transition-colors duration-500 line-clamp-2">
+                      <h3 className={`heading-sub text-xl md:text-2xl transition-colors duration-500 line-clamp-2 ${
+                        isDark ? "text-white group-hover:text-accent" : "text-primary group-hover:text-accent-blue"
+                      }`}>
                         {product.name}
                       </h3>
                       
                       {/* Interaction Footer */}
-                      <div className="mt-6 flex items-center justify-between opacity-40 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0 text-white/60 group-hover:text-accent-blue">
-                         <span className="text-[10px] font-tech font-bold uppercase tracking-[0.3em]">View Technical Specs</span>
+                      <div className={`mt-6 flex items-center justify-between opacity-40 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0 ${
+                        isDark ? "text-white/60 group-hover:text-accent" : "text-primary/60 group-hover:text-accent-blue"
+                      }`}>
+                         <span className="text-[10px] font-tech font-bold uppercase tracking-[0.3em]">Technical Details</span>
                          <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>

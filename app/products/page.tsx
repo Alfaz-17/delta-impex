@@ -103,7 +103,7 @@ function ProductsListingContent() {
   }
 
   return (
-    <main className="min-h-screen bg-background pt-24">
+    <main className="min-h-screen bg-background">
       <ProductCatalog divisionSlug={divisionSlug} divisionName={divisionName} />
     </main>
   );
@@ -114,7 +114,7 @@ export default function ProductsPage() {
     <>
       <Header />
       <Suspense fallback={<div className="h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary/40" /></div>}>
-        <main className="min-h-screen bg-background pt-24 md:pt-32">
+        <main className="min-h-screen bg-background">
           <ProductsListingContent />
         </main>
       </Suspense>

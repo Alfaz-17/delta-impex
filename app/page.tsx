@@ -1,9 +1,10 @@
-﻿import { Header } from "@/components/header";
+"use client";
+
+import { Header } from "@/components/header";
 import { CategoryHeroSection } from "@/components/sections/category-hero-section";
 import { WhyChooseUsSection } from "@/components/sections/why-choose-us-section";
 import { SectionWrapper } from "@/components/section-wrapper";
 import dynamic from "next/dynamic";
-import type { Metadata } from 'next'
 
 // Dynamic imports for heavy or off-screen sections to optimize initial load
 const PhilosophySection = dynamic(() => import("@/components/sections/philosophy-section").then(mod => mod.PhilosophySection));
@@ -14,64 +15,44 @@ const FooterSection = dynamic(() => import("@/components/sections/footer-section
 const SeoContentSection = dynamic(() => import("@/components/sections/seo-content-section").then(mod => mod.SeoContentSection));
 const FeaturedProductsSection = dynamic(() => import("@/components/sections/featured-products-section").then(mod => mod.FeaturedProductsSection));
 
-export const metadata: Metadata = {
-  title: "Delta Impex | Marine Engine Spares & RO Water Treatment",
-  description: "Delta Impex is a global supplier of marine engine spare parts, industrial machinery, and advanced RO water treatment plants with trusted technical sourcing and worldwide delivery.",
-  keywords: ["Delta Impex", "marine spare parts", "RO water treatment", "ship engine spares", "industrial machinery supplier", "desalination plants", "marine engineering", "Delta Impex Bhavnagar"],
-  alternates: {
-    canonical: "https://deltaimpex.co/",
-  },
-  openGraph: {
-    title: "Delta Impex | Marine Spares & RO Water Treatment",
-    description: "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions.",
-    url: 'https://deltaimpex.co/',
-    siteName: "Delta Impex",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Delta Impex | Marine Spares & RO Water Treatment",
-    description: "Global supplier of marine engine spare parts and RO treatment systems.",
-  },
-}
-
 export default function Home() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
+      
+      {/* 01. HERO SECTION (Light/Brand Contrast) */}
       <CategoryHeroSection />
 
-      {/* Dynamic Marine Featured Section - Moved Up */}
+      {/* 02. MARINE FEATURED (Dark Contrast) */}
       <FeaturedProductsSection 
         divisionSlug="marine-industrial" 
         hideTabs={true} 
         featuredOnly={true}
         title="Marine Engineering." 
         subtitle="Featured Inventory."
+        isDark={true}
+      />
+      
+      {/* 03. ABOUT PREVIEW (Light Contrast) */}
+      <AboutPreviewSection isDark={false} />
+      
+      {/* 04. WATER FEATURED (Dark Contrast) */}
+      <FeaturedProductsSection 
+        divisionSlug="ro-solutions" 
+        hideTabs={true} 
+        featuredOnly={true}
+        title="Water Treatment." 
+        subtitle="Technical Highlights."
+        isDark={true}
       />
 
-      
-      <SectionWrapper>
-        <AboutPreviewSection />
-      </SectionWrapper>
-      
-      {/* Dynamic RO Featured Section - Moved Up */}
-      <SectionWrapper>
-        <FeaturedProductsSection 
-          divisionSlug="ro-solutions" 
-          hideTabs={true} 
-          featuredOnly={true}
-          title="Water Treatment." 
-          subtitle="Technical Highlights."
-        />
-      </SectionWrapper>
-
+      {/* 05. BRANDS & TECH (Alternating) */}
       <BrandsMarquee />
       <TechnologySection />
+      
+      {/* 06. SEO & FOOTER */}
       <SeoContentSection />
-
       <FooterSection />
     </main>
   );
 }
-

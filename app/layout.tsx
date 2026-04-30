@@ -105,6 +105,7 @@ export const metadata: Metadata = {
 
 import { Providers } from "@/components/providers"
 import { SmoothScroll } from "@/components/smooth-scroll"
+import { WhatsAppButton } from "@/components/common/whatsapp-button"
 
 export default function RootLayout({
   children,
@@ -218,6 +219,7 @@ export default function RootLayout({
         <SmoothScroll>
           <Providers>
             {children}
+            <WhatsAppButton />
           </Providers>
         </SmoothScroll>
         <Analytics />

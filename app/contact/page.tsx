@@ -3,8 +3,9 @@
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 import Image from "next/image";
+import Link from "next/link";
 import { useRef, useState } from "react";
-import { Mail, Phone, MapPin, Globe, Send, ChevronRight, Clock, ShieldCheck, AlertCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Globe, Send, ChevronRight, Clock, ShieldCheck, AlertCircle, ArrowRight } from "lucide-react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
 import { SITE_INFO } from "@/lib/site";
@@ -12,42 +13,35 @@ import { SITE_INFO } from "@/lib/site";
 const contactMethods = [
   {
     icon: MapPin,
-    title: "Visit Us",
+    title: "Global Headquarters",
     primary: SITE_INFO.addressLine1,
     secondary: SITE_INFO.addressLine2,
-    color: "bg-accent-glow/10 text-accent-glow",
+    accent: "text-accent",
   },
   {
     icon: Phone,
-    title: "Call Us",
+    title: "Direct Support",
     primary: `${SITE_INFO.phoneIndia} (IND)`,
     secondary: `${SITE_INFO.phoneUAE} (UAE)`,
-    color: "bg-green-500/10 text-green-600",
+    accent: "text-green-500",
   },
   {
     icon: Mail,
-    title: "Email Us",
+    title: "Technical Inquiries",
     primary: SITE_INFO.email,
-    color: "bg-primary/10 text-primary",
+    secondary: "Response within 24 hours",
+    accent: "text-accent",
   },
   {
     icon: Globe,
-    title: "Global Reach",
-    primary: "150+ Ports Worldwide",
-    secondary: "Serving marine & industrial clients",
-    color: "bg-orange-500/10 text-orange-600",
+    title: "Service Reach",
+    primary: "150+ Major Ports",
+    secondary: "Marine & Industrial Supply",
+    accent: "text-orange-500",
   },
 ];
 
 export default function ContactPage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end end"],
-  });
-
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1.1, 1.2]);
-
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: "", email: "", company: "", message: "" });
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -55,335 +49,241 @@ export default function ContactPage() {
 
   function validateForm() {
     const nextErrors: { name?: string; email?: string; company?: string; message?: string } = {};
-    const name = formData.name.trim();
-    const email = formData.email.trim();
-    const company = formData.company.trim();
-    const message = formData.message.trim();
-
-    if (!name) {
-      nextErrors.name = "Name is required.";
-    } else if (name.length < 2) {
-      nextErrors.name = "Name must be at least 2 characters.";
-    } else if (name.length > 80) {
-      nextErrors.name = "Name must be under 80 characters.";
-    }
-
-    if (!email) {
-      nextErrors.email = "Email is required.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      nextErrors.email = "Enter a valid email address.";
-    }
-
-    if (company.length > 120) {
-      nextErrors.company = "Company/Vessel must be under 120 characters.";
-    }
-
-    if (!message) {
-      nextErrors.message = "Message is required.";
-    } else if (message.length < 15) {
-      nextErrors.message = "Message should be at least 15 characters.";
-    } else if (message.length > 1200) {
-      nextErrors.message = "Message must be under 1200 characters.";
-    }
-
+    if (!formData.name.trim()) nextErrors.name = "Name is required.";
+    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) nextErrors.email = "Valid email required.";
+    if (!formData.message.trim()) nextErrors.message = "Message is required.";
     setErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!validateForm()) {
-      setSubmitStatus("error");
-      return;
-    }
+    if (!validateForm()) return;
 
-    try {
-      setSubmitStatus("loading");
-
-      const subjectParts = [
-        formData.company.trim() || "Website Inquiry",
-        formData.name.trim() ? `from ${formData.name.trim()}` : "",
-      ].filter(Boolean);
-
-      const subject = subjectParts.join(" ");
-      const body = [
-        `Name: ${formData.name}`,
-        `Email: ${formData.email}`,
-        `Company / Vessel: ${formData.company || "-"}`,
-        "",
-        "Requirement:",
-        formData.message,
-      ].join("\n");
-
-      window.location.href = `mailto:${SITE_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", company: "", message: "" });
-      setTimeout(() => setSubmitStatus("idle"), 4000);
-    } catch {
-      setSubmitStatus("error");
-      setTimeout(() => setSubmitStatus("idle"), 4000);
-    }
+    setSubmitStatus("loading");
+    const subject = `Inquiry from ${formData.name} (${formData.company || "General"})`;
+    const body = `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company}\n\nMessage:\n${formData.message}`;
+    window.location.href = `mailto:${SITE_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setSubmitStatus("success");
+    setTimeout(() => setSubmitStatus("idle"), 5000);
   }
 
   return (
     <main className="min-h-screen bg-background">
       <Header />
 
-      <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-foreground">
-        <motion.div
-          className="absolute inset-0 z-0"
-          style={{ scale: heroScale }}
-        >
-          <Image
-            src="/images/hero-clean.png"
-            alt="Global logistics and communication"
-            fill
-            className="object-cover opacity-60 contrast-125 saturate-[0.8]"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/40 pointer-events-none" />
-        </motion.div>
-
-        <div className="relative z-10 text-center px-6" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.5)" }}>
+      {/* 01. CONTACT HERO (Dark Contrast) */}
+      <section className="bg-primary pt-40 pb-24 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5" 
+          style={{ 
+            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundSize: '32px 32px'
+          }} 
+        />
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-accent/10 skew-x-12 translate-x-1/2 pointer-events-none" />
+        
+        <div className="section-container relative z-10 text-center">
           <FadeInOnScroll>
-            
-            <h1 className="heading-display text-white !leading-[0.95] uppercase drop-shadow-2xl">
-              Get in <span className="text-accent-blue italic">Touch.</span>
+            <p className="label-tech text-accent mb-6 uppercase tracking-[0.4em]">Global Connectivity</p>
+            <h1 className="heading-display text-white !leading-[0.9] uppercase tracking-tighter max-w-4xl mx-auto">
+              Consult Our <br />
+              <span className="text-accent italic font-medium">Engineering</span> Experts.
             </h1>
           </FadeInOnScroll>
         </div>
       </section>
 
-      <section className="bg-dark-card border-b border-white/[0.06]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {contactMethods.map((method, index) => (
-            <FadeInOnScroll key={index} delay={index * 0.1}>
-              <div className="relative h-full overflow-hidden p-10 md:p-12 border-b sm:border-b-0 sm:border-r border-white/[0.06] group hover:bg-white/[0.03] transition-all duration-500">
-                <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.5) 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
-                <div className="relative z-10">
-                  <div className="mb-8 h-14 w-14 flex items-center justify-center rounded-2xl bg-accent-blue/10 text-accent-blue group-hover:scale-110 transition-transform duration-500">
-                    <method.icon size={24} strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-tech text-xs uppercase tracking-[0.2em] text-accent-blue font-bold mb-4">{method.title}</h3>
-                  <p className="font-display text-xl font-bold text-white mb-2 group-hover:text-accent-blue transition-colors duration-500">
-                    {method.primary}
-                  </p>
-                  <p className="text-sm leading-relaxed text-slate-400">
-                    {method.secondary}
-                  </p>
+      {/* 02. CONTACT METHODS (Grid Showcase) */}
+      <section className="relative z-20 -mt-12 mb-24">
+        <div className="section-container">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-slate-200 shadow-2xl border border-border">
+            {contactMethods.map((method, index) => (
+              <div key={index} className="bg-white p-10 group hover:bg-slate-50 transition-all duration-500">
+                <div className="w-12 h-12 bg-primary/5 flex items-center justify-center text-primary mb-8 group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                   <method.icon size={20} />
                 </div>
+                <h3 className="font-tech text-[10px] font-bold uppercase tracking-[0.3em] text-accent mb-4">{method.title}</h3>
+                <p className="font-display text-lg font-bold text-primary mb-2 leading-tight group-hover:text-accent transition-colors">
+                  {method.primary}
+                </p>
+                <p className="text-xs text-slate-400 font-sans tracking-tight">
+                  {method.secondary}
+                </p>
               </div>
-            </FadeInOnScroll>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="section-container py-12 md:py-16 lg:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
-          <div className="lg:col-span-5">
-            <FadeInOnScroll>
-              <div className="space-y-10">
+      {/* 03. CONTACT FORM & INFO */}
+      <section className="pb-32">
+        <div className="section-container">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+            
+            {/* Left Side: Editorial Content */}
+            <div className="space-y-12">
+              <FadeInOnScroll>
                 <div>
-                  <p className="label-tech text-primary mb-5">Global Operations</p>
-                  <h2 className="heading-display text-foreground mb-8">Consult Our Experts.</h2>
-                  <p className="body-text !leading-relaxed text-muted-foreground text-lg">
-                    Whether you&apos;re managing a global shipping fleet or a localized industrial facility,
-                    Delta Impex provides the technical support and logistical precision you need.
+                  <h2 className="heading-display text-primary mb-8 uppercase tracking-tighter">How We <br />Can Help.</h2>
+                  <p className="body-premium text-slate-600 border-l-4 border-accent pl-8 py-2">
+                    We provide reliable spare parts and fast support for ships and industries worldwide.
                   </p>
                 </div>
-
-                <div className="space-y-6">
+                
+                <div className="space-y-6 pt-12">
                   {[
-                    { icon: Clock, title: "24h Response", desc: "Technical quotes within one business day." },
-                    { icon: ShieldCheck, title: "Quality Guaranteed", desc: "Rigorous inspection for every single part." },
-                    { icon: Send, title: "Global Logistics", desc: "Express delivery to 100+ major world ports." },
+                    { icon: ShieldCheck, title: "Quality Check", desc: "Every part is inspected before we send it." },
+                    { icon: Globe, title: "Worldwide Delivery", desc: "We deliver to 150+ major ports around the world." },
+                    { icon: Clock, title: "Fast Response", desc: "We send price quotes within one working day." },
                   ].map((item, i) => (
-                    <div key={i} className="flex gap-4 group">
-                      <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-xl bg-accent-blue/10 text-accent-blue group-hover:bg-accent-blue/20 transition-colors">
+                    <div key={i} className="flex gap-6 group">
+                      <div className="w-12 h-12 shrink-0 bg-slate-50 border border-slate-100 flex items-center justify-center text-accent group-hover:bg-primary group-hover:text-white transition-all">
                         <item.icon size={18} />
                       </div>
                       <div>
-                        <h4 className="font-tech text-xs uppercase tracking-widest font-bold text-foreground mb-1">{item.title}</h4>
-                        <p className="body-text text-xs">{item.desc}</p>
+                        <h4 className="font-tech text-[11px] font-bold uppercase tracking-widest text-primary mb-1">{item.title}</h4>
+                        <p className="text-xs text-slate-500 leading-relaxed max-w-xs">{item.desc}</p>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="relative overflow-hidden p-8 rounded-[2.5rem] border border-white/[0.06] bg-dark-card shadow-lg">
-                  <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.5) 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
-                  <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-accent-glow/20 blur-[50px]" />
-                  <div className="relative z-10">
-                    <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-accent-blue !mb-4">Urgent Inquiries</p>
-                    <p className="font-display text-lg font-bold text-white mb-2">Available 24/7 for marine emergencies.</p>
-                    <a href="tel:+919925999945" className="text-accent-blue font-tech text-xs font-bold tracking-[0.2em] flex items-center gap-2 hover:underline">
-                      Call Technical Support <ChevronRight size={14} />
-                    </a>
+                <div className="pt-12 border-t border-slate-100">
+                  <div className="relative overflow-hidden p-8 bg-primary text-white shadow-2xl group transition-all duration-700">
+                    <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
+                    <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-accent/20 blur-[60px] group-hover:bg-accent/40 transition-all duration-700" />
+                    
+                    <div className="relative z-10">
+                      <p className="font-tech text-[10px] font-bold uppercase tracking-[0.4em] text-accent mb-4">Direct Contact</p>
+                      <h3 className="font-display text-2xl font-bold mb-2">Anas Malek</h3>
+                      <p className="text-[10px] font-tech font-bold uppercase tracking-widest text-white/60 mb-6">Managing Director & Owner</p>
+                      
+                      <Link 
+                        href="https://wa.me/91992599945" 
+                        target="_blank"
+                        className="inline-flex items-center gap-3 text-[10px] font-tech font-bold uppercase tracking-[0.3em] hover:text-accent transition-colors"
+                      >
+                        Contact Owner via WhatsApp <ArrowRight size={14} />
+                      </Link>
+                    </div>
                   </div>
                 </div>
+              </FadeInOnScroll>
+            </div>
 
-                <div className="relative overflow-hidden p-8 rounded-[2.5rem] border border-white/[0.06] bg-dark-card shadow-lg">
-                  <div className="absolute inset-0 opacity-[0.07]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.5) 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
-                  <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-primary/20 blur-[50px]" />
-                  <div className="relative z-10">
-                    <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-accent-blue !mb-4">Owner</p>
-                    <p className="font-display text-lg font-bold text-white mb-2">Anas Malek</p>
-                    <p className="text-sm text-slate-400 mb-4">Managing Director & Owner</p>
-                    <a href="https://wa.me/91992599945" target="_blank" rel="noopener noreferrer" className="text-accent-blue font-tech text-xs font-bold tracking-[0.2em] flex items-center gap-2 hover:underline">
-                      Contact Owner <ChevronRight size={14} />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </FadeInOnScroll>
-          </div>
-
-          <div className="lg:col-span-7">
+            {/* Right Side: High-End Form */}
             <FadeInOnScroll delay={0.2}>
-              <div className="bg-background border border-border/80 p-8 md:p-12 lg:p-16 rounded-[3rem] shadow-2xl shadow-foreground/5">
-                <form className="space-y-8" onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div className="bg-slate-50 border border-slate-100 p-10 md:p-16 shadow-2xl relative">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-accent/5 blur-3xl" />
+                
+                <form className="space-y-10 relative z-10" onSubmit={handleSubmit}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                     <div className="space-y-3">
-                      <label className={`label-tech text-[10px] transition-colors ${focusedField === "name" ? "text-primary" : "text-muted-foreground"}`}>Your Full Name</label>
+                      <label className="font-tech text-[10px] font-bold uppercase tracking-widest text-slate-400">Full Name</label>
                       <input
                         type="text"
+                        className="w-full bg-transparent border-b border-slate-200 py-3 text-primary focus:outline-none focus:border-accent transition-all font-sans"
+                        placeholder="John Doe"
                         value={formData.name}
-                        onChange={(e) => {
-                          setFormData({ ...formData, name: e.target.value });
-                          if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
-                        }}
-                        onFocus={() => setFocusedField("name")}
-                        onBlur={() => setFocusedField(null)}
-                        className={`w-full bg-transparent border-b py-2 text-foreground focus:outline-none focus:border-primary transition-colors font-sans ${errors.name ? "border-red-500" : "border-border"}`}
-                        placeholder="Enter your name"
-                        maxLength={80}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
                         required
                       />
-                      {errors.name ? <p className="text-xs text-red-600">{errors.name}</p> : null}
                     </div>
                     <div className="space-y-3">
-                      <label className={`label-tech text-[10px] transition-colors ${focusedField === "email" ? "text-primary" : "text-muted-foreground"}`}>Professional Email</label>
+                      <label className="font-tech text-[10px] font-bold uppercase tracking-widest text-slate-400">Professional Email</label>
                       <input
                         type="email"
+                        className="w-full bg-transparent border-b border-slate-200 py-3 text-primary focus:outline-none focus:border-accent transition-all font-sans"
+                        placeholder="john@company.com"
                         value={formData.email}
-                        onChange={(e) => {
-                          setFormData({ ...formData, email: e.target.value });
-                          if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
-                        }}
-                        onFocus={() => setFocusedField("email")}
-                        onBlur={() => setFocusedField(null)}
-                        className={`w-full bg-transparent border-b py-2 text-foreground focus:outline-none focus:border-primary transition-colors font-sans ${errors.email ? "border-red-500" : "border-border"}`}
-                        placeholder="your@company.com"
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
                         required
                       />
-                      {errors.email ? <p className="text-xs text-red-600">{errors.email}</p> : null}
                     </div>
                   </div>
 
                   <div className="space-y-3">
-                    <label className={`label-tech text-[10px] transition-colors ${focusedField === "company" ? "text-primary" : "text-muted-foreground"}`}>Company / Vessel Name</label>
+                    <label className="font-tech text-[10px] font-bold uppercase tracking-widest text-slate-400">Company / Vessel Name</label>
                     <input
                       type="text"
+                      className="w-full bg-transparent border-b border-slate-200 py-3 text-primary focus:outline-none focus:border-accent transition-all font-sans"
+                      placeholder="Shipping Co. / MV Delta"
                       value={formData.company}
-                      onChange={(e) => {
-                        setFormData({ ...formData, company: e.target.value });
-                        if (errors.company) setErrors((prev) => ({ ...prev, company: undefined }));
-                      }}
-                      onFocus={() => setFocusedField("company")}
-                      onBlur={() => setFocusedField(null)}
-                      className={`w-full bg-transparent border-b py-2 text-foreground focus:outline-none focus:border-primary transition-colors font-sans ${errors.company ? "border-red-500" : "border-border"}`}
-                      placeholder="Ship name or company"
-                      maxLength={120}
+                      onChange={(e) => setFormData({...formData, company: e.target.value})}
                     />
-                    {errors.company ? <p className="text-xs text-red-600">{errors.company}</p> : null}
                   </div>
 
                   <div className="space-y-3">
-                    <label className={`label-tech text-[10px] transition-colors ${focusedField === "message" ? "text-primary" : "text-muted-foreground"}`}>Your Message / Requirement</label>
+                    <label className="font-tech text-[10px] font-bold uppercase tracking-widest text-slate-400">Your Technical Requirement</label>
                     <textarea
                       rows={4}
+                      className="w-full bg-transparent border-b border-slate-200 py-3 text-primary focus:outline-none focus:border-accent transition-all font-sans resize-none"
+                      placeholder="List part numbers or specifications..."
                       value={formData.message}
-                      onChange={(e) => {
-                        setFormData({ ...formData, message: e.target.value });
-                        if (errors.message) setErrors((prev) => ({ ...prev, message: undefined }));
-                      }}
-                      onFocus={() => setFocusedField("message")}
-                      onBlur={() => setFocusedField(null)}
-                      className={`w-full bg-transparent border-b py-2 text-foreground focus:outline-none focus:border-primary transition-colors resize-none font-sans ${errors.message ? "border-red-500" : "border-border"}`}
-                      placeholder="How can we assist you today?"
-                      maxLength={1200}
+                      onChange={(e) => setFormData({...formData, message: e.target.value})}
                       required
                     />
-                    {errors.message ? <p className="text-xs text-red-600">{errors.message}</p> : null}
                   </div>
-
-                  <AnimatePresence>
-                    {submitStatus === "success" && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        className="p-4 rounded-2xl bg-green-500/10 border border-green-500/20 text-green-600 font-sans text-sm flex items-center gap-3"
-                      >
-                        <ShieldCheck size={18} />
-                        Your email draft has been opened successfully.
-                      </motion.div>
-                    )}
-                    {submitStatus === "error" && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-600 font-sans text-sm flex items-center gap-3"
-                      >
-                        <AlertCircle size={18} />
-                        We could not open your email app. Please email {SITE_INFO.email} directly.
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
 
                   <button
                     type="submit"
                     disabled={submitStatus === "loading"}
-                    className="group relative w-full overflow-hidden bg-foreground text-background py-5 rounded-full font-tech text-xs uppercase tracking-[0.3em] font-bold hover:bg-primary transition-all duration-700 disabled:opacity-50"
+                    className="w-full bg-primary text-white py-6 font-display font-bold uppercase text-xs tracking-[0.3em] hover:bg-accent transition-all shadow-xl flex items-center justify-center gap-3 group"
                   >
-                    <span className="relative z-10 flex items-center justify-center gap-3">
-                      {submitStatus === "loading" ? "Opening Email..." : "Send Inquiry"}
-                      <Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                    </span>
+                    {submitStatus === "loading" ? "Processing..." : "Send Technical Inquiry"}
+                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </button>
                 </form>
+
+                <AnimatePresence>
+                  {submitStatus === "success" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-8 p-4 bg-green-50 text-green-600 font-tech text-[10px] font-bold uppercase tracking-widest text-center"
+                    >
+                      Your inquiry has been processed. Opening email draft...
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </FadeInOnScroll>
           </div>
         </div>
       </section>
 
-      <section className="section-container pb-12 md:pb-16 lg:pb-20">
-        <div className="relative overflow-hidden rounded-3xl border border-white/[0.06] bg-dark-card shadow-lg">
-          <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(91,155,213,0.5) 1px, transparent 0)', backgroundSize: '2rem 2rem' }} />
-          <div className="relative z-10 flex flex-col gap-4 border-b border-white/[0.06] p-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-accent-blue mb-2">Local Presence</p>
-              <h2 className="heading-sub !mb-0 text-white">Delta Impex Bhavnagar Office</h2>
-              <p className="mt-2 text-sm text-slate-400">{SITE_INFO.fullAddress}</p>
+      {/* 04. INTERACTIVE MAP SECTION */}
+      <section className="pb-32">
+        <div className="section-container">
+          <div className="relative overflow-hidden bg-white border border-slate-100 shadow-2xl">
+            <div className="grid grid-cols-1 lg:grid-cols-3">
+              <div className="p-10 lg:p-16 flex flex-col justify-center space-y-8">
+                <div>
+                  <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-accent mb-3">Head Office</p>
+                  <h3 className="font-display text-2xl font-bold text-primary mb-4">Bhavnagar Operations</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed font-sans">
+                    {SITE_INFO.fullAddress}
+                  </p>
+                </div>
+                <a
+                  href={SITE_INFO.mapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-3 font-tech text-[10px] font-bold uppercase tracking-[0.2em] text-primary hover:text-accent transition-colors"
+                >
+                  Locate via Google Maps <ArrowRight size={14} />
+                </a>
+              </div>
+              <div className="lg:col-span-2 h-[450px]">
+                <iframe
+                  title="Delta Impex Office"
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(SITE_INFO.fullAddress)}&output=embed`}
+                  className="w-full h-full grayscale hover:grayscale-0 transition-all duration-1000 border-0"
+                  loading="lazy"
+                />
+              </div>
             </div>
-            <a
-              href={SITE_INFO.mapsUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-accent-blue hover:underline"
-            >
-              Open in Google Maps <ChevronRight size={14} />
-            </a>
           </div>
-          <iframe
-            title="Delta Impex Bhavnagar Map"
-            src={`https://www.google.com/maps?q=${encodeURIComponent(SITE_INFO.fullAddress)}&output=embed`}
-            className="relative z-10 h-[320px] w-full border-0"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
         </div>
       </section>
 
