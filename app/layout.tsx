@@ -106,6 +106,7 @@ export const metadata: Metadata = {
 import { Providers } from "@/components/providers"
 import { SmoothScroll } from "@/components/smooth-scroll"
 import { WhatsAppButton } from "@/components/common/whatsapp-button"
+import { CustomCursor } from "@/components/common/custom-cursor"
 
 export default function RootLayout({
   children,
@@ -211,11 +212,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head />
-      <body className={`${outfit.variable} ${syne.variable} ${spaceMono.variable} ${syncopate.variable} font-sans antialiased text-foreground`}>
+      <body className={`${outfit.variable} ${syne.variable} ${spaceMono.variable} ${syncopate.variable} font-sans antialiased text-foreground cursor-none`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <CustomCursor />
         <SmoothScroll>
           <Providers>
             {children}
