@@ -2,24 +2,8 @@
 @import 'tw-animate-css';
 
 /* Lenis Smooth Scroll Essential Styles */
-html.lenis, html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
+html {
+  scroll-behavior: smooth !important;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -188,6 +172,7 @@ html.lenis, html.lenis body {
   body {
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
   }
 }
 
@@ -414,12 +399,12 @@ html.lenis, html.lenis body {
 }
 
 .marquee-track-left {
-  animation: marquee-left 40s linear infinite;
+  animation: marquee-left 25s linear infinite;
   will-change: transform;
 }
 
 .marquee-track-right {
-  animation: marquee-right 40s linear infinite;
+  animation: marquee-right 25s linear infinite;
   will-change: transform;
 }
 

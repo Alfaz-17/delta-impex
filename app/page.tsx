@@ -23,27 +23,28 @@ export default function Home() {
       {/* 01. HERO SECTION (Light/Brand Contrast) */}
       <CategoryHeroSection />
 
-      {/* 02. MARINE FEATURED (Dark Contrast) */}
+      {/* 02. MARINE FEATURED (Light Contrast - Rhythm) */}
       <FeaturedProductsSection 
         divisionSlug="marine-industrial" 
         hideTabs={true} 
         featuredOnly={true}
         title="Marine Engineering." 
         subtitle="Featured Inventory."
-        isDark={true}
+        isDark={false}
       />
+
       
-      {/* 03. ABOUT PREVIEW (Light Contrast) */}
-      <AboutPreviewSection isDark={false} />
+      {/* 03. ABOUT PREVIEW (Dark Contrast) */}
+      <AboutPreviewSection isDark={true} />
       
-      {/* 04. WATER FEATURED (Dark Contrast) */}
+      {/* 04. WATER FEATURED (Light Contrast) */}
       <FeaturedProductsSection 
         divisionSlug="ro-solutions" 
         hideTabs={true} 
         featuredOnly={true}
         title="Water Treatment." 
         subtitle="Technical Highlights."
-        isDark={true}
+        isDark={false}
       />
 
       {/* 05. BRANDS & TECH (Alternating) */}

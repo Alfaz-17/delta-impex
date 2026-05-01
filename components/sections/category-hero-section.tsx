@@ -20,12 +20,61 @@ interface Category {
 }
 
 export function CategoryHeroSection() {
-  const [categories, setCategories] = useState<Category[]>(getCachedCategories() || []);
+  // Prioritized categories matching files in /public/categories
+  const [categories, setCategories] = useState<Category[]>([
+    {
+      _id: "priority-1",
+      name: "Main Engine",
+      slug: "main-engine",
+      imageUrl: "/categories/Main Engine - 1.png",
+      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
+    },
+    {
+      _id: "priority-2",
+      name: "Generators",
+      slug: "generators",
+      imageUrl: "/categories/Generators - 2.png",
+      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
+    },
+    {
+      _id: "priority-3",
+      name: "Spare Parts",
+      slug: "spare-parts",
+      imageUrl: "/categories/Spare Parts - 3.png",
+      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
+    },
+    {
+      _id: "priority-4",
+      name: "Industrial Parts",
+      slug: "industrial-parts-1",
+      imageUrl: "/categories/Industrials Parts -  4.png",
+      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
+    },
+    {
+      _id: "priority-5",
+      name: "Crank Shaft",
+      slug: "crank-shaft",
+      imageUrl: "/categories/Crank Shaft - 5.png",
+      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
+    },
+    {
+      _id: "priority-6",
+      name: "Alternators",
+      slug: "alternators",
+      imageUrl: "/categories/Alternators -6.png",
+      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
+    },
+    {
+      _id: "priority-7",
+      name: "RO Water Plant",
+      slug: "ro-wanter-plant",
+      imageUrl: "/categories/Ro System -8.png",
+      division: { _id: "ro", name: "RO Solutions", slug: "ro-solutions" }
+    }
+  ]);
 
   useEffect(() => {
-    const allCategories = getCachedCategories() || [];
-    const filtered = allCategories.filter(cat => cat.division?.slug !== "ro-solutions");
-    setCategories(filtered.slice(0, 6));
+    // We already set the prioritized categories above
   }, []);
 
   return (
@@ -91,41 +140,50 @@ export function CategoryHeroSection() {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 1 }}
-        className="relative z-10 w-full bg-gradient-to-t from-black/95 to-transparent pb-8 pt-10 -mt-16"
+        className="relative z-10 w-full bg-gradient-to-t from-black/95 to-transparent pb-8 pt-10 -mt-20 overflow-hidden"
       >
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="flex items-center gap-4 mb-6">
+        <div className="max-w-[1400px] mx-auto px-6 mb-6">
+          <div className="flex items-center gap-4">
             <span className="h-px w-8 bg-accent/30" />
-            <p className="font-tech text-[9px] font-bold uppercase tracking-[0.3em] text-accent-blue">Core Product Categories</p>
+            <p className="font-tech text-[9px] font-bold uppercase tracking-[0.3em] text-accent-blue">Our Products Categories</p>
             <span className="h-px flex-1 bg-accent/10" />
           </div>
+        </div>
 
-          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-6 gap-2 md:gap-6 lg:gap-8">
-            {categories.map((category) => (
+        {/* Marquee Container */}
+        <div className="relative w-full">
+          {/* Edge fade masks */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black/80 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black/80 to-transparent z-10 pointer-events-none" />
+
+          <div className="marquee-track-right flex w-max">
+            {[...categories, ...categories].map((category, i) => (
               <Link
-                key={category._id}
+                key={`${category._id}-${i}`}
                 href={`/products?category=${category.slug}`}
-                className="group flex flex-col items-center gap-1.5 text-center transition-all duration-300"
+                className="group flex flex-col items-center gap-2 text-center transition-all duration-300 flex-shrink-0 pr-20"
               >
-                <div className="relative w-full max-w-[80px] md:max-w-[105px] aspect-square flex items-center justify-center transition-all duration-500">
+                <div className="relative w-32 md:w-30 aspect-square flex items-center justify-center transition-all duration-500 bg-white shadow-lg rounded-[2rem] border border-white group-hover:border-accent group-hover:scale-105">
                   {category.imageUrl ? (
                     <img
                       src={category.imageUrl}
                       alt={category.name}
-                      className="w-full h-full object-contain transition-all duration-500 group-hover:scale-110 opacity-100"
+                      className="w-full h-full object-contain p-3 transition-all duration-500 group-hover:scale-110"
                     />
                   ) : (
-                    <Globe className="w-8 h-8 text-accent/60 group-hover:text-accent transition-colors" />
+                    <Globe className="w-10 h-10 text-accent/60 group-hover:text-accent transition-colors" />
                   )}
                 </div>
-                <span className="font-tech text-[8px] font-bold uppercase tracking-[0.2em] text-slate-300 group-hover:text-accent transition-colors drop-shadow-sm px-1">
+                <span className="font-tech text-[9px] font-bold uppercase tracking-[0.2em] text-slate-200 group-hover:text-accent-blue transition-colors drop-shadow-sm px-1">
                   {category.name}
                 </span>
+
               </Link>
             ))}
           </div>
         </div>
       </motion.div>
+
 
       {/* Decorative side brackets */}
       <div className="absolute bottom-10 left-10 w-20 h-20 border-b border-l border-accent/20 pointer-events-none" />
