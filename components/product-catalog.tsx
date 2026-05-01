@@ -84,6 +84,36 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
     currentPage * ITEMS_PER_PAGE
   );
 
+  const [inquiryData, setInquiryData] = useState({ name: "", email: "", message: "" });
+  const [inquiryStatus, setInquiryStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleInquirySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setInquiryStatus("loading");
+    try {
+      const res = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...inquiryData,
+          type: "product_search",
+          searchQuery: searchQuery,
+          message: `Automatic Inquiry for Search: "${searchQuery}"\n\nUser Message: ${inquiryData.message}`
+        }),
+      });
+
+      if (res.ok) {
+        setInquiryStatus("success");
+        setInquiryData({ name: "", email: "", message: "" });
+        setTimeout(() => setInquiryStatus("idle"), 5000);
+      } else {
+        setInquiryStatus("error");
+      }
+    } catch (err) {
+      setInquiryStatus("error");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* 01. PREMIUM PAGE HEADER (Dark Contrast) */}
@@ -186,7 +216,7 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
         </div>
       </section>
 
-      {/* 03. PRODUCT GRID (Light Mode with High Contrast Cards) */}
+      {/* 03. PRODUCT GRID */}
       <section className="py-20 md:py-32">
         <div className="section-container">
           {isLoading ? (
@@ -203,8 +233,83 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
               ))}
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="py-32 text-center border-2 border-dashed border-slate-100 bg-slate-50/50">
-              <p className="heading-sub text-slate-300 uppercase tracking-widest">No matching technical results found.</p>
+            <div className="max-w-2xl mx-auto text-center space-y-12 py-12">
+              <div className="space-y-4">
+                <div className="w-20 h-20 bg-slate-50 border border-slate-100 flex items-center justify-center mx-auto mb-8">
+                  <Search className="w-8 h-8 text-slate-200" />
+                </div>
+                <h2 className="heading-sub text-3xl text-primary uppercase">No Results Found.</h2>
+                <p className="body-premium text-slate-500 italic">
+                  Currently not available in stock. However, we specialize in technical sourcing. Please submit an inquiry below and our engineers will find it for you.
+                </p>
+              </div>
+
+              <div className="bg-slate-50 border border-slate-100 p-8 md:p-12 shadow-xl text-left relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 blur-3xl pointer-events-none" />
+                
+                {inquiryStatus === "success" ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="py-12 text-center space-y-4"
+                  >
+                    <div className="w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-6">
+                      <ShieldCheck size={32} />
+                    </div>
+                    <h3 className="font-display text-2xl font-bold text-primary">Inquiry Received</h3>
+                    <p className="text-slate-500 font-tech text-[10px] uppercase tracking-widest">Our technical team will respond within 24 hours.</p>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleInquirySubmit} className="space-y-6 relative z-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="font-tech text-[9px] font-bold uppercase tracking-widest text-slate-400">Full Name</label>
+                        <input 
+                          type="text" 
+                          required
+                          value={inquiryData.name}
+                          onChange={(e) => setInquiryData({...inquiryData, name: e.target.value})}
+                          className="w-full bg-transparent border-b border-slate-200 py-3 text-primary focus:outline-none focus:border-accent transition-all text-sm"
+                          placeholder="Your Name"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="font-tech text-[9px] font-bold uppercase tracking-widest text-slate-400">Email Address</label>
+                        <input 
+                          type="email" 
+                          required
+                          value={inquiryData.email}
+                          onChange={(e) => setInquiryData({...inquiryData, email: e.target.value})}
+                          className="w-full bg-transparent border-b border-slate-200 py-3 text-primary focus:outline-none focus:border-accent transition-all text-sm"
+                          placeholder="your@email.com"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="font-tech text-[9px] font-bold uppercase tracking-widest text-slate-400">Technical Details / Part Numbers</label>
+                      <textarea 
+                        required
+                        value={inquiryData.message}
+                        onChange={(e) => setInquiryData({...inquiryData, message: e.target.value})}
+                        rows={3}
+                        className="w-full bg-transparent border-b border-slate-200 py-3 text-primary focus:outline-none focus:border-accent transition-all text-sm resize-none"
+                        placeholder={`I am looking for ${searchQuery}...`}
+                      />
+                    </div>
+                    <button 
+                      type="submit"
+                      disabled={inquiryStatus === "loading"}
+                      className="w-full bg-primary text-white py-5 font-display font-bold uppercase text-[10px] tracking-[0.3em] hover:bg-accent transition-all flex items-center justify-center gap-3 group"
+                    >
+                      {inquiryStatus === "loading" ? "Processing..." : "Send Technical Inquiry"}
+                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    </button>
+                    {inquiryStatus === "error" && (
+                      <p className="text-red-500 text-[9px] font-tech uppercase text-center mt-2">Failed to send. Please try again or contact us via WhatsApp.</p>
+                    )}
+                  </form>
+                )}
+              </div>
             </div>
           ) : (
             <>
