@@ -38,26 +38,44 @@ export async function analyzeProductImage(imageBuffer: Buffer, mimeType: string,
     }
   `;
 
-  try {
-    const result = await model.generateContent([
-      prompt,
-      {
-        inlineData: {
-          data: imageBuffer.toString("base64"),
-          mimeType: mimeType
-        }
-      }
-    ]);
+  const maxRetries = 2;
+  let lastError: any;
 
-    const response = await result.response;
-    const text = response.text();
-    if (!text) {
-      throw new Error("Empty response from AI");
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const result = await model.generateContent([
+        prompt,
+        {
+          inlineData: {
+            data: imageBuffer.toString("base64"),
+            mimeType: mimeType
+          }
+        }
+      ]);
+
+      const response = await result.response;
+      const text = response.text();
+      if (!text) {
+        throw new Error("Empty response from AI");
+      }
+      
+      return JSON.parse(text);
+    } catch (error: any) {
+      lastError = error;
+      const isRateLimit = error.status === 429 || error.message?.includes("429") || error.message?.includes("Quota");
+      
+      if (isRateLimit && attempt < maxRetries) {
+        console.log(`AI Rate limit hit (attempt ${attempt}). Retrying in 2 seconds...`);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        continue;
+      }
+      
+      console.error(`Gemini API error (attempt ${attempt}/${maxRetries}):`, error);
+      break;
     }
-    
-    return JSON.parse(text);
-  } catch (error: any) {
-    console.error("Gemini API detailed error:", error);
+  }
+
+  const error = lastError;
     
     // Better user-facing error message
     let errorMessage = "AI Analysis failed.";

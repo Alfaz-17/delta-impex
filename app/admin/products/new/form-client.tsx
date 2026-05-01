@@ -167,13 +167,16 @@ export function ProductFormContent() {
 
     setIsRemovingBg(true);
     setBgTarget(targetKey);
+    const toastId = toast.loading("AI is removing background... Please wait.");
 
     try {
       const blob = await removeBackgroundClient(file);
+      toast.success("Background removed successfully", { id: toastId });
       return new File([blob], `bg-removed-${file.name.replace(/\.[^/.]+$/, "")}.png`, {
         type: "image/png",
       });
     } catch (error: any) {
+      toast.dismiss(toastId);
       if (error?.message === "MOBILE_MEMORY_ERROR") {
         toast.error("Image too large for this device memory. Using original image.");
       } else {
@@ -181,7 +184,6 @@ export function ProductFormContent() {
       }
       return file;
     } finally {
-      toast.success("Background removed successfully");
       setIsRemovingBg(false);
       setBgTarget(null);
     }
@@ -245,6 +247,7 @@ export function ProductFormContent() {
 
       setIsRemovingBg(true);
       setBgTarget("main");
+      const toastId = toast.loading("Removing background from main image...");
 
       try {
         const blob = await removeBackgroundClient(mainFile);
@@ -253,9 +256,9 @@ export function ProductFormContent() {
         });
         setMainFile(processed);
         setMainPreviewUrl(URL.createObjectURL(processed));
-        toast.success("Background removed from main image");
+        toast.success("Background removed from main image", { id: toastId });
       } catch {
-        toast.error("Background removal failed for main image");
+        toast.error("Background removal failed for main image", { id: toastId });
       } finally {
         setIsRemovingBg(false);
         setBgTarget(null);
@@ -272,6 +275,7 @@ export function ProductFormContent() {
 
     setIsRemovingBg(true);
     setBgTarget(`gallery-${assetId}`);
+    const toastIdGallery = toast.loading("Removing background from gallery image...");
 
     try {
       const blob = await removeBackgroundClient(asset.file);
@@ -285,9 +289,9 @@ export function ProductFormContent() {
             : item
         )
       );
-      toast.success("Background removed from gallery image");
+      toast.success("Background removed from gallery image", { id: toastIdGallery });
     } catch {
-      toast.error("Background removal failed for gallery image");
+      toast.error("Background removal failed for gallery image", { id: toastIdGallery });
     } finally {
       setIsRemovingBg(false);
       setBgTarget(null);
