@@ -46,6 +46,13 @@ export function ProductsContent() {
   };
 
   const handleToggleFeatured = async (product: any) => {
+    // Optimistic Update
+    const previousProducts = [...products];
+    const updatedProducts = products.map(p => 
+      p._id === product._id ? { ...p, isFeatured: !product.isFeatured } : p
+    );
+    setProducts(updatedProducts);
+
     try {
       const res = await fetch(`/api/products/${product._id}`, {
         method: "PATCH",
@@ -58,9 +65,13 @@ export function ProductsContent() {
         throw new Error(data?.error || "Failed to update product");
       }
 
-      toast.success(`Product ${!product.isFeatured ? 'marked as featured' : 'removed from featured'}`);
-      fetchProducts();
+      toast.success(
+        `Product ${!product.isFeatured ? 'marked as featured' : 'removed from featured'}`,
+        { duration: 2000 }
+      );
     } catch (error) {
+      // Rollback on error
+      setProducts(previousProducts);
       toast.error(error instanceof Error ? error.message : "Error updating status");
     }
   };
@@ -209,10 +220,14 @@ export function ProductsContent() {
                       <td className="py-6 px-6 text-center">
                           <button
                           onClick={() => handleToggleFeatured(product)}
-                          className={`p-2 transition-all duration-300 ${product.isFeatured ? 'text-yellow-600 scale-125' : 'text-muted-foreground/30 hover:text-accent'}`}
+                          className={`p-3 rounded-full transition-all duration-500 hover:bg-yellow-50 active:scale-95 ${
+                            product.isFeatured 
+                              ? 'text-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.3)] scale-110' 
+                              : 'text-muted-foreground/20 hover:text-yellow-400'
+                          }`}
                           title={product.isFeatured ? "Featured Product" : "Mark as Featured"}
                           >
-                          <Star className={`w-5 h-5 ${product.isFeatured ? 'fill-yellow-500' : ''}`} />
+                          <Star className={`w-5 h-5 transition-all ${product.isFeatured ? 'fill-yellow-500 stroke-yellow-600' : 'stroke-[1.5px]'}`} />
                           </button>
                       </td>
                       <td className="py-6 px-6 text-right">
