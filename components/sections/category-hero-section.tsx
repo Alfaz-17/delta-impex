@@ -29,7 +29,7 @@ export function CategoryHeroSection() {
   }, []);
 
   return (
-    <section className="relative w-full h-screen overflow-hidden flex flex-col justify-between">
+    <section className="relative w-full h-[100dvh] overflow-hidden flex flex-col justify-between">
       {/* Background Video */}
       <div className="absolute inset-0 z-0">
         <video
@@ -37,7 +37,7 @@ export function CategoryHeroSection() {
           loop
           muted
           playsInline
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-[65%_center] md:object-center"
           poster="/hero-poster.png"
         >
           <source src="/hero.mp4" type="video/mp4" />
@@ -48,7 +48,7 @@ export function CategoryHeroSection() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 flex-1 flex flex-col items-start justify-center text-left px-8 lg:px-24 pt-0">
+      <div className="relative z-10 flex-1 flex flex-col items-start justify-center text-left px-6 md:px-12 lg:px-24 pt-0">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -56,7 +56,7 @@ export function CategoryHeroSection() {
           className="max-w-md space-y-3"
         >
           <div className="space-y-1">
-            <h1 className="font-display text-slate-300 text-3xl md:text-4xl lg:text-5xl uppercase leading-[1] tracking-tighter">
+            <h1 className="font-display text-slate-300 text-2xl md:text-4xl lg:text-5xl uppercase leading-[1] tracking-tighter">
               Marine & <br />
               <span className="text-accent-blue italic">Industrial</span> <br />
               Suppliers.
