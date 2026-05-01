@@ -6,12 +6,7 @@ import { MessageCircle } from "lucide-react";
 import { SITE_INFO } from "@/lib/site";
 
 export function WhatsAppButton() {
-  const [showLabel, setShowLabel] = React.useState(true);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => setShowLabel(false), 5000);
-    return () => clearTimeout(timer);
-  }, []);
+  const showLabel = true;
 
   const message = "Hello Delta Impex, I'm interested in your marine and industrial solutions.";
   const whatsappUrl = `${SITE_INFO.whatsappHref}?text=${encodeURIComponent(message)}`;
@@ -20,17 +15,7 @@ export function WhatsAppButton() {
     <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-3 group">
       {/* Technical Label */}
       <AnimatePresence>
-        {showLabel && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="bg-white border border-accent/20 px-4 py-2 shadow-2xl shadow-accent/10 relative"
-          >
-            <div className="absolute top-0 left-0 w-1 h-full bg-accent" />
-            <span className="font-tech text-[10px] font-bold uppercase tracking-widest text-primary whitespace-nowrap">Technical Sales Support</span>
-          </motion.div>
-        )}
+      
       </AnimatePresence>
 
       <motion.a

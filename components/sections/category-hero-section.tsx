@@ -96,7 +96,7 @@ export function CategoryHeroSection() {
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="flex items-center gap-4 mb-6">
             <span className="h-px w-8 bg-accent/30" />
-            <p className="font-tech text-[9px] font-bold uppercase tracking-[0.3em] text-accent/60">Core Product Categories</p>
+            <p className="font-tech text-[9px] font-bold uppercase tracking-[0.3em] text-accent-blue">Core Product Categories</p>
             <span className="h-px flex-1 bg-accent/10" />
           </div>
 
