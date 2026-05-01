@@ -1,6 +1,7 @@
 import Category from "./Category";
-import Division from "./Division";
 import Product from "./Product";
+import Division from "./Division";
 import Settings from "./Settings";
+import Inquiry from "./Inquiry";
 
-export { Category, Division, Product, Settings };
+export { Category, Product, Division, Settings, Inquiry };
