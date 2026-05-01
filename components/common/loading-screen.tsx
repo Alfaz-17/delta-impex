@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { Anchor } from "lucide-react";
+import { MarineLoader } from "@/components/ui/marine-loader";
 
 export function LoadingScreen() {
   const [loading, setLoading] = useState(true);
@@ -47,90 +49,66 @@ export function LoadingScreen() {
       {loading && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, y: -20 }}
+          exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-[10000] bg-dark-base flex flex-col items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-[10000] bg-white flex flex-col items-center justify-center overflow-hidden"
         >
           {/* Background Technical Grid */}
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
                style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '30px 30px' }} />
           
-          <div className="relative z-10 flex flex-col items-center max-w-sm w-full px-8">
-            {/* Logo Animation */}
+          <div className="relative z-10 flex flex-col items-center">
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 1, ease: "easeOut" }}
-              className="relative w-48 h-20 mb-12"
+              className="relative w-24 h-24"
             >
-              <Image
-                src="/logo.png"
-                alt="Delta Impex Logo"
-                fill
-                className="object-contain brightness-0 invert"
-                priority
-              />
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent w-full h-full"
-                animate={{ x: ['-100%', '100%'] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                className="w-full h-full"
+              >
+                <svg viewBox="0 0 100 100" className="w-full h-full text-primary fill-none stroke-current stroke-[3]">
+                  {/* Outer Rim */}
+                  <circle cx="50" cy="50" r="35" />
+                  {/* Spokes */}
+                  {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+                    <line
+                      key={angle}
+                      x1="50"
+                      y1="50"
+                      x2={50 + 45 * Math.cos((angle * Math.PI) / 180)}
+                      y2={50 + 45 * Math.sin((angle * Math.PI) / 180)}
+                    />
+                  ))}
+                  {/* Inner Ring */}
+                  <circle cx="50" cy="50" r="10" />
+                </svg>
+              </motion.div>
+              <motion.div
+                animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute inset-0 bg-primary/20 rounded-full blur-2xl -z-10"
               />
             </motion.div>
-
-            {/* Progress Bar Container */}
-            <div className="w-full space-y-4">
-              <div className="flex items-center justify-between font-tech text-[8px] uppercase tracking-[0.3em] text-white/40">
-                <div className="relative h-4 overflow-hidden flex-1">
-                  <AnimatePresence mode="wait">
-                    <motion.span 
-                      key={statusIndex}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute left-0"
-                    >
-                      {loadingStatuses[statusIndex]}
-                    </motion.span>
-                  </AnimatePresence>
-                </div>
-                <span>{Math.round(progress)}%</span>
-              </div>
-              
-              <div className="h-0.5 w-full bg-white/5 relative overflow-hidden">
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="mt-12 flex flex-col items-center"
+            >
+              <span className="font-tech text-[10px] uppercase tracking-[0.5em] text-primary font-bold">Delta Impex</span>
+              <div className="h-px w-12 bg-primary/20 mt-3 relative overflow-hidden">
                 <motion.div 
-                  className="absolute inset-y-0 left-0 bg-accent-blue"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progress}%` }}
-                  transition={{ type: "spring", bounce: 0, duration: 0.8 }}
-                />
-                <motion.div 
-                  className="absolute inset-y-0 left-0 bg-white/30 blur-sm"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progress}%` }}
-                  transition={{ type: "spring", bounce: 0, duration: 1.2 }}
+                  animate={{ x: ["-100%", "100%"] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 bg-primary"
                 />
               </div>
-            </div>
-
-            {/* Technical Detail */}
-            <div className="mt-12 flex items-center gap-6">
-                <div className="flex flex-col items-center">
-                    <span className="text-[7px] font-tech text-accent uppercase tracking-widest mb-1">Division</span>
-                    <span className="text-[9px] font-sans font-bold text-white uppercase tracking-tighter">Marine / RO</span>
-                </div>
-                <div className="h-4 w-px bg-white/10" />
-                <div className="flex flex-col items-center">
-                    <span className="text-[7px] font-tech text-accent uppercase tracking-widest mb-1">Protocol</span>
-                    <span className="text-[9px] font-sans font-bold text-white uppercase tracking-tighter">Secure-NX</span>
-                </div>
-            </div>
+            </motion.div>
           </div>
-
-          {/* Decorative Corner Brackets */}
-          <div className="absolute top-12 left-12 w-6 h-6 border-t border-l border-white/10" />
-          <div className="absolute top-12 right-12 w-6 h-6 border-t border-r border-white/10" />
-          <div className="absolute bottom-12 left-12 w-6 h-6 border-b border-l border-white/10" />
-          <div className="absolute bottom-12 right-12 w-6 h-6 border-b border-r border-white/10" />
         </motion.div>
       )}
     </AnimatePresence>

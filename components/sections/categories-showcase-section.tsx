@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Anchor, Droplet, ArrowRight } from "lucide-react";
-import { BusinessLoader } from "@/components/ui/business-loader";
+import { MarineLoader } from "@/components/ui/marine-loader";
 import Link from "next/link";
 
 const divisionMeta: Record<string, { description: string; tag: string; image: string }> = {
@@ -69,7 +69,7 @@ export function CategoriesShowcaseSection() {
 
         {isLoading ? (
           <div className="flex justify-center items-center py-24">
-            <BusinessLoader size="lg" />
+            <MarineLoader size="lg" />
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">

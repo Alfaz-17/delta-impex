@@ -33,7 +33,7 @@ const footerLinks = {
 
 export function FooterSection() {
   return (
-    <footer id="contact" className="relative overflow-hidden bg-dark-base">
+    <footer id="contact" className="relative overflow-hidden bg-primary">
       {/* Upper Edge Light Accent */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[2px] w-1/3 bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent blur-[1px]" />

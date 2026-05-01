@@ -76,10 +76,16 @@ export function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[100]">
-      <nav className="max-w-full mx-auto px-6 lg:px-12 transition-all duration-500 border-b relative overflow-visible  bg-dark-base/95 backdrop-blur-xl py-6 shadow-md border-white/10">
+      <nav className={`max-w-full mx-auto px-6 lg:px-12 transition-all duration-500 relative overflow-visible py-6 ${
+        isScrolled 
+          ? "bg-primary shadow-md border-b border-white/10" 
+          : isHome 
+            ? "bg-transparent border-b border-white/0" 
+            : "bg-primary shadow-md border-b border-white/10"
+      }`}>
         {/* Glow line */}
-        <div className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-60"}`} />
-        <div className={`absolute inset-0 bg-gradient-to-b from-accent-blue/8 to-transparent pointer-events-none transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-40"}`} />
+        <div className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-0"}`} />
+        <div className={`absolute inset-0 bg-gradient-to-b from-accent-blue/8 to-transparent pointer-events-none transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-0"}`} />
 
         {/* Scroll Progress Bar */}
         <motion.div
