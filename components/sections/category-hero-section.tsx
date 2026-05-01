@@ -19,7 +19,7 @@ export function CategoryHeroSection() {
           muted
           playsInline
           className="w-full h-full object-cover object-[65%_center] md:object-center"
-          poster="/hero-poster.png"
+          poster="/hero-poster-ship.png"
         >
           <source src="/hero.mp4" type="video/mp4" />
           Your browser does not support the video tag.
