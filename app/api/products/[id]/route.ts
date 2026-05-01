@@ -41,8 +41,11 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
+    console.log("GET /api/products/[id] - ID:", id);
+    
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+      console.log("GET /api/products/[id] - Invalid ID format:", id);
+      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
     }
 
     await connectToDatabase();

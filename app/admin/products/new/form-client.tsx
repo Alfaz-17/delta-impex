@@ -112,7 +112,9 @@ export function ProductFormContent() {
   };
 
   const fetchProduct = async (id: string) => {
+    setIsLoading(true);
     try {
+      console.log("Fetching product details for ID:", id);
       const res = await fetch(`/api/products/${id}`);
       const data = await res.json();
       if (!res.ok) {
@@ -122,10 +124,16 @@ export function ProductFormContent() {
       const existingMain = data.imageUrl || "";
       const existingGallery = Array.isArray(data.images) ? data.images : [];
 
+      // Robust category resolution
+      let categoryValue = "";
+      if (data.category) {
+        categoryValue = data.category.slug || data.category.name || (typeof data.category === 'string' ? data.category : "");
+      }
+
       setFormData({
         name: data.name || "",
         division: data.division?._id || data.division || "",
-        category: data.category?.slug || data.category?.name || data.category || "",
+        category: categoryValue,
         description: data.description || "",
         price: data.price || "",
         condition: data.condition || "",
@@ -143,8 +151,12 @@ export function ProductFormContent() {
           existingUrl: url,
         }))
       );
+      console.log("Form data pre-filled successfully:", data.name);
     } catch (error) {
+      console.error("Error fetching product:", error);
       toast.error(error instanceof Error ? error.message : "Error loading product");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -449,16 +461,22 @@ export function ProductFormContent() {
             <ArrowLeft className="mr-2 h-4 w-4" /> Back to Inventory List
           </button>
 
-          <div className="mt-4 mb-8 flex items-center justify-between border-b border-border pb-8">
-            <div>
-              <h1 className="text-3xl font-bold uppercase tracking-tighter text-primary">
-                {editingId ? "Modify Record" : "Add New Record"}
-              </h1>
-              <p className="mt-2 text-xs font-bold uppercase tracking-[0.3em] text-accent">
-                Technical Specification Entry
-              </p>
+          {isLoading ? (
+            <div className="flex h-96 items-center justify-center border-2 border-dashed border-border bg-muted/5">
+              <MarineLoader size="lg" />
             </div>
-          </div>
+          ) : (
+            <>
+              <div className="mt-4 mb-8 flex items-center justify-between border-b border-border pb-8">
+                <div>
+                  <h1 className="text-3xl font-bold uppercase tracking-tighter text-primary">
+                    {editingId ? "Modify Record" : "Add New Record"}
+                  </h1>
+                  <p className="mt-2 text-xs font-bold uppercase tracking-[0.3em] text-accent">
+                    Technical Specification Entry
+                  </p>
+                </div>
+              </div>
 
           <div className="space-y-8 border border-border bg-white p-10">
             <div className="grid grid-cols-1 gap-4 border border-border/70 bg-muted/20 p-5 md:grid-cols-3">
@@ -731,6 +749,8 @@ export function ProductFormContent() {
               </div>
             </form>
           </div>
+            </>
+          )}
         </main>
       </div>
 
