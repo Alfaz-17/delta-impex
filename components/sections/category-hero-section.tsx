@@ -40,7 +40,7 @@ export function CategoryHeroSection() {
             <h1 className="font-display text-slate-300 text-2xl md:text-4xl lg:text-5xl uppercase leading-[1] tracking-tighter">
               Marine & <br />
               <span className="text-accent-blue italic">Industrial</span> <br />
-              Suppliers.
+              Suppliers
             </h1>
           </div>
 
