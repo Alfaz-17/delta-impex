@@ -10,6 +10,8 @@ import type { Metadata } from 'next'
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function ROSystemsPage() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -54,7 +56,9 @@ export default function ROSystemsPage() {
       </section>
 
       {/* E-Commerce Catalog Section */}
-      <ProductCatalog divisionSlug="ro-solutions" divisionName="RO Water Treatment" />
+      <Suspense fallback={<div className="h-96 flex items-center justify-center bg-background text-primary/20"><Loader2 className="animate-spin" /></div>}>
+        <ProductCatalog divisionSlug="ro-solutions" divisionName="RO Water Treatment" />
+      </Suspense>
 
       {/* Introduction Section */}
       <section className="relative overflow-hidden bg-dark-base border-t border-white/[0.06]">

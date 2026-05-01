@@ -7,7 +7,8 @@ import Image from "next/image";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
-import { Ship, Anchor, Gauge, Cog, Filter, Zap, Compass, ChevronRight } from "lucide-react";
+import { Ship, Anchor, Gauge, Cog, Filter, Zap, Compass, ChevronRight, Loader2 } from "lucide-react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 
 const categories = [
@@ -65,7 +66,9 @@ export default function MarinePartsPage() {
       </section>
 
       {/* Product Catalog */}
-      <ProductCatalog divisionSlug="marine-industrial" divisionName="Marine & Industrial" />
+      <Suspense fallback={<div className="h-96 flex items-center justify-center bg-background text-primary/20"><Loader2 className="animate-spin" /></div>}>
+        <ProductCatalog divisionSlug="marine-industrial" divisionName="Marine & Industrial" />
+      </Suspense>
 
       {/* Section 1: Introduction & Capabilities */}
       <section className="section-container pt-16 md:pt-24 border-t border-border/50">
