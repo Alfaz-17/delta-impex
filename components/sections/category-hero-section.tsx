@@ -11,21 +11,22 @@ export function CategoryHeroSection() {
 
   return (
     <section className="relative w-full h-[100dvh] overflow-hidden flex flex-col justify-between">
-      {/* Background Video */}
+      {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover object-[65%_center] md:object-center"
-          poster="/hero-poster-ship.png"
+        <motion.div 
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="w-full h-full"
         >
-          <source src="/hero.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+          <img
+            src="/hero-poster-ship.png"
+            alt="Delta Impex Marine Ship"
+            className="w-full h-full object-cover object-[65%_center] md:object-center"
+          />
+        </motion.div>
         {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/0 bg-gradient-to-b from-black/5 via-transparent to-black/0" />
+        <div className="absolute inset-0 bg-black/10 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
       </div>
 
       {/* Main Content */}
