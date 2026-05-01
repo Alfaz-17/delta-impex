@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/mongodb";
 import Product from "@/lib/models/Product";
 import Division from "@/lib/models/Division";
-import Category from "@/lib/models/Category";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import mongoose from "mongoose";
+import { STATIC_CATEGORIES } from "@/lib/categories";
 
 export const revalidate = 120;
 
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const divisionId = searchParams.get("divisionId");
     const divisionSlug = searchParams.get("divisionSlug");
-    const categoryId = searchParams.get("categoryId");
+    const categorySlug = searchParams.get("category");
     const isFeatured = searchParams.get("isFeatured");
     const limit = parseInt(searchParams.get("limit") || "0", 10);
     
@@ -62,16 +62,14 @@ export async function GET(req: NextRequest) {
       if (!divisionIds?.length) return NextResponse.json([]);
       query.division = { $in: divisionIds };
     }
-    if (categoryId) {
-      if (!mongoose.Types.ObjectId.isValid(categoryId)) return NextResponse.json([]);
-      query.category = categoryId;
+    if (categorySlug) {
+      query.category = categorySlug;
     }
     if (isFeatured === "true") query.isFeatured = true;
     
     let dbQuery = Product.find(query)
-      .populate("division", "name slug") // Only fetch essential division fields
-      .populate("category", "name slug") // Only fetch essential category fields
-      .select("name slug imageUrl isFeatured category division description price condition") // Project only what's needed for grids
+      .populate("division", "name slug")
+      .select("name slug imageUrl isFeatured category division description price condition")
       .sort({ createdAt: -1 });
 
     if (limit > 0) {
@@ -79,8 +77,17 @@ export async function GET(req: NextRequest) {
     }
       
     const products = await dbQuery.lean();
+
+    // Enrich category field with static data for display
+    const enriched = products.map((p: any) => {
+      const cat = STATIC_CATEGORIES.find((c) => c.slug === p.category);
+      return {
+        ...p,
+        category: cat ? { name: cat.name, slug: cat.slug } : { name: p.category, slug: p.category },
+      };
+    });
       
-    return NextResponse.json(products, {
+    return NextResponse.json(enriched, {
       headers: {
         "Cache-Control": "public, s-maxage=120, stale-while-revalidate=600",
       },
@@ -105,28 +112,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    if (
-      !mongoose.Types.ObjectId.isValid(data.division) ||
-      !mongoose.Types.ObjectId.isValid(data.category)
-    ) {
-      return NextResponse.json({ error: "Invalid division or category ID" }, { status: 400 });
+    if (!mongoose.Types.ObjectId.isValid(data.division)) {
+      return NextResponse.json({ error: "Invalid division ID" }, { status: 400 });
     }
 
-    const [division, category] = await Promise.all([
-      Division.findById(data.division).select("_id"),
-      Category.findById(data.category).select("_id division"),
-    ]);
+    // Validate category is a valid static slug
+    const validCategory = STATIC_CATEGORIES.find((c) => c.slug === data.category);
+    if (!validCategory) {
+      return NextResponse.json({ error: "Invalid category. Please select a valid category." }, { status: 400 });
+    }
 
+    const division = await Division.findById(data.division).select("_id");
     if (!division) {
       return NextResponse.json({ error: "Division not found" }, { status: 404 });
-    }
-
-    if (!category) {
-      return NextResponse.json({ error: "Category not found" }, { status: 404 });
-    }
-
-    if (String(category.division) !== String(data.division)) {
-      return NextResponse.json({ error: "Category does not belong to the selected division" }, { status: 400 });
     }
 
     const baseSlug = slugify(data.slug || data.name);

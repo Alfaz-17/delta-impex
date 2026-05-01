@@ -71,7 +71,7 @@ export function MarineLoader({ className, size = "md" }: { className?: string, s
       </div>
       
       <div className="flex flex-col items-center">
-        <span className="font-tech text-[10px] uppercase tracking-[0.5em] text-accent font-bold">Scanning Horizons</span>
+        <span className="font-tech text-[10px] uppercase tracking-[0.5em] text-accent font-bold">Delta impex</span>
         <motion.div 
           className="h-px w-12 bg-accent/20 mt-2 overflow-hidden relative"
         >

@@ -18,6 +18,8 @@ const divisionMeta: Record<string, { description: string; tag: string; image: st
   },
 };
 
+import { STATIC_CATEGORIES } from "@/lib/categories";
+
 export function CategoriesShowcaseSection() {
   const [categories, setCategories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,16 +28,12 @@ export function CategoriesShowcaseSection() {
     async function fetchAllCategories() {
       setIsLoading(true);
       try {
-        const [divRes, catRes] = await Promise.all([
-          fetch("/api/divisions"),
-          fetch("/api/categories?includeCounts=false"),
-        ]);
-
-        const [divisions, allCategories] = await Promise.all([divRes.json(), catRes.json()]);
+        const divRes = await fetch("/api/divisions");
+        const divisions = await divRes.json();
         
         const grouped = divisions.map((div: any) => ({
           ...div,
-          categories: allCategories.filter((c: any) => c.division?._id === div._id || c.division === div._id)
+          categories: STATIC_CATEGORIES.filter((c) => c.division === div.slug)
         }));
         
         setCategories(grouped);
@@ -123,8 +121,8 @@ export function CategoriesShowcaseSection() {
                       <div className="marquee-track-right flex gap-32">
                         {[...division.categories, ...division.categories, ...division.categories].map((cat: any, idx: number) => (
                           <Link 
-                            href={`/divisions/${division.slug}?category=${cat._id}`}
-                            key={`${cat._id}-${idx}`}
+                            href={`/products?category=${cat.slug}`}
+                            key={`${cat.slug}-${idx}`}
                             className="group/link flex flex-col items-center gap-2 text-center transition-all duration-300 flex-shrink-0"
                           >
                             <div className="relative w-[450px] h-[450px] flex items-center justify-center transition-all duration-500 bg-white/5 backdrop-blur-sm rounded-[3rem] border border-white/5 group-hover/link:border-primary/30 group-hover/link:bg-primary/5">

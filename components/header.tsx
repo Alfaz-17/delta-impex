@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ChevronRight, ChevronDown, Phone, Mail, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { STATIC_CATEGORIES } from "@/lib/categories";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,18 +42,12 @@ export function Header() {
   useEffect(() => {
     const fetchNavData = async () => {
       try {
-        const [divRes, catRes] = await Promise.all([
-          fetch("/api/divisions"),
-          fetch("/api/categories")
-        ]);
+        const divRes = await fetch("/api/divisions");
         const divisions = await divRes.json();
-        const categories = await catRes.json();
+        
         const structuredData = divisions.map((div: any) => ({
           ...div,
-          categories: categories.filter((cat: any) => {
-            const divId = typeof cat.division === 'string' ? cat.division : cat.division?._id;
-            return divId === div._id;
-          })
+          categories: STATIC_CATEGORIES.filter((cat) => cat.division === div.slug)
         }));
         setNavData(structuredData);
       } catch (error) {
@@ -176,8 +171,8 @@ export function Header() {
                                       {div.categories && div.categories.length > 0 ? (
                                         div.categories.map((cat: any) => (
                                           <Link
-                                            key={cat._id}
-                                            href={`/products?categoryId=${cat._id}`}
+                                            key={cat.slug}
+                                            href={`/products?category=${cat.slug}`}
                                             className="group/item flex items-center justify-between text-sm py-2 px-3 rounded-lg transition-all hover:bg-white/5 hover:text-white text-white/70 hover:translate-x-1"
                                             onClick={() => setActiveDropdown(null)}
                                           >
@@ -324,8 +319,8 @@ export function Header() {
                                       <div className="flex flex-col gap-4 pl-2">
                                         {div.categories.map((cat: any) => (
                                           <Link
-                                            key={cat._id}
-                                            href={`/products?categoryId=${cat._id}`}
+                                            key={cat.slug}
+                                            href={`/products?category=${cat.slug}`}
                                             className="text-base font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors flex items-center gap-3"
                                             onClick={() => setIsMenuOpen(false)}
                                           >

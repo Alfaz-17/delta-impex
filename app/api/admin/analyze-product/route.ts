@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeProductImage } from "@/lib/ai";
-import Category from "@/lib/models/Category";
 import connectToDatabase from "@/lib/mongodb";
+import mongoose from "mongoose";
+import { STATIC_CATEGORIES } from "@/lib/categories";
+import Division from "@/lib/models/Division";
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,9 +22,13 @@ export async function POST(req: NextRequest) {
     
     // Fetch categories for this division to help AI pick the right one
     let categories: string[] = [];
-    if (divisionId) {
-      const dbCategories = await Category.find({ division: divisionId }).select("name");
-      categories = dbCategories.map(c => c.name);
+    if (divisionId && mongoose.Types.ObjectId.isValid(divisionId)) {
+      const division = await Division.findById(divisionId).select("slug");
+      if (division) {
+        categories = STATIC_CATEGORIES.filter(c => c.division === division.slug).map(c => c.name);
+      }
+    } else {
+      categories = STATIC_CATEGORIES.map(c => c.name);
     }
 
     const analysis = await analyzeProductImage(buffer, mimeType, categories);

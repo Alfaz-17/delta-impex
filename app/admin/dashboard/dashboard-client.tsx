@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Package, Layers, Star, TrendingUp, ArrowUpRight } from "lucide-react";
 import { DivisionSwitcher } from "@/components/admin/division-switcher";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 export function DashboardContent() {
   const { data: session, status } = useSession();
@@ -36,6 +37,7 @@ export function DashboardContent() {
           { title: "Operational Status", value: "Active", icon: TrendingUp, color: "text-green-500" },
         ]);
       } catch (error) {
+        toast.error("Failed to load dashboard stats");
         console.error("Error fetching stats:", error);
       } finally {
         setIsLoading(false);

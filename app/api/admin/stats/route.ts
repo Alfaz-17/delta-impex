@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/mongodb";
 import Product from "@/lib/models/Product";
-import Category from "@/lib/models/Category";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import mongoose from "mongoose";
+import { STATIC_CATEGORIES } from "@/lib/categories";
+import Division from "@/lib/models/Division";
+
 
 export async function GET(req: NextRequest) {
   try {
@@ -18,19 +20,24 @@ export async function GET(req: NextRequest) {
     const divisionId = searchParams.get("divisionId");
 
     let query: any = {};
+    let staticCatCount = STATIC_CATEGORIES.length;
+
     if (divisionId && mongoose.Types.ObjectId.isValid(divisionId)) {
         query.division = divisionId;
+        const division = await Division.findById(divisionId).select("slug");
+        if (division) {
+          staticCatCount = STATIC_CATEGORIES.filter(c => c.division === division.slug).length;
+        }
     }
 
-    const [productCount, categoryCount, featuredCount] = await Promise.all([
+    const [productCount, featuredCount] = await Promise.all([
       Product.countDocuments(query),
-      Category.countDocuments(query),
       Product.countDocuments({ ...query, isFeatured: true }),
     ]);
 
     return NextResponse.json({
       productCount,
-      categoryCount,
+      categoryCount: staticCatCount,
       featuredCount,
     });
   } catch (error: any) {

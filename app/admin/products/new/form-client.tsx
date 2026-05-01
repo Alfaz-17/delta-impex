@@ -15,6 +15,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import CropModal from "@/components/common/CropModal";
 import { addWatermark } from "@/lib/utils/watermark";
 import { removeBackgroundClient } from "@/lib/background-removal-client";
+import { STATIC_CATEGORIES } from "@/lib/categories";
 
 type GalleryAsset = {
   id: string;
@@ -84,13 +85,13 @@ export function ProductFormContent() {
     if (editingId) fetchProduct(editingId);
   }, [activeDivisionId, editingId]);
 
-  useEffect(() => {
-    if (formData.division) {
-      fetchCategories(formData.division);
-    } else {
-      setCategories([]);
-    }
-  }, [formData.division]);
+  // Filter static categories by selected division slug
+  const filteredCategories = useMemo(() => {
+    if (!formData.division) return STATIC_CATEGORIES;
+    const selectedDiv = divisions.find((d: any) => d._id === formData.division);
+    if (!selectedDiv) return STATIC_CATEGORIES;
+    return STATIC_CATEGORIES.filter((c) => c.division === selectedDiv.slug);
+  }, [formData.division, divisions]);
 
   const newGalleryCount = useMemo(
     () => galleryAssets.filter((asset) => !!asset.file).length,
@@ -110,19 +111,6 @@ export function ProductFormContent() {
     }
   };
 
-  const fetchCategories = async (divId: string) => {
-    try {
-      const res = await fetch(`/api/categories?divisionId=${divId}`);
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data?.error || "Failed to load categories");
-      }
-      setCategories(Array.isArray(data) ? data : []);
-    } catch {
-      toast.error("Failed to load categories");
-    }
-  };
-
   const fetchProduct = async (id: string) => {
     try {
       const res = await fetch(`/api/products/${id}`);
@@ -137,7 +125,7 @@ export function ProductFormContent() {
       setFormData({
         name: data.name || "",
         division: data.division?._id || data.division || "",
-        category: data.category?._id || data.category || "",
+        category: data.category?.slug || data.category?.name || data.category || "",
         description: data.description || "",
         price: data.price || "",
         condition: data.condition || "",
@@ -181,6 +169,7 @@ export function ProductFormContent() {
       }
       return file;
     } finally {
+      toast.success("Background removed successfully");
       setIsRemovingBg(false);
       setBgTarget(null);
     }
@@ -365,7 +354,7 @@ export function ProductFormContent() {
     e.preventDefault();
 
     if (!formData.name || !formData.division || !formData.category) {
-      toast.error("Required fields missing");
+      toast.warning("Please fill in all required fields: Name, Division, and Category");
       return;
     }
 
@@ -373,6 +362,7 @@ export function ProductFormContent() {
 
     try {
       setIsUploading(true);
+      toast.loading("Uploading images...", { id: "product-upload" });
 
       let finalMainImageUrl = formData.imageUrl;
       if (mainFile) {
@@ -416,12 +406,14 @@ export function ProductFormContent() {
         throw new Error(data?.error || "Failed to save product");
       }
 
-      toast.success(editingId ? "Updated" : "Created");
+      toast.dismiss("product-upload");
+      toast.success(editingId ? `Product "${formData.name}" updated successfully` : `Product "${formData.name}" created successfully`);
       const nextDivisionId = formData.division || activeDivisionId;
       router.push(`/admin/products${nextDivisionId ? "?divisionId=" + nextDivisionId : ""}`);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to save product");
     } finally {
+      toast.dismiss("product-upload");
       setIsUploading(false);
       setIsLoading(false);
     }
@@ -537,8 +529,8 @@ export function ProductFormContent() {
                     disabled={!formData.division}
                   >
                     <option value="">Select Classification</option>
-                    {categories.map((cat) => (
-                      <option key={cat._id} value={cat._id}>
+                    {filteredCategories.map((cat) => (
+                      <option key={cat.slug} value={cat.slug}>
                         {cat.name}
                       </option>
                     ))}

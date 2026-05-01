@@ -3,13 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import connectToDatabase from "@/lib/mongodb";
 import Product from "@/lib/models/Product";
-import Category from "@/lib/models/Category";
 import Division from "@/lib/models/Division";
 import { ArrowLeft, ArrowRight, ShieldCheck, Globe, Clock, Package } from "lucide-react";
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 
 import type { Metadata, ResolvingMetadata } from 'next'
+
+import { STATIC_CATEGORIES } from "@/lib/categories";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +20,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   await connectToDatabase();
   const { slug } = await params;
-  const product = await Product.findOne({ slug }).populate("category").lean();
+  const product = await Product.findOne({ slug }).lean();
 
   if (!product) {
     return { title: 'Product Not Found' }
@@ -44,24 +45,36 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
 
   Division.schema; 
-  Category.schema;
 
-  const product = await Product.findOne({ slug })
-    .populate("category")
+  const productRaw = await Product.findOne({ slug })
     .populate("division")
     .lean();
 
-  if (!product) {
+  if (!productRaw) {
     notFound();
   }
 
-  const relatedProducts = await Product.find({
-    category: product.category._id,
+  const p = productRaw as any;
+  const cat = STATIC_CATEGORIES.find((c) => c.slug === p.category);
+  const product = {
+    ...p,
+    category: cat ? { name: cat.name, slug: cat.slug } : { name: p.category, slug: p.category }
+  };
+
+  const relatedProductsRaw = await Product.find({
+    category: p.category, // category is already a slug in the DB
     _id: { $ne: product._id }
   })
-    .populate("category")
     .limit(4)
     .lean();
+
+  const relatedProducts = relatedProductsRaw.map((rp: any) => {
+    const rCat = STATIC_CATEGORIES.find((c) => c.slug === rp.category);
+    return {
+      ...rp,
+      category: rCat ? { name: rCat.name, slug: rCat.slug } : { name: rp.category, slug: rp.category }
+    };
+  });
 
   return (
     <div className="min-h-screen bg-background flex flex-col">

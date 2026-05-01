@@ -65,6 +65,7 @@ export function CategoriesContent() {
     setFormData({ name: "", division: activeDivisionId || "", imageUrl: "" });
     setImageFile(null);
     setImagePreviewUrl("");
+    toast.info("Edit cancelled");
   };
 
   const handleEdit = (category: any) => {
@@ -76,6 +77,7 @@ export function CategoriesContent() {
     });
     setImageFile(null);
     setImagePreviewUrl(category.imageUrl || "");
+    toast.info(`Editing category: ${category.name}`);
   };
 
   const toggleSelect = (category: any) => {
@@ -100,9 +102,10 @@ export function CategoriesContent() {
   };
 
   const handleBulkDelete = async () => {
-    if (!confirm(`Are you sure?`)) return;
+    if (!confirm(`Are you sure you want to delete ${selectedIds.length} category(ies)? This action cannot be undone.`)) return;
 
     setIsLoading(true);
+    toast.loading("Deleting categories...", { id: "cat-delete" });
     try {
       const res = await fetch("/api/categories", {
         method: "DELETE",
@@ -118,12 +121,13 @@ export function CategoriesContent() {
         throw new Error(data?.error || "Failed to delete categories");
       }
 
-      toast.success("Categories deleted");
+      toast.success(`${selectedIds.length} category(ies) deleted successfully`);
       setSelectedIds([]);
       fetchCategories();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Error deleting");
     } finally {
+      toast.dismiss("cat-delete");
       setIsLoading(false);
     }
   };
@@ -158,7 +162,10 @@ export function CategoriesContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.division) return;
+    if (!formData.name || !formData.division) {
+      toast.warning("Please fill in all required fields");
+      return;
+    }
     
     setIsLoading(true);
     setIsUploading(true);
@@ -166,7 +173,9 @@ export function CategoriesContent() {
       let finalImageUrl = formData.imageUrl;
       
       if (imageFile) {
+        toast.loading("Uploading image...", { id: "cat-upload" });
         finalImageUrl = await uploadImage(imageFile);
+        toast.dismiss("cat-upload");
       }
 
       const payload = {
@@ -189,7 +198,7 @@ export function CategoriesContent() {
         throw new Error(data?.error || "Failed to save category");
       }
 
-      toast.success(editingId ? "Updated" : "Added");
+      toast.success(editingId ? `Category "${formData.name}" updated successfully` : `Category "${formData.name}" added successfully`);
       if (!editingId) {
         setFormData({ name: "", division: activeDivisionId || "", imageUrl: "" });
         setImageFile(null);

@@ -1,54 +1,77 @@
-export const STATIC_CATEGORIES = [
+// Static categories — single source of truth for the entire website.
+// No database dependency. Used in admin product form, public pages, and hero section.
+
+export type StaticCategory = {
+  name: string;
+  slug: string;
+  imageUrl: string;
+  division: string; // "marine-industrial" or "ro-solutions"
+  divisionName: string;
+};
+
+export const STATIC_CATEGORIES: StaticCategory[] = [
   {
-    "_id": "69eb3e7debfe92dc6194927f",
-    "name": "Ro wanter plant",
-    "slug": "ro-wanter-plant",
-    "division": {
-      "_id": "69e87238bcd3e352f23c543a",
-      "name": "RO Solutions",
-      "slug": "ro-solutions"
-    },
-    "imageUrl": "https://res.cloudinary.com/dpmyifbns/image/upload/v1777385061/delta-impex/fqat8gue9jv8wvysw0cv.jpg"
+    name: "Main Engine",
+    slug: "main-engine",
+    imageUrl: "/categories/main-engine-1.png",
+    division: "marine-industrial",
+    divisionName: "Marine & Industrial",
   },
   {
-    "_id": "69f07175342748767500319f",
-    "name": "Industrial Parts",
-    "slug": "industrial-parts-1",
-    "division": {
-      "_id": "69e87238bcd3e352f23c5439",
-      "name": "Marine & Industrial",
-      "slug": "marine-industrial"
-    },
-    "imageUrl": "https://res.cloudinary.com/dpmyifbns/image/upload/v1777365364/delta-impex/snljkmao8t2sy47iybw7.png"
+    name: "Generators",
+    slug: "generators",
+    imageUrl: "/categories/generators-2.png",
+    division: "marine-industrial",
+    divisionName: "Marine & Industrial",
   },
   {
-    "_id": "69f19e87bfa842f1dcffe39d",
-    "name": "Main engine ",
-    "slug": "main-engine",
-    "division": {
-      "_id": "69e87238bcd3e352f23c5439",
-      "name": "Marine & Industrial",
-      "slug": "marine-industrial"
-    },
-    "imageUrl": "https://res.cloudinary.com/dpmyifbns/image/upload/v1777442431/delta-impex/s5qzjdarqqe0dpnpbdxe.png"
+    name: "Spare Parts",
+    slug: "spare-parts",
+    imageUrl: "/categories/spare-parts-3.png",
+    division: "marine-industrial",
+    divisionName: "Marine & Industrial",
   },
   {
-    "_id": "69f1ba9a0d961949f81819c8",
-    "name": "Generators",
-    "slug": "generators",
-    "division": {
-      "_id": "69e87238bcd3e352f23c5439",
-      "name": "Marine & Industrial",
-      "slug": "marine-industrial"
-    },
-    "imageUrl": "https://res.cloudinary.com/dpmyifbns/image/upload/v1777449627/delta-impex/co6rg6kydkhxupwe7z3i.png"
-  }
+    name: "Industrial Parts",
+    slug: "industrial-parts",
+    imageUrl: "/categories/industrial-parts-4.png",
+    division: "marine-industrial",
+    divisionName: "Marine & Industrial",
+  },
+  {
+    name: "Crank Shaft",
+    slug: "crank-shaft",
+    imageUrl: "/categories/crank-shaft-5.png",
+    division: "marine-industrial",
+    divisionName: "Marine & Industrial",
+  },
+  {
+    name: "Alternators",
+    slug: "alternators",
+    imageUrl: "/categories/alternators-6.png",
+    division: "marine-industrial",
+    divisionName: "Marine & Industrial",
+  },
+  {
+    name: "RO Water Plant",
+    slug: "ro-water-plant",
+    imageUrl: "/categories/ro-system-8.png",
+    division: "ro-solutions",
+    divisionName: "RO Solutions",
+  },
 ];
 
-export async function getCategories() {
-  return STATIC_CATEGORIES;
+// Helper: get categories filtered by division slug
+export function getCategoriesByDivision(divisionSlug: string) {
+  return STATIC_CATEGORIES.filter((c) => c.division === divisionSlug);
 }
 
-export function getCachedCategories() {
-  return STATIC_CATEGORIES;
+// Helper: find a category by slug
+export function getCategoryBySlug(slug: string) {
+  return STATIC_CATEGORIES.find((c) => c.slug === slug);
+}
+
+// Helper: get all category names (for AI analysis)
+export function getCategoryNames() {
+  return STATIC_CATEGORIES.map((c) => c.name);
 }

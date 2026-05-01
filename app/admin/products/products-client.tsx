@@ -80,9 +80,10 @@ export function ProductsContent() {
   };
 
   const handleBulkDelete = async () => {
-    if (!confirm(`Are you sure you want to delete ${selectedIds.length} items?`)) return;
+    if (!confirm(`Are you sure you want to delete ${selectedIds.length} item(s)? This action cannot be undone.`)) return;
 
     setIsLoading(true);
+    toast.loading("Deleting products...", { id: "bulk-delete" });
     try {
       const res = await fetch("/api/products", {
         method: "DELETE",
@@ -95,12 +96,13 @@ export function ProductsContent() {
         throw new Error(data?.error || "Failed to delete products");
       }
 
-      toast.success("Products deleted successfully");
+      toast.success(`${selectedIds.length} product(s) deleted successfully`);
       setSelectedIds([]);
       fetchProducts();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Error deleting products");
     } finally {
+      toast.dismiss("bulk-delete");
       setIsLoading(false);
     }
   };

@@ -13,7 +13,7 @@ interface ProductCatalogProps {
 
 const ITEMS_PER_PAGE = 12;
 
-import { getCategories, getCachedCategories } from "@/lib/categories";
+import { STATIC_CATEGORIES } from "@/lib/categories";
 import { useSearchParams } from "next/navigation";
 
 export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogProps) {
@@ -21,11 +21,10 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
   const initialCategory = searchParams.get("category") || searchParams.get("categoryId") || "all";
 
   const [products, setProducts] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>(getCachedCategories() || []);
+  const [categories, setCategories] = useState<any[]>(STATIC_CATEGORIES.filter(c => c.division === divisionSlug));
   const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingCategories, setIsLoadingCategories] = useState(!getCachedCategories());
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -37,15 +36,8 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
         const division = Array.isArray(divisions) ? divisions.find((d: any) => d.slug === divisionSlug) : null;
         
         if (division) {
-          // Use global cache/fetcher
-          const allCategories = await getCategories();
-          const filteredCats = allCategories.filter((cat: any) => 
-            cat.division?._id === division._id || 
-            cat.division === division._id ||
-            cat.division?.slug === divisionSlug
-          );
+          const filteredCats = STATIC_CATEGORIES.filter((cat: any) => cat.division === divisionSlug);
           setCategories(filteredCats);
-          setIsLoadingCategories(false);
 
           const prodRes = await fetch(`/api/products?divisionId=${division._id}`);
           const prodData = await prodRes.json();
@@ -58,7 +50,6 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
         console.error("Error fetching catalog data:", error);
       } finally {
         setIsLoading(false);
-        setIsLoadingCategories(false);
       }
     }
     fetchData();
@@ -149,45 +140,36 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                   <span className={`font-tech text-[9px] font-bold uppercase tracking-widest ${activeCategory === "all" ? "text-primary" : "text-slate-400"}`}>All Parts</span>
                 </button>
 
-                {isLoadingCategories ? (
-                  [...Array(6)].map((_, i) => (
-                    <div key={i} className="flex-none flex flex-col items-center gap-3 animate-pulse">
-                      <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-50 border border-slate-100" />
-                      <div className="h-2 w-12 bg-slate-100" />
+                {categories.map((cat) => (
+                  <button
+                    key={cat.slug}
+                    onClick={() => setActiveCategory(cat.slug)}
+                    className={`flex-none flex flex-col items-center gap-3 transition-all opacity-100`}
+                  >
+                    <div className={`w-16 h-16 md:w-20 md:h-20 relative p-3 border transition-all duration-500 rounded-none flex items-center justify-center ${
+                      activeCategory === cat.slug ? "bg-white border-accent scale-110 shadow-xl" : "bg-slate-50 border-slate-100"
+                    }`}>
+                      {cat.imageUrl ? (
+                        <img 
+                          src={cat.imageUrl} 
+                          alt={cat.name} 
+                          className={`w-full h-full object-contain transition-transform duration-500 ${activeCategory === cat.slug ? "scale-110" : ""}`}
+                        />
+                      ) : (
+                        <FileText className={`w-6 h-6 md:w-8 md:h-8 ${activeCategory === cat.slug ? "text-accent" : "text-primary/20"}`} />
+                      )}
+                      {/* Selected Indicator Dot */}
+                      {activeCategory === cat.slug && (
+                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent border-2 border-white rounded-full" />
+                      )}
                     </div>
-                  ))
-                ) : (
-                  categories.map((cat) => (
-                    <button
-                      key={cat._id}
-                      onClick={() => setActiveCategory(cat._id)}
-                      className={`flex-none flex flex-col items-center gap-3 transition-all opacity-100`}
-                    >
-                      <div className={`w-16 h-16 md:w-20 md:h-20 relative p-3 border transition-all duration-500 rounded-none flex items-center justify-center ${
-                        activeCategory === cat._id ? "bg-white border-accent scale-110 shadow-xl" : "bg-slate-50 border-slate-100"
-                      }`}>
-                        {cat.imageUrl ? (
-                          <img 
-                            src={cat.imageUrl} 
-                            alt={cat.name} 
-                            className={`w-full h-full object-contain transition-transform duration-500 ${activeCategory === cat._id ? "scale-110" : ""}`}
-                          />
-                        ) : (
-                          <FileText className={`w-6 h-6 md:w-8 md:h-8 ${activeCategory === cat._id ? "text-accent" : "text-primary/20"}`} />
-                        )}
-                        {/* Selected Indicator Dot */}
-                        {activeCategory === cat._id && (
-                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent border-2 border-white rounded-full" />
-                        )}
-                      </div>
-                      <span className={`font-tech text-[9px] font-bold uppercase tracking-widest text-center max-w-[80px] leading-tight ${
-                        activeCategory === cat._id ? "text-primary" : "text-slate-400"
-                      }`}>
-                        {cat.name}
-                      </span>
-                    </button>
-                  ))
-                )}
+                    <span className={`font-tech text-[9px] font-bold uppercase tracking-widest text-center max-w-[80px] leading-tight ${
+                      activeCategory === cat.slug ? "text-primary" : "text-slate-400"
+                    }`}>
+                      {cat.name}
+                    </span>
+                  </button>
+                ))}
               </div>
             </div>
           </div>

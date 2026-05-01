@@ -6,6 +6,7 @@ import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 import { ProductCatalog } from "@/components/product-catalog";
 import { MarineLoader } from "@/components/ui/marine-loader";
+import { STATIC_CATEGORIES } from "@/lib/categories";
 
 type DivisionRecord = {
   _id: string;
@@ -56,22 +57,15 @@ function ProductsListingContent() {
           (divisionId ? divisions.find((d) => d._id === divisionId) : undefined) ||
           (requestedDivisionSlug ? divisions.find((d) => d.slug === requestedDivisionSlug) : undefined);
 
-        if (!targetDiv && (categoryId || categorySlug)) {
-          const catRes = await fetch("/api/categories");
-          const categoriesData = await catRes.json();
-          if (!catRes.ok) {
-            throw new Error(categoriesData?.error || "Failed to load categories");
-          }
 
-          const categories: CategoryRecord[] = Array.isArray(categoriesData) ? categoriesData : [];
+        if (!targetDiv && (categoryId || categorySlug)) {
           const category =
-            (categoryId ? categories.find((c) => c._id === categoryId) : undefined) ||
-            (categorySlug ? categories.find((c) => c.slug === categorySlug) : undefined);
+            (categoryId ? STATIC_CATEGORIES.find((c: any) => (c as any)._id === categoryId) : undefined) ||
+            (categorySlug ? STATIC_CATEGORIES.find((c) => c.slug === categorySlug) : undefined);
 
           if (category) {
-            const divId =
-              typeof category.division === "string" ? category.division : category.division?._id;
-            targetDiv = divisions.find((d) => d._id === divId);
+            const divSlug = category.division;
+            targetDiv = divisions.find((d) => d.slug === divSlug);
           }
         }
 
