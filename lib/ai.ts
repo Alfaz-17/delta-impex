@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
-import connectToDatabase from "./mongodb";
-import Settings from "./models/Settings";
+import connectDB from "./db";
+import { Settings } from "./models";
 
 const apiKey = process.env.GEMINI_API_KEY || "";
 const ai = new GoogleGenAI({ apiKey });
@@ -12,9 +12,9 @@ export async function analyzeProductImage(imageBuffer: Buffer, mimeType: string,
     throw new Error("GEMINI_API_KEY is not defined in environment variables.");
   }
 
-  await connectToDatabase();
+  await connectDB();
   const settings = await Settings.findOne();
-  const modelName = settings?.geminiModel || "gemini-1.5-flash";
+  const modelName = settings?.geminiModel || "gemini-2.5-flash";
   console.log(`Using Gemini Model: ${modelName} via @google/genai SDK`);
 
   const categoriesPrompt = categories.length > 0 
