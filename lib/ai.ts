@@ -1,9 +1,9 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 import connectToDatabase from "./mongodb";
 import Settings from "./models/Settings";
 
 const apiKey = process.env.GEMINI_API_KEY || "";
-const genAI = new GoogleGenerativeAI(apiKey);
+const ai = new GoogleGenAI({ apiKey });
 
 export async function analyzeProductImage(imageBuffer: Buffer, mimeType: string, categories: string[] = []) {
   console.log("Gemini API Key check:", apiKey ? `Present (length: ${apiKey.length})` : "Missing");
@@ -15,14 +15,7 @@ export async function analyzeProductImage(imageBuffer: Buffer, mimeType: string,
   await connectToDatabase();
   const settings = await Settings.findOne();
   const modelName = settings?.geminiModel || "gemini-1.5-flash";
-  console.log(`Using Gemini Model: ${modelName}`);
-
-  const model = genAI.getGenerativeModel({ 
-    model: modelName,
-    generationConfig: {
-        responseMimeType: "application/json"
-    }
-  });
+  console.log(`Using Gemini Model: ${modelName} via @google/genai SDK`);
 
   const categoriesPrompt = categories.length > 0 
     ? `Pick the most appropriate category from this list: ${categories.join(", ")}. If none fit perfectly, pick the closest one.`
@@ -38,44 +31,31 @@ export async function analyzeProductImage(imageBuffer: Buffer, mimeType: string,
     }
   `;
 
-  const maxRetries = 2;
-  let lastError: any;
-
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      const result = await model.generateContent([
-        prompt,
+  try {
+    const response = await ai.models.generateContent({
+      model: modelName,
+      contents: [
+        { text: prompt },
         {
           inlineData: {
             data: imageBuffer.toString("base64"),
             mimeType: mimeType
           }
         }
-      ]);
+      ],
+      config: {
+        responseMimeType: "application/json"
+      }
+    });
 
-      const response = await result.response;
-      const text = response.text();
-      if (!text) {
-        throw new Error("Empty response from AI");
-      }
-      
-      return JSON.parse(text);
-    } catch (error: any) {
-      lastError = error;
-      const isRateLimit = error.status === 429 || error.message?.includes("429") || error.message?.includes("Quota");
-      
-      if (isRateLimit && attempt < maxRetries) {
-        console.log(`AI Rate limit hit (attempt ${attempt}). Retrying in 2 seconds...`);
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        continue;
-      }
-      
-      console.error(`Gemini API error (attempt ${attempt}/${maxRetries}):`, error);
-      break;
+    const text = response.text;
+    if (!text) {
+      throw new Error("Empty response from AI");
     }
-  }
-
-  const error = lastError;
+    
+    return JSON.parse(text);
+  } catch (error: any) {
+    console.error("Gemini API detailed error:", error);
     
     // Better user-facing error message
     let errorMessage = "AI Analysis failed.";
@@ -90,4 +70,5 @@ export async function analyzeProductImage(imageBuffer: Buffer, mimeType: string,
     }
     
     throw new Error(errorMessage);
+  }
 }
