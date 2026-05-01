@@ -31,21 +31,18 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
     async function fetchData() {
       setIsLoading(true);
       try {
+        // Fetch all divisions to map the name if needed, but primarily we want categories
         const divRes = await fetch("/api/divisions");
         const divisions = await divRes.json();
-        const division = Array.isArray(divisions) ? divisions.find((d: any) => d.slug === divisionSlug) : null;
         
-        if (division) {
-          const filteredCats = STATIC_CATEGORIES.filter((cat: any) => cat.division === divisionSlug);
-          setCategories(filteredCats);
+        // Filter categories based on the current division for the UI tabs
+        const filteredCats = STATIC_CATEGORIES.filter((cat: any) => cat.division === divisionSlug);
+        setCategories(filteredCats);
 
-          const prodRes = await fetch(`/api/products?divisionId=${division._id}`);
-          const prodData = await prodRes.json();
-          setProducts(Array.isArray(prodData) ? prodData : []);
-        } else {
-          setCategories([]);
-          setProducts([]);
-        }
+        // Fetch ALL products so search is global across all divisions and categories
+        const prodRes = await fetch(`/api/products`);
+        const prodData = await prodRes.json();
+        setProducts(Array.isArray(prodData) ? prodData : []);
       } catch (error) {
         console.error("Error fetching catalog data:", error);
       } finally {
@@ -60,12 +57,25 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
   }, [searchQuery, activeCategory]);
 
   const filteredProducts = products.filter((product) => {
+    const query = searchQuery.toLowerCase().trim();
+    const matchesSearch = product.name.toLowerCase().includes(query) || 
+                          product.description?.toLowerCase().includes(query) ||
+                          product.category?.name?.toLowerCase().includes(query);
+
+    // If there is a search query, show all matching products from any category/division
+    if (query.length > 0) {
+      return matchesSearch;
+    }
+
+    // If no search query, filter by division and category as usual
+    const matchesDivision = product.division?.slug === divisionSlug || 
+                            product.division === divisionSlug; // handle potential populated/unpopulated cases
+    
     const matchesCategory = activeCategory === "all" || 
                            product.category?._id === activeCategory || 
                            product.category?.slug === activeCategory;
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          product.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+                           
+    return matchesDivision && matchesCategory;
   });
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
