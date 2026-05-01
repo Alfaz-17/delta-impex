@@ -4,78 +4,10 @@ import Link from "next/link";
 import { ArrowRight, Globe } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { getCachedCategories } from "@/lib/categories";
-
-interface Category {
-  _id: string;
-  name: string;
-  slug: string;
-  imageUrl?: string;
-  division: {
-    _id: string;
-    name: string;
-    slug: string;
-  };
-  productCount?: number;
-}
+import { STATIC_CATEGORIES } from "@/lib/categories";
 
 export function CategoryHeroSection() {
-  // Prioritized categories matching files in /public/categories
-  const [categories, setCategories] = useState<Category[]>([
-    {
-      _id: "priority-1",
-      name: "Main Engine",
-      slug: "main-engine",
-      imageUrl: "/categories/Main Engine - 1.png",
-      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
-    },
-    {
-      _id: "priority-2",
-      name: "Generators",
-      slug: "generators",
-      imageUrl: "/categories/Generators - 2.png",
-      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
-    },
-    {
-      _id: "priority-3",
-      name: "Spare Parts",
-      slug: "spare-parts",
-      imageUrl: "/categories/Spare Parts - 3.png",
-      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
-    },
-    {
-      _id: "priority-4",
-      name: "Industrial Parts",
-      slug: "industrial-parts-1",
-      imageUrl: "/categories/Industrials Parts -  4.png",
-      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
-    },
-    {
-      _id: "priority-5",
-      name: "Crank Shaft",
-      slug: "crank-shaft",
-      imageUrl: "/categories/Crank Shaft - 5.png",
-      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
-    },
-    {
-      _id: "priority-6",
-      name: "Alternators",
-      slug: "alternators",
-      imageUrl: "/categories/Alternators -6.png",
-      division: { _id: "marine", name: "Marine & Industrial", slug: "marine-industrial" }
-    },
-    {
-      _id: "priority-7",
-      name: "RO Water Plant",
-      slug: "ro-wanter-plant",
-      imageUrl: "/categories/Ro System -8.png",
-      division: { _id: "ro", name: "RO Solutions", slug: "ro-solutions" }
-    }
-  ]);
-
-  useEffect(() => {
-    // We already set the prioritized categories above
-  }, []);
+  const categories = STATIC_CATEGORIES;
 
   return (
     <section className="relative w-full h-[100dvh] overflow-hidden flex flex-col justify-between">
@@ -159,7 +91,7 @@ export function CategoryHeroSection() {
           <div className="marquee-track-right flex w-max">
             {[...categories, ...categories].map((category, i) => (
               <Link
-                key={`${category._id}-${i}`}
+                key={`${category.slug}-${i}`}
                 href={`/products?category=${category.slug}`}
                 className="group flex flex-col items-center gap-2 text-center transition-all duration-300 flex-shrink-0 pr-20"
               >

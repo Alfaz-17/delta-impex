@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Anchor, Droplet, ArrowRight } from "lucide-react";
+import { Anchor, Droplet, ArrowRight, Globe } from "lucide-react";
 import { MarineLoader } from "@/components/ui/marine-loader";
 import Link from "next/link";
 
