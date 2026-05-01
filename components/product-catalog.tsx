@@ -341,6 +341,7 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
                               fill 
                               className="object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.1)] group-hover:drop-shadow-[0_30px_60px_rgba(0,0,0,0.3)] transition-all duration-700"
                               sizes="(max-width: 768px) 100vw, 25vw"
+                              priority={index < 4}
                             />
                           ) : (
                             <FileText className="w-16 h-16 text-primary/10" />

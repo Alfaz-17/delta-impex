@@ -13,7 +13,7 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { STATIC_CATEGORIES } from "@/lib/categories";
 import { SITE_INFO } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600; // Revalidate every hour, or when revalidatePath is called
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> },
