@@ -13,10 +13,6 @@ export function WhatsAppButton() {
 
   return (
     <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-3 group">
-      {/* Technical Label */}
-      <AnimatePresence>
-      
-      </AnimatePresence>
 
       <motion.a
         href={whatsappUrl}

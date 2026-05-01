@@ -472,3 +472,52 @@ html.lenis, html.lenis body {
   -webkit-text-fill-color: transparent;
 }
 
+
+/* ── Global Smoothness Enhancements ── */
+::selection {
+  background-color: var(--accent);
+  color: #FFFFFF;
+}
+
+/* Custom technical scrollbar for a premium look */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #081020;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(91, 155, 213, 0.3);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(91, 155, 213, 0.6);
+}
+
+/* Universal smooth transitions for interactive elements */
+a, button, input, select, textarea {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 400ms;
+}
+
+/* Custom smooth-scroll utility */
+.smooth-scroll-container {
+  scroll-behavior: smooth;
+}
+
+/* Technical scrollbar for internal containers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(91, 155, 213, 0.2);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(91, 155, 213, 0.5);
+}

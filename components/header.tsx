@@ -349,14 +349,14 @@ export function Header() {
                 <div className="pt-10 border-t border-primary/10 mt-auto relative">
                   <h3 className="font-mono text-[8px] font-black uppercase tracking-[0.3em] text-primary/60 mb-8">Technical Ops</h3>
                   <div className="space-y-4">
-                    <a href="tel:+919925999945" className="flex items-center gap-4 group bg-primary/5 p-4 border border-primary/10 hover:border-primary/40 transition-all relative">
+                    <a href="tel:+918866114549" className="flex items-center gap-4 group bg-primary/5 p-4 border border-primary/10 hover:border-primary/40 transition-all relative">
                       <div className="absolute top-0 right-0 w-1 h-1 bg-primary/40" />
                       <div className="w-10 h-10 bg-background border border-primary/20 flex items-center justify-center rounded-sm">
                         <Phone size={16} className="text-primary" />
                       </div>
                       <div className="flex flex-col">
                         <span className="text-[7px] font-mono text-primary/60 uppercase">Primary Comms</span>
-                        <span className="text-[11px] font-mono font-black text-foreground group-hover:text-primary transition-colors">+91 99259 99945</span>
+                        <span className="text-[11px] font-mono font-black text-foreground group-hover:text-primary transition-colors">+91 88661 14549</span>
                       </div>
                     </a>
                   </div>

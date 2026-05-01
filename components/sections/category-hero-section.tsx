@@ -53,12 +53,12 @@ export function CategoryHeroSection() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-md space-y-4"
+          className="max-w-md space-y-3"
         >
-          <div className="space-y-2">
-            <h1 className="font-display text-slate-100 text-3xl md:text-4xl lg:text-5xl uppercase leading-[1.1] tracking-tighter">
+          <div className="space-y-1">
+            <h1 className="font-display text-slate-300 text-3xl md:text-4xl lg:text-5xl uppercase leading-[1] tracking-tighter">
               Marine & <br />
-              <span className="text-accent-blue font-black italic">Industrial</span> <br />
+              <span className="text-accent-blue italic">Industrial</span> <br />
               Suppliers.
             </h1>
           </div>
@@ -71,7 +71,7 @@ export function CategoryHeroSection() {
           >
             <Link
               href="/products"
-              className="px-7 py-3 bg-primary text-white font-display font-bold uppercase text-[10px] tracking-widest transition-all hover:bg-accent shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 group"
+              className="px-7 py-3 bg-accent text-white font-display font-bold uppercase text-[10px] tracking-widest transition-all hover:bg-accent-blue shadow-lg hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 group"
             >
               Explore
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
