@@ -90,5 +90,4 @@ export async function analyzeProductImage(imageBuffer: Buffer, mimeType: string,
     }
     
     throw new Error(errorMessage);
-  }
 }
