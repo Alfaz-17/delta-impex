@@ -16,6 +16,7 @@ import CropModal from "@/components/common/CropModal";
 import { addWatermark } from "@/lib/utils/watermark";
 import { removeBackgroundClient } from "@/lib/background-removal-client";
 import { STATIC_CATEGORIES } from "@/lib/categories";
+import { MarineLoader } from "@/components/ui/marine-loader";
 
 type GalleryAsset = {
   id: string;
