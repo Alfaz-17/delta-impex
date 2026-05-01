@@ -58,7 +58,7 @@ export function CustomCursor() {
     <>
       {/* Main Marine Helm (Outer) */}
       <motion.div
-        className="fixed top-0 left-0 w-12 h-12 pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center"
+        className="fixed top-0 left-0 w-12 h-12 pointer-events-none z-[9999] flex items-center justify-center"
         style={{
           translateX: cursorXSpring,
           translateY: cursorYSpring,
@@ -74,7 +74,7 @@ export function CustomCursor() {
           className="relative w-full h-full"
         >
           {/* Ship's Wheel SVG */}
-          <svg viewBox="0 0 100 100" className="w-full h-full text-accent fill-none stroke-current stroke-[3]">
+          <svg viewBox="0 0 100 100" className="w-full h-full text-cursor fill-none stroke-current stroke-[3]">
             {/* Outer Rim */}
             <circle cx="50" cy="50" r="35" />
             {/* Spokes */}
@@ -100,10 +100,10 @@ export function CustomCursor() {
                 exit={{ opacity: 0, scale: 0.5 }}
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <div className="absolute top-[-10px] left-1/2 -translate-x-1/2 text-[8px] font-tech font-bold uppercase tracking-widest text-accent">N</div>
-                <div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 text-[8px] font-tech font-bold uppercase tracking-widest text-accent">S</div>
-                <div className="absolute left-[-10px] top-1/2 -translate-y-1/2 text-[8px] font-tech font-bold uppercase tracking-widest text-accent">W</div>
-                <div className="absolute right-[-10px] top-1/2 -translate-y-1/2 text-[8px] font-tech font-bold uppercase tracking-widest text-accent">E</div>
+                <div className="absolute top-[-10px] left-1/2 -translate-x-1/2 text-[8px] font-tech font-bold uppercase tracking-widest text-cursor">N</div>
+                <div className="absolute bottom-[-10px] left-1/2 -translate-x-1/2 text-[8px] font-tech font-bold uppercase tracking-widest text-cursor">S</div>
+                <div className="absolute left-[-10px] top-1/2 -translate-y-1/2 text-[8px] font-tech font-bold uppercase tracking-widest text-cursor">W</div>
+                <div className="absolute right-[-10px] top-1/2 -translate-y-1/2 text-[8px] font-tech font-bold uppercase tracking-widest text-cursor">E</div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -112,7 +112,7 @@ export function CustomCursor() {
 
       {/* Precision Hub (Inner) */}
       <motion.div
-        className="fixed top-0 left-0 w-1.5 h-1.5 bg-accent rounded-full pointer-events-none z-[9999]"
+        className="fixed top-0 left-0 w-1.5 h-1.5 bg-cursor rounded-full pointer-events-none z-[9999]"
         style={{
           translateX: cursorX,
           translateY: cursorY,

@@ -97,9 +97,16 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/logo.png',
+    icon: [
+      { url: '/logo.png' },
+      { url: '/logo.png', sizes: '32x32', type: 'image/png' },
+      { url: '/logo.png', sizes: '16x16', type: 'image/png' },
+    ],
     shortcut: '/logo.png',
-    apple: '/logo.png',
+    apple: [
+      { url: '/logo.png' },
+      { url: '/logo.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 }
 
@@ -120,8 +127,8 @@ export default function RootLayout({
       "@type": "Organization",
       "name": SITE_INFO.name,
       "url": SITE_INFO.domain,
-      "logo": `${SITE_INFO.domain}/icon-light-32x32.png`,
-      "image": `${SITE_INFO.domain}/og-image.png`,
+      "logo": `${SITE_INFO.domain}/logo.png`,
+      "image": `${SITE_INFO.domain}/logo.png`,
       "description": "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions.",
       "address": {
         "@type": "PostalAddress",

@@ -45,6 +45,7 @@ html.lenis, html.lenis body {
   --input: #F1F5F9;
   --ring: #1B3A5C;
   --radius: 0.75rem;
+  --cursor-color: var(--accent);
 
   /* ── Dark Card Palette ── */
   --dark-base: #081020;       /* More vibrant Midnight Navy for premium feel */
@@ -85,6 +86,7 @@ html.lenis, html.lenis body {
   --border: rgba(255, 255, 255, 0.08); /* Subtle border for dark mode */
   --input: #1E293B;
   --ring: #5B9BD5;
+  --cursor-color: #FFFFFF;
 }
 
 @theme inline {
@@ -133,6 +135,7 @@ html.lenis, html.lenis body {
   --color-dark-card-hover: var(--dark-card-hover);
   --color-accent-blue: var(--accent-blue);
   --color-accent-glow: var(--accent-glow);
+  --color-cursor: var(--cursor-color);
 }
 
 /* ── 3D Effects for Category Hero ── */

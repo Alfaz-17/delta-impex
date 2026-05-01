@@ -219,11 +219,11 @@ export function FeaturedProductsSection({
               return (
                 <motion.div
                   key={product._id}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: (index % 4) * 0.1 }}
-                  className={`flex-none w-[280px] md:w-[320px] snap-start transition-all duration-1000 ${
+                  viewport={{ once: true, margin: "-20px" }}
+                  transition={{ duration: 0.6, delay: (index % 4) * 0.1 }}
+                  className={`flex-none w-[280px] md:w-[320px] snap-start transform-gpu ${
                     isOffset ? "mt-4 md:mt-10 lg:mt-16" : ""
                   }`}
                 >
@@ -232,33 +232,33 @@ export function FeaturedProductsSection({
                     className="group relative block"
                   >
                     {/* Premium Card Container */}
-                    <div className={`relative aspect-[4/5] overflow-hidden rounded-none border p-8 flex items-center justify-center transition-all duration-700 ${
+                    <div className={`relative aspect-[4/5] overflow-hidden rounded-none border p-8 flex items-center justify-center transition-transform duration-500 will-change-transform ${
                       isDark 
-                        ? "bg-white/5 border-white/10 group-hover:border-accent/40 group-hover:shadow-[0_0_50px_-12px_rgba(30,95,166,0.5)]" 
-                        : "bg-slate-50 border-border group-hover:border-accent-blue/30 group-hover:shadow-[0_0_50px_-12px_rgba(91,155,213,0.3)]"
+                        ? "bg-white/5 border-white/10 group-hover:border-accent/40" 
+                        : "bg-slate-50 border-border group-hover:border-accent-blue/30"
                     }`}>
                       
                       {/* Technical Background Layer */}
-                      <div className="absolute inset-0 opacity-[0.05] group-hover:opacity-[0.08] transition-opacity duration-700" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.4) 1px, transparent 0)', backgroundSize: '1.5rem 1.5rem' }} />
+                      <div className="absolute inset-0 opacity-[0.05] group-hover:opacity-[0.08] transition-opacity duration-500" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.4) 1px, transparent 0)', backgroundSize: '1.5rem 1.5rem' }} />
                       
                       {/* Ambient Glows */}
-                      <div className={`absolute -top-24 -right-24 h-48 w-48 rounded-full blur-[60px] transition-all duration-700 ${
+                      <div className={`absolute -top-24 -right-24 h-48 w-48 rounded-full blur-[60px] transition-all duration-500 ${
                         isDark ? "bg-accent/20 group-hover:bg-accent/40" : "bg-accent-blue/10 group-hover:bg-accent-blue/20"
                       }`} />
                       
                       {/* Product Image */}
-                      <div className="relative w-full h-full transform transition-all duration-1000 group-hover:scale-110 group-hover:-translate-y-2">
+                      <div className="relative w-full h-full transform transition-all duration-700 group-hover:scale-105 group-hover:-translate-y-1 will-change-transform">
                         <Image
                           src={product.imageUrl || "/placeholder.svg"}
                           alt={product.name}
                           fill
-                          className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
+                          className="object-contain"
                           sizes="(max-width: 768px) 280px, 320px"
                         />
                       </div>
                       
                       {/* Glass Bottom Overlay */}
-                      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </div>
 
                     {/* Typography Area */}
