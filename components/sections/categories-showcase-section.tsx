@@ -112,22 +112,46 @@ export function CategoriesShowcaseSection() {
                       </p>
                     </div>
 
-                    {/* Categories as clean subtle list */}
-                    <div className="mb-12">
+                    {/* Categories as smooth marquee with images */}
+                    <div className="mb-12 overflow-hidden relative">
                       <p className="label-tech !text-muted-foreground mb-6">Core Portfolio</p>
-                      <div className="flex flex-wrap gap-x-8 gap-y-4">
-                        {division.categories.slice(0, 6).map((cat: any) => (
+                      
+                      {/* Edge fade masks for the card-level marquee */}
+                      <div className="absolute left-0 bottom-0 top-[40px] w-12 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+                      <div className="absolute right-0 bottom-0 top-[40px] w-12 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+                      <div className="marquee-track-right flex gap-32">
+                        {[...division.categories, ...division.categories, ...division.categories].map((cat: any, idx: number) => (
                           <Link 
                             href={`/divisions/${division.slug}?category=${cat._id}`}
-                            key={cat._id}
-                            className="text-xs font-bold text-foreground/70 hover:text-primary transition-all flex items-center gap-2 group/link hover:translate-x-1"
+                            key={`${cat._id}-${idx}`}
+                            className="group/link flex flex-col items-center gap-2 text-center transition-all duration-300 flex-shrink-0"
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent/30 group-hover/link:bg-primary transition-colors" />
-                            {cat.name}
+                            <div className="relative w-[450px] h-[450px] flex items-center justify-center transition-all duration-500 bg-white/5 backdrop-blur-sm rounded-[3rem] border border-white/5 group-hover/link:border-primary/30 group-hover/link:bg-primary/5">
+                              {cat.imageUrl ? (
+                                <img
+                                  src={cat.imageUrl}
+                                  alt={cat.name}
+                                  className="w-full h-full object-contain p-2 transition-all duration-500 group-hover/link:scale-110"
+                                />
+                              ) : (
+                                <Globe className="w-24 h-24 text-muted-foreground/60 group-hover/link:text-primary transition-colors" />
+                              )}
+                            </div>
+                            <span className="font-tech text-base font-bold uppercase tracking-[0.2em] text-foreground/70 group-hover/link:text-primary transition-colors whitespace-nowrap">
+                              {cat.name}
+                            </span>
+
+
+
+
+
                           </Link>
                         ))}
                       </div>
                     </div>
+
+
 
                     {/* CTA Footer */}
                     <div className="pt-8 border-t border-border/20">
