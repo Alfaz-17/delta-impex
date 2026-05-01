@@ -11,6 +11,7 @@ import { FooterSection } from "@/components/sections/footer-section";
 import type { Metadata, ResolvingMetadata } from 'next'
 
 import { STATIC_CATEGORIES } from "@/lib/categories";
+import { SITE_INFO } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -195,7 +196,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     <ArrowRight size={16} />
                   </Link>
                   <Link 
-                    href={`https://wa.me/91992599945?text=Hello, I am interested in ${product.name}`} 
+                    href={`https://wa.me/91${SITE_INFO.whatsappNumber}?text=${encodeURIComponent(`Hello, I am interested in ${product.name}`)}`} 
                     target="_blank"
                     className="inline-flex items-center justify-center px-8 py-5 border-2 border-primary/10 text-primary font-display font-bold uppercase text-[11px] tracking-[0.2em] hover:border-accent hover:text-accent transition-all bg-white"
                   >

@@ -159,7 +159,7 @@ export default function ContactPage() {
                       <p className="text-[10px] font-tech font-bold uppercase tracking-widest text-white/60 mb-6">Managing Director & Owner</p>
                       
                       <Link 
-                        href="https://wa.me/91992599945" 
+                        href={`https://wa.me/91${SITE_INFO.whatsappNumber}`} 
                         target="_blank"
                         className="inline-flex items-center gap-3 text-[10px] font-tech font-bold uppercase tracking-[0.3em] hover:text-accent transition-colors"
                       >
