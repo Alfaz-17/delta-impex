@@ -222,7 +222,7 @@ export function FeaturedProductsSection({
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-20px" }}
-                  transition={{ duration: 0.6, delay: (index % 4) * 0.1 }}
+                  transition={{ duration: 0.4, delay: (index % 4) * 0.05 }}
                   className={`flex-none w-[280px] md:w-[320px] snap-start transform-gpu ${
                     isOffset ? "mt-4 md:mt-10 lg:mt-16" : ""
                   }`}
@@ -232,7 +232,7 @@ export function FeaturedProductsSection({
                     className="group relative block"
                   >
                     {/* Premium Card Container */}
-                    <div className={`relative aspect-[4/5] overflow-hidden rounded-none border p-8 flex items-center justify-center transition-transform duration-500 will-change-transform ${
+                    <div className={`relative aspect-[4/5] overflow-hidden rounded-none border p-8 flex items-center justify-center transition-transform duration-300 will-change-transform ${
                       isDark 
                         ? "bg-white/5 border-white/10 group-hover:border-accent/40" 
                         : "bg-slate-50 border-border group-hover:border-accent-blue/30"

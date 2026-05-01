@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import connectToDatabase from "@/lib/mongodb";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -124,6 +125,11 @@ export async function PATCH(
     const cat = STATIC_CATEGORIES.find((c) => c.slug === p.category);
     (p as any).category = cat ? { name: cat.name, slug: cat.slug } : { name: p.category, slug: p.category };
 
+    // Revalidate paths for instant updates
+    revalidatePath("/");
+    revalidatePath("/products");
+    revalidatePath("/products/[slug]", "page");
+
     return NextResponse.json(p);
   } catch (error: any) {
     if (error?.code === 11000) {
@@ -154,6 +160,10 @@ export async function DELETE(
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
+
+    // Revalidate paths for instant updates
+    revalidatePath("/");
+    revalidatePath("/products");
 
     return NextResponse.json({ message: "Product deleted successfully" });
   } catch (error: any) {
