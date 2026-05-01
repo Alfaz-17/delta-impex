@@ -27,9 +27,9 @@ const contactMethods = [
   },
   {
     icon: Mail,
-    title: "Technical Inquiries",
-    primary: SITE_INFO.email,
-    secondary: "Response within 24 hours",
+    title: "Direct Correspondence",
+    primary: "anas@deltaimpex.co",
+    secondary: "Anas Malek (Owner)",
     accent: "text-accent",
   },
   {
@@ -183,7 +183,7 @@ export default function ContactPage() {
                       <input
                         type="text"
                         className="w-full bg-transparent border-b border-slate-200 py-3 text-primary focus:outline-none focus:border-accent transition-all font-sans"
-                        placeholder="John Doe"
+                        placeholder="Your full name"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                         required
