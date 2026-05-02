@@ -7,6 +7,7 @@ import Division from "@/lib/models/Division";
 import { ArrowLeft, ArrowRight, ShieldCheck, Globe, Clock, Package } from "lucide-react";
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
+import ProductStructuredData from "@/components/seo/product-structured-data";
 
 import type { Metadata, ResolvingMetadata } from 'next'
 
@@ -80,6 +81,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   return (
     <div className="min-h-screen bg-background flex flex-col">
        <Header />
+       <ProductStructuredData 
+         product={{
+           title: product.name,
+           description: product.description || "",
+           image: `${SITE_INFO.domain}${product.imageUrl || "/og-image.png"}`,
+           category: product.category?.name,
+           condition: product.condition,
+           sku: product._id.toString(),
+           brand: SITE_INFO.name
+         }} 
+         slug={slug} 
+       />
        
        <main className="flex-1 pt-32 pb-24">
           {/* Breadcrumb Navigation */}

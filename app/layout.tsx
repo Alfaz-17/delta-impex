@@ -106,121 +106,29 @@ export const metadata: Metadata = {
     ],
     shortcut: '/icon-light-32x32.png',
   },
-  manifest: '/manifest.json',
+  manifest: '/manifest',
+}
+
+export const viewport = {
+  themeColor: '#001a3d',
+  width: 'device-width',
+  initialScale: 1,
 }
 
 import { Providers } from "@/components/providers"
 import { WhatsAppButton } from "@/components/common/whatsapp-button"
+import StructuredData from "@/components/seo/structured-data"
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": SITE_INFO.name,
-      "url": SITE_INFO.domain,
-      "logo": `${SITE_INFO.domain}/logo.png`,
-      "image": `${SITE_INFO.domain}/logo.png`,
-      "description": "Global provider of high-quality marine engine spare parts and advanced RO water treatment solutions.",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": SITE_INFO.fullAddress,
-        "addressLocality": "Bhavnagar",
-        "postalCode": "364001",
-        "addressRegion": "Gujarat",
-        "addressCountry": "IN"
-      },
-      "email": SITE_INFO.email,
-      "contactPoint": [
-        {
-          "@type": "ContactPoint",
-          "telephone": "+91-99259-99945",
-          "contactType": "sales",
-          "areaServed": "Global",
-          "availableLanguage": ["English", "Hindi", "Gujarati"]
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": SITE_INFO.name,
-      "url": SITE_INFO.domain,
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": `${SITE_INFO.domain}/products?query={search_term_string}`,
-        "query-input": "required name=search_term_string"
-      }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": SITE_INFO.name,
-      "url": SITE_INFO.domain,
-      "image": `${SITE_INFO.domain}/og-image.png`,
-      "telephone": "+91-99259-99945",
-      "email": SITE_INFO.email,
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": SITE_INFO.fullAddress,
-        "addressLocality": "Bhavnagar",
-        "addressRegion": "Gujarat",
-        "postalCode": "364001",
-        "addressCountry": "IN"
-      },
-      "sameAs": [SITE_INFO.mapsUrl],
-      "areaServed": "Global"
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "itemListElement": [
-        {
-          "@type": "SiteNavigationElement",
-          "position": 1,
-          "name": "Home",
-          "url": SITE_INFO.domain
-        },
-        {
-          "@type": "SiteNavigationElement",
-          "position": 2,
-          "name": "About Us",
-          "url": `${SITE_INFO.domain}/about`
-        },
-        {
-          "@type": "SiteNavigationElement",
-          "position": 3,
-          "name": "Marine & Industrial",
-          "url": `${SITE_INFO.domain}/products?divisionSlug=marine-industrial`
-        },
-        {
-          "@type": "SiteNavigationElement",
-          "position": 4,
-          "name": "RO Solutions",
-          "url": `${SITE_INFO.domain}/products?divisionSlug=ro-solutions`
-        },
-        {
-          "@type": "SiteNavigationElement",
-          "position": 5,
-          "name": "Contact",
-          "url": `${SITE_INFO.domain}/contact`
-        }
-      ]
-    }
-  ];
-
   return (
     <html lang="en">
       <head />
       <body className={`${outfit.variable} ${syne.variable} ${spaceMono.variable} ${syncopate.variable} font-sans antialiased text-foreground`}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <StructuredData />
         <Providers>
           {children}
           <WhatsAppButton />
