@@ -48,7 +48,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       
       {/* Extract active state from pathname */}
       <AdminSidebar 
-        active={pathname.includes("dashboard") ? "dashboard" : pathname.includes("products") ? "products" : "categories"} 
+        active={pathname.includes("dashboard") ? "dashboard" : pathname.includes("products") ? "products" : pathname.includes("settings") ? "settings" : "categories"} 
         isOpen={isSidebarOpen} 
         onClose={() => setIsSidebarOpen(false)} 
       />

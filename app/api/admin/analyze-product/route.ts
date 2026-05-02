@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeProductImage } from "@/lib/ai";
+import { analyzeProductImage } from "@/lib/gemini";
 import connectToDatabase from "@/lib/mongodb";
 import mongoose from "mongoose";
 import { STATIC_CATEGORIES } from "@/lib/categories";
