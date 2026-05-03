@@ -21,6 +21,7 @@ export function CategoryHeroSection() {
           className="w-full h-full object-cover object-[65%_center] md:object-center"
           poster="/hero-fallback.png"
         >
+          <source src="/hero.webm" type="video/webm" />
           <source src="/hero.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
