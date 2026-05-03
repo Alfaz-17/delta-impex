@@ -7,7 +7,7 @@ export default function StructuredData() {
     "@type": "Organization",
     "name": SITE_INFO.name,
     "url": SITE_INFO.domain,
-    "logo": `${SITE_INFO.domain}/logo.png`,
+    "logo": `${SITE_INFO.domain}/logo-optimized.png`,
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": SITE_INFO.phoneIndia,
