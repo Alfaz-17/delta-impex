@@ -250,36 +250,34 @@ export default function ContactContent() {
         </div>
       </section>
 
-      {/* 04. INTERACTIVE MAP SECTION */}
+      {/* 04. LOCATION REDIRECT SECTION */}
       <section className="pb-32">
         <div className="section-container">
-          <div className="relative overflow-hidden bg-white border border-slate-100 shadow-2xl">
-            <div className="grid grid-cols-1 lg:grid-cols-3">
-              <div className="p-10 lg:p-16 flex flex-col justify-center space-y-8">
-                <div>
-                  <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-accent mb-3">Head Office</p>
-                  <h3 className="font-display text-2xl font-bold text-primary mb-4">Bhavnagar Operations</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed font-sans">
-                    {SITE_INFO.fullAddress}
-                  </p>
-                </div>
-                <a
-                  href={SITE_INFO.mapsUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-3 font-tech text-[10px] font-bold uppercase tracking-[0.2em] text-primary hover:text-accent transition-colors"
-                >
-                  Locate via Google Maps <ArrowRight size={14} />
-                </a>
+          <div className="relative overflow-hidden bg-white border border-slate-100 shadow-2xl p-10 md:p-16 text-center max-w-4xl mx-auto">
+            <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #1B3A5C 1px, transparent 0)', backgroundSize: '1.5rem 1.5rem' }} />
+            
+            <div className="relative z-10 flex flex-col items-center space-y-6">
+              <div className="w-16 h-16 bg-slate-50 border border-slate-100 flex items-center justify-center text-accent mb-2">
+                <MapPin size={24} />
               </div>
-              <div className="lg:col-span-2 h-[450px]">
-                <iframe
-                  title="Delta Impex Office"
-                  src={`https://www.google.com/maps?q=${encodeURIComponent(SITE_INFO.fullAddress)}&output=embed`}
-                  className="w-full h-full grayscale hover:grayscale-0 transition-all duration-1000 border-0"
-                  loading="lazy"
-                />
+              
+              <div>
+                <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-accent mb-3">Head Office</p>
+                <h3 className="font-display text-3xl font-bold text-primary mb-4">Bhavnagar Operations</h3>
+                <p className="text-base text-slate-600 leading-relaxed font-sans max-w-lg mx-auto">
+                  {SITE_INFO.fullAddress}
+                </p>
               </div>
+
+              <a
+                href={SITE_INFO.mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-4 px-10 py-5 bg-primary text-white font-display font-bold uppercase text-[10px] tracking-[0.3em] hover:bg-accent transition-all shadow-xl group"
+              >
+                Open in Google Maps 
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </a>
             </div>
           </div>
         </div>
