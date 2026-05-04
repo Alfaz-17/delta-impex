@@ -111,7 +111,7 @@ export default function AboutContent() {
                 />
                 <div className="absolute -bottom-8 -right-8 bg-primary p-8 hidden md:block border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50" />
-                  <span className="font-display font-bold text-5xl text-white block leading-none">30<span className="text-accent-foreground/50">+</span></span>
+                  <span className="font-display font-bold text-5xl text-white block leading-none">20<span className="text-accent-foreground/50">+</span></span>
                   <span className="font-tech text-white/80 text-[10px] uppercase font-bold tracking-[0.3em] block mt-3">Years of Mastery</span>
                   <div className="mt-4 pt-4 border-t border-white/5 flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />

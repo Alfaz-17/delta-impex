@@ -23,7 +23,7 @@ export default function ProductStructuredData({ product, slug }: ProductStructur
     "@type": "Product",
     "name": product.title,
     "image": [product.image],
-    "description": product.description,
+    "description": product.description || `Specialized ${product.title} for marine and industrial applications.`,
     "sku": product.sku || `DI-${slug.toUpperCase()}`,
     "mpn": product.mpn || slug,
     "brand": {
@@ -36,14 +36,29 @@ export default function ProductStructuredData({ product, slug }: ProductStructur
       "priceCurrency": "USD",
       "price": product.price || "0.00",
       "priceValidUntil": "2026-12-31",
-      "availability": product.availability === 'in-stock' ? "https://schema.org/InStock" : "https://schema.org/PreOrder",
-      "itemCondition": product.condition === 'new' ? "https://schema.org/NewCondition" : "https://schema.org/UsedCondition",
+      "availability": product.availability === 'out-of-stock' ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+      "itemCondition": product.condition?.toLowerCase() === 'new' ? "https://schema.org/NewCondition" : "https://schema.org/UsedCondition",
       "shippingDetails": {
         "@type": "OfferShippingDetails",
         "shippingRate": {
           "@type": "MonetaryAmount",
           "value": "0",
           "currency": "USD"
+        },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 0,
+            "maxValue": 1,
+            "unitCode": "DAY"
+          },
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 1,
+            "maxValue": 7,
+            "unitCode": "DAY"
+          }
         },
         "shippingDestination": {
           "@type": "DefinedRegion",

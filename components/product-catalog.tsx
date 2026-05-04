@@ -216,7 +216,7 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
         </div>
       </section>
 
-      {/* 03. PRODUCT GRID */}
+      {/* 03. PRODUCT GRID & CATEGORY CONTENT */}
       <section className="py-20 md:py-32">
         <div className="section-container">
           {isLoading ? (
@@ -417,6 +417,22 @@ export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogPro
               )}
             </>
           )}
+
+          {/* SEO Optimized Category Description (Moved to bottom) */}
+          <div className="max-w-4xl mt-32 pt-16 border-t border-slate-100 space-y-6">
+            <h2 className="heading-sub text-3xl text-primary uppercase">
+              Reliable <span className="text-accent italic font-medium">{divisionName}</span> Equipment.
+            </h2>
+            <p className="body-premium text-slate-600 leading-relaxed">
+              Explore our extensive inventory of {divisionName.toLowerCase()} solutions, specifically curated for technical reliability and performance. 
+              As a leading supplier based Alang Gujrat , India, Delta Impex specializes in sourcing high-quality {divisionSlug === 'marine-industrial' ? 'marine engine spares, ship machinery, and industrial components' : 'advanced RO water treatment systems and desalination plant parts'} for global clients.
+            </p>
+            <p className="text-sm text-slate-500 font-sans leading-relaxed">
+              Every part in our catalog undergoes rigorous technical verification to meet international maritime and industrial standards. 
+              Whether you are looking for new, reconditioned, or second-hand machinery, our engineering team ensures that you receive the most cost-effective and durable solutions 
+              delivered to any major port worldwide.
+            </p>
+          </div>
         </div>
       </section>
     </div>

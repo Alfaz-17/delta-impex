@@ -8,6 +8,8 @@ import { ArrowLeft, ArrowRight, ShieldCheck, Globe, Clock, Package } from "lucid
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 import ProductStructuredData from "@/components/seo/product-structured-data";
+import BreadcrumbSchema from "@/components/seo/breadcrumb-schema";
+import { ProductFAQ } from "@/components/sections/product-faq";
 
 import type { Metadata, ResolvingMetadata } from 'next'
 
@@ -22,23 +24,41 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   await connectToDatabase();
   const { slug } = await params;
-  const product = await Product.findOne({ slug }).lean();
+  const productRaw = await Product.findOne({ slug }).lean();
 
-  if (!product) {
-    return { title: 'Product Not Found' }
+  if (!productRaw) {
+    return { title: 'Product Not Found | Delta Impex' }
   }
 
+  const product = productRaw as any;
+  const category = STATIC_CATEGORIES.find(c => c.slug === product.category)?.name || "Technical Spares";
   const previousImages = (await parent).openGraph?.images || []
 
+  const title = `${product.name} — ${category} | Delta Impex`;
+  const description = product.description 
+    ? `${product.description.substring(0, 150)}... Buy ${product.name} at Delta Impex. High-quality marine and industrial equipment. Request a quote today.`
+    : `High-quality ${product.name} specialized for marine and industrial applications. Global sourcing and delivery available at Delta Impex. Inquire now!`;
+
   return {
-    title: `${product.name} | Delta Impex Marine & Industrial`,
-    description: product.description || `High-quality ${product.name} available at Delta Impex. Specialized marine engine parts and industrial equipment.`,
+    title,
+    description,
+    keywords: [product.name, category, "marine spares", "industrial machinery", "Delta Impex", "ship equipment"],
+    alternates: {
+      canonical: `https://deltaimpex.co/products/${slug}`,
+    },
     openGraph: {
-      title: product.name,
-      description: product.description,
+      title,
+      description,
       url: `https://deltaimpex.co/products/${slug}`,
       images: [product.imageUrl || '/og-image.png', ...previousImages],
+      type: 'article',
     },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [product.imageUrl || '/og-image.png'],
+    }
   }
 };
 
@@ -93,6 +113,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
          }} 
          slug={slug} 
        />
+       <BreadcrumbSchema 
+          items={[
+            { name: "Home", item: "/" },
+            { name: "Products", item: "/products" },
+            { name: product.division?.name || "Inventory", item: `/products?divisionSlug=${product.division?.slug || 'marine-industrial'}` },
+            { name: product.name, item: `/products/${slug}` }
+          ]}
+        />
        
        <main className="flex-1 pt-32 pb-24">
           {/* Breadcrumb Navigation */}
@@ -219,6 +247,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </div>
             </div>
           </div>
+
+          {/* Technical FAQ Section */}
+          <ProductFAQ productName={product.name} />
 
           {/* Related Products Section (Dark Contrast) */}
           {relatedProducts.length > 0 && (
