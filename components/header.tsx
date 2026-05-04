@@ -84,7 +84,7 @@ export function Header() {
 
         {/* Scroll Progress Bar */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[4px] origin-left z-[60] bg-white"
+          className="absolute bottom-0 left-0 right-0 h-[3px] origin-left z-[60] bg-accent-blue shadow-[0_0_10px_rgba(91,155,213,0.5)]"
           style={{ scaleX: scrollProgress }}
         />
 
@@ -140,7 +140,7 @@ export function Header() {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
                           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                          className={`absolute top-full left-1/2 -translate-x-1/2 z-50 ${isProducts ? "w-[700px]" : "w-[300px]"}`}
+                          className={`absolute top-full left-1/2 -translate-x-1/2 z-[70] ${isProducts ? "w-[700px]" : "w-[300px]"}`}
                         >
                           {/* Invisible bridge to prevent mouseLeave gap */}
                           <div className="h-6 w-full" />
@@ -149,7 +149,7 @@ export function Header() {
                             data-lenis-prevent
                             onWheel={(e) => e.stopPropagation()}
                           >
-                            <div className={`bg-dark-base relative overflow-hidden border border-white/10 rounded-2xl p-8 shadow-2xl ${isProducts ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
+                            <div className={`bg-[#0A192F] relative overflow-hidden border border-accent-blue/20 rounded-2xl p-8 shadow-2xl ${isProducts ? "grid grid-cols-2 gap-x-12 gap-y-10" : "flex flex-col gap-8"}`}>
                               {/* Dot Pattern */}
                               <div
                                 className="absolute inset-0 opacity-[0.05] pointer-events-none"
