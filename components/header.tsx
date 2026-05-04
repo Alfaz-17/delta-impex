@@ -82,9 +82,9 @@ export function Header() {
         <div className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-0"}`} />
         <div className={`absolute inset-0 bg-gradient-to-b from-accent-blue/8 to-transparent pointer-events-none transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-0"}`} />
 
-        {/* Scroll Progress Bar */}
+        {/* Scroll Progress Bar (Moved to Top for better UX) */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[3px] origin-left z-[60] bg-accent-blue shadow-[0_0_10px_rgba(91,155,213,0.5)]"
+          className="absolute top-0 left-0 right-0 h-[3px] origin-left z-[110] bg-accent-blue shadow-[0_0_10px_rgba(91,155,213,0.5)]"
           style={{ scaleX: scrollProgress }}
         />
 
