@@ -59,7 +59,7 @@ export default function AboutContent() {
               <h1 className="heading-display text-white mb-6 uppercase">
                 About <span className="text-accent font-black tracking-tighter">DELTA</span> <span className="text-white italic font-medium">Impex</span>
               </h1>
-              <p className="body-premium text-white/90 max-w-2xl mx-auto italic border-l-2 border-accent pl-6">
+              <p className="body-premium text-white/90 max-w-2xl mx-auto italic ">
                 Marine & Industrial Machinery Spare Parts Solutions
               </p>
             </motion.div>

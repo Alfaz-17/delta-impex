@@ -43,7 +43,7 @@ export function AboutPreviewSection({ isDark = true }: AboutPreviewSectionProps)
                 isDark ? "bg-background border-border" : "bg-primary border-white/10 shadow-[0_20px_50px_rgba(27,58,92,0.3)]"
               }`}>
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50" />
-                <span className={`font-display font-bold text-5xl block leading-none ${isDark ? "text-primary" : "text-white"}`}>30<span className="text-accent">+</span></span>
+                <span className={`font-display font-bold text-5xl block leading-none ${isDark ? "text-primary" : "text-white"}`}>20<span className="text-accent">+</span></span>
                 <span className={`font-tech text-[10px] uppercase font-bold tracking-[0.3em] block mt-3 ${isDark ? "text-accent" : "text-white/60"}`}>Years of Mastery</span>
                 <div className={`mt-4 pt-4 border-t flex items-center gap-2 ${isDark ? "border-border" : "border-white/10"}`}>
                   <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />

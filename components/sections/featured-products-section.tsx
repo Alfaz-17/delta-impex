@@ -199,7 +199,7 @@ export function FeaturedProductsSection({
             <div className="flex gap-8 md:gap-12 w-full">
               {[...Array(4)].map((_, i) => (
                 <div key={i} className="flex-none w-[280px] md:w-[320px] space-y-8">
-                  <div className={`aspect-[4/5] w-full ${isDark ? "bg-white/5" : "bg-slate-100"} animate-pulse rounded-none`} />
+                  <div className={`aspect-square w-full ${isDark ? "bg-white/5" : "bg-slate-100"} animate-pulse rounded-none`} />
                   <div className="space-y-4 px-2">
                     <div className={`h-3 w-24 ${isDark ? "bg-white/10" : "bg-slate-100"} animate-pulse`} />
                     <div className={`h-6 w-full ${isDark ? "bg-white/10" : "bg-slate-100"} animate-pulse`} />
@@ -213,9 +213,6 @@ export function FeaturedProductsSection({
             </div>
           ) : (
             products.map((product, index) => {
-              // Maintaining the editorial stagger even in the scroller
-              const isOffset = index % 2 === 1;
-              
               return (
                 <motion.div
                   key={product._id}
@@ -223,19 +220,17 @@ export function FeaturedProductsSection({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-20px" }}
                   transition={{ duration: 0.4, delay: (index % 4) * 0.05 }}
-                  className={`flex-none w-[280px] md:w-[320px] snap-start transform-gpu ${
-                    isOffset ? "mt-4 md:mt-10 lg:mt-16" : ""
-                  }`}
+                  className="flex-none w-[280px] md:w-[320px] snap-start transform-gpu"
                 >
                   <Link 
                     href={`/products/${product.slug}`}
                     className="group relative block"
                   >
                     {/* Premium Card Container */}
-                    <div className={`relative aspect-[4/5] overflow-hidden rounded-none border p-8 flex items-center justify-center transition-transform duration-300 will-change-transform ${
+                    <div className={`relative aspect-square overflow-hidden rounded-none border p-10 flex items-center justify-center transition-transform duration-300 will-change-transform ${
                       isDark 
                         ? "bg-white/5 border-white/10 group-hover:border-accent/40" 
-                        : "bg-slate-50 border-border group-hover:border-accent-blue/30"
+                        : "bg-white border-slate-100 group-hover:border-accent/40 shadow-sm"
                     }`}>
                       
                       {/* Technical Background Layer */}

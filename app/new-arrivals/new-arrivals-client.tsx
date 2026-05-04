@@ -45,7 +45,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
     <FadeInOnScroll delay={index * 0.1}>
       <div key={product._id} className="group relative">
         {/* Premium Catalog Card - Tech Frame */}
-        <div className="relative aspect-[4/5] mb-6 overflow-hidden rounded-2xl bg-white/[0.01] border border-white/[0.06] transition-all duration-500 group-hover:border-accent-blue/30 group-hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]">
+        <div className="relative aspect-square mb-6 overflow-hidden bg-white border border-slate-100 group-hover:border-accent/40 transition-all duration-700 shadow-sm group-hover:shadow-[0_20px_50px_-12px_rgba(30,95,166,0.15)]">
           
           {/* Featured Badge */}
           {product.isFeatured && (
@@ -68,7 +68,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           
           {/* Image Content */}
-          <div className="relative h-full w-full p-6 transition-all duration-700 group-hover:scale-105 group-hover:-translate-y-1">
+          <div className="relative h-full w-full p-10 flex items-center justify-center transform transition-all duration-1000 group-hover:scale-110 group-hover:-translate-y-4">
             {product.imageUrl ? (
               <Image 
                 src={product.imageUrl} 
@@ -221,7 +221,7 @@ export function NewArrivalsClient() {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-3 gap-y-10 md:gap-x-6 md:gap-y-16">
                 {[...Array(10)].map((_, i) => (
                   <div key={i} className="group relative">
-                    <div className="relative aspect-4/5 mb-6 overflow-hidden rounded-2xl bg-white/1 border border-white/6">
+                    <div className="relative aspect-square mb-6 overflow-hidden bg-slate-50 border border-slate-100 animate-pulse">
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="bg-slate-800 rounded-2xl h-32 md:h-40 w-full animate-pulse" />
                       </div>
