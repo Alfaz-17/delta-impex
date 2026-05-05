@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Globe } from "lucide-react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useState, useEffect } from "react";
 import { STATIC_CATEGORIES } from "@/lib/categories";
 
@@ -19,10 +20,10 @@ export function CategoryHeroSection() {
           muted
           playsInline
           className="w-full h-full object-cover object-[65%_center] md:object-center"
-          poster="/hero-fallback.png"
+          poster="/hero-fallback.webp"
         >
-          <source src="/hero.webm" type="video/webm" />
           <source src="/hero.mp4" type="video/mp4" />
+          <source src="/hero.webm" type="video/webm" />
           Your browser does not support the video tag.
         </video>
         {/* Overlay for better text readability */}
@@ -31,7 +32,7 @@ export function CategoryHeroSection() {
 
       {/* Main Content */}
       <div className="relative z-10 flex-1 flex flex-col items-start justify-center text-left px-6 md:px-12 lg:px-24 pt-0">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -45,7 +46,7 @@ export function CategoryHeroSection() {
             </h1>
           </div>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
@@ -64,12 +65,12 @@ export function CategoryHeroSection() {
             >
               Contact
             </Link>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       </div>
 
       {/* Bottom Category Display */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 1 }}
@@ -98,11 +99,16 @@ export function CategoryHeroSection() {
               >
                 <div className="relative w-32 md:w-30 aspect-square flex items-center justify-center transition-all duration-500 bg-white shadow-lg rounded-[2rem] border border-white group-hover:border-accent group-hover:scale-105">
                   {category.imageUrl ? (
-                    <img
-                      src={category.imageUrl}
-                      alt={category.name}
-                      className="w-full h-full object-contain p-3 transition-all duration-500 group-hover:scale-110"
-                    />
+                    <div className="relative w-full h-full p-3">
+                      <Image
+                        src={category.imageUrl}
+                        alt={category.name}
+                        fill
+                        className="object-contain transition-all duration-500 group-hover:scale-110"
+                        sizes="(max-width: 768px) 128px, 120px"
+                        priority={i < 4}
+                      />
+                    </div>
                   ) : (
                     <Globe className="w-10 h-10 text-accent/60 group-hover:text-accent transition-colors" />
                   )}
@@ -115,7 +121,7 @@ export function CategoryHeroSection() {
             ))}
           </div>
         </div>
-      </motion.div>
+      </m.div>
 
 
       {/* Decorative side brackets */}

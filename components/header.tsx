@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronRight, ChevronDown, Phone, Mail, ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { STATIC_CATEGORIES } from "@/lib/categories";
 
 export function Header() {
@@ -82,9 +82,9 @@ export function Header() {
         <div className={`absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-0"}`} />
         <div className={`absolute inset-0 bg-gradient-to-b from-accent-blue/8 to-transparent pointer-events-none transition-all duration-500 ${isScrolled ? "opacity-100" : "opacity-0"}`} />
 
-        {/* Scroll Progress Bar (Moved to Top for better UX) */}
-        <motion.div
-          className="absolute top-0 left-0 right-0 h-[3px] origin-left z-[110] bg-accent-blue shadow-[0_0_10px_rgba(91,155,213,0.5)]"
+        {/* Scroll Progress Bar (Moved to Bottom) */}
+        <m.div
+          className="absolute bottom-0 left-0 right-0 h-[3px] origin-left z-[110] bg-accent-blue shadow-[0_0_10px_rgba(91,155,213,0.5)]"
           style={{ scaleX: scrollProgress }}
         />
 
@@ -135,7 +135,7 @@ export function Header() {
 
                     <AnimatePresence>
                       {activeDropdown === link.dropdownId && (
-                        <motion.div
+                        <m.div
                           initial={{ opacity: 0, y: 10, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -193,7 +193,7 @@ export function Header() {
                               )}
                             </div>
                           </div>
-                        </motion.div>
+                        </m.div>
                       )}
                     </AnimatePresence>
                   </div>
@@ -235,7 +235,7 @@ export function Header() {
       <AnimatePresence>
         {isMenuOpen && (
           <>
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -243,7 +243,7 @@ export function Header() {
               className="fixed inset-0 z-[80] bg-black/60 backdrop-blur-md lg:hidden"
             />
 
-            <motion.div
+            <m.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -305,12 +305,12 @@ export function Header() {
 
                         <AnimatePresence>
                           {isExpanded && link.divisions && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              className="overflow-hidden"
-                            >
+                            <m.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="overflow-hidden"
+                              >
                               <div className="max-h-[350px] overflow-y-auto custom-scrollbar pr-2 mb-4 overscroll-contain" data-lenis-prevent>
                                 <div className="pl-4 space-y-8 pt-4 pb-4 border-l border-primary/20 ml-1">
                                   {link.divisions.map((div: any) => (
@@ -333,7 +333,7 @@ export function Header() {
                                   ))}
                                 </div>
                               </div>
-                            </motion.div>
+                            </m.div>
                           )}
                         </AnimatePresence>
                       </div>
@@ -368,7 +368,7 @@ export function Header() {
                   </Link>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </>
         )}
       </AnimatePresence>

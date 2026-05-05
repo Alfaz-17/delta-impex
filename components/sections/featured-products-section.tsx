@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Loader2, ArrowLeft, ArrowRight } from "lucide-react";
 import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 
 type CategoryType = "marine" | "ro";
 
@@ -214,7 +214,7 @@ export function FeaturedProductsSection({
           ) : (
             products.map((product, index) => {
               return (
-                <motion.div
+                <m.div
                   key={product._id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -282,7 +282,7 @@ export function FeaturedProductsSection({
                       </div>
                     </div>
                   </Link>
-                </motion.div>
+                </m.div>
               );
             })
           )}
