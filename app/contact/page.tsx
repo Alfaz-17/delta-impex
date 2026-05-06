@@ -17,6 +17,8 @@ export const metadata: Metadata = {
 
 import { client } from '@/sanity/lib/client'
 
+export const revalidate = 3600;
+
 async function getContactPageData() {
   const query = `{
     "contact": *[_type == "contactPage"][0],

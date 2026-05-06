@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   }
 }
 
+export const revalidate = 3600;
+
 async function getHomePageData() {
   const query = `{
     "home": *[_type == "homePage"][0] {

@@ -1,45 +1,57 @@
-"use client";
-
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 import { FeaturedProductsSection } from "@/components/sections/featured-products-section";
-import { motion } from "framer-motion";
 import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import connectToDatabase from "@/lib/mongodb";
+import Product from "@/lib/models/Product";
+import Division from "@/lib/models/Division";
+import { STATIC_CATEGORIES } from "@/lib/categories";
+import { NewArrivalsHero } from "./new-arrivals-hero";
 
-export default function NewArrivalsPage() {
+export const revalidate = 3600;
+
+async function getNewArrivalsData() {
+  await connectToDatabase();
+  
+  const getProductsForDivision = async (slug: string) => {
+    const division = await Division.findOne({ slug });
+    if (!division) return [];
+    
+    const productsRaw = await Product.find({ 
+      division: division._id,
+      isFeatured: true // For now using featured as "new arrivals" or we could add a new field
+    })
+    .limit(8)
+    .lean();
+
+    return productsRaw.map((p: any) => {
+      const cat = STATIC_CATEGORIES.find((c) => c.slug === p.category);
+      return {
+        ...p,
+        _id: p._id.toString(),
+        division: { _id: p.division.toString(), name: division.name, slug: division.slug },
+        category: cat ? { name: cat.name, slug: cat.slug } : { name: p.category, slug: p.category },
+      };
+    });
+  };
+
+  const [marineProducts, roProducts] = await Promise.all([
+    getProductsForDivision("marine-industrial"),
+    getProductsForDivision("ro-solutions")
+  ]);
+
+  return { marineProducts, roProducts };
+}
+
+export default async function NewArrivalsPage() {
+  const { marineProducts, roProducts } = await getNewArrivalsData();
+
   return (
     <main className="min-h-screen bg-background">
       <Header />
       
-      {/* 01. PREMIUM HERO (Dark Contrast) */}
-      <section className="bg-primary pt-40 pb-24 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5" 
-          style={{ 
-            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-            backgroundSize: '32px 32px'
-          }} 
-        />
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-accent/10 skew-x-12 translate-x-1/2 pointer-events-none" />
-        
-        <div className="section-container relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl"
-          >
-            <p className="label-tech text-accent mb-6 uppercase tracking-[0.4em]">Inventory Update</p>
-            <h1 className="heading-display text-white !leading-[0.9] uppercase tracking-tighter">
-              New <span className="text-accent italic font-medium">Arrivals</span> & <br />
-              Technical Stock.
-            </h1>
-            <p className="body-premium text-white/70 max-w-2xl mt-8 border-l-2 border-accent pl-6">
-              Explore the latest technical additions to our marine and industrial inventory. High-quality spares, freshly sourced and verified for technical compliance.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <NewArrivalsHero />
 
       {/* 02. NEW ARRIVALS GRID (Dark Mode Sections) */}
       <div className="space-y-0">
@@ -50,6 +62,7 @@ export default function NewArrivalsPage() {
           title="Marine Components." 
           subtitle="Latest Marine Arrivals"
           isDark={false}
+          initialProducts={marineProducts}
         />
         
         <FeaturedProductsSection 
@@ -59,6 +72,7 @@ export default function NewArrivalsPage() {
           title="Water Solutions." 
           subtitle="New Water Tech"
           isDark={true}
+          initialProducts={roProducts}
         />
       </div>
 

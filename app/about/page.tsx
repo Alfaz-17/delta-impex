@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   }
 }
 
+export const revalidate = 3600;
+
 async function getAboutPageData() {
   const query = `{
     "about": *[_type == "aboutPage"][0] {
