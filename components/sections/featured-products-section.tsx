@@ -16,6 +16,10 @@ interface FeaturedProductsSectionProps {
   title?: string;
   subtitle?: string;
   isDark?: boolean;
+  viewAllText?: string;
+  technicalDetailsText?: string;
+  emptyText?: string;
+  initialProducts?: any[];
 }
 
 export function FeaturedProductsSection({ 
@@ -25,15 +29,24 @@ export function FeaturedProductsSection({
   featuredOnly = false,
   title = "Detailed Inventory.",
   subtitle = "Our newest products.",
-  isDark = true
+  isDark = true,
+  viewAllText,
+  technicalDetailsText,
+  emptyText,
+  initialProducts = []
 }: FeaturedProductsSectionProps) {
   const [activeTab, setActiveTab] = useState<CategoryType>(initialCategory);
-  const [products, setProducts] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<any[]>(initialProducts);
+  const [isLoading, setIsLoading] = useState(initialProducts.length === 0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function fetchProducts() {
+      // If we already have initial products and this is the first load, don't fetch
+      if (initialProducts.length > 0 && products === initialProducts) {
+        setIsLoading(false);
+        return;
+      }
       setIsLoading(true);
       try {
         const targetSlug = divisionSlug || (activeTab === "marine" ? "marine-industrial" : "ro-solutions");
@@ -180,7 +193,7 @@ export function FeaturedProductsSection({
                       isDark ? "text-white/40 hover:text-accent" : "text-muted-foreground hover:text-primary"
                     }`}
                 >
-                    View Full Directory 
+                    {viewAllText || "View Full Directory"} 
                     <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
             </div>
@@ -209,7 +222,7 @@ export function FeaturedProductsSection({
             </div>
           ) : (!Array.isArray(products) || products.length === 0) ? (
             <div className={`w-full text-center py-24 border border-dashed rounded-none opacity-40 ${isDark ? "border-white/20" : "border-border/50"}`}>
-              <p className="font-tech text-[10px] uppercase tracking-[0.4em]">Establishing Catalog Sync...</p>
+              <p className="font-tech text-[10px] uppercase tracking-[0.4em]">{emptyText || "Establishing Catalog Sync..."}</p>
             </div>
           ) : (
             products.map((product, index) => {
@@ -277,7 +290,7 @@ export function FeaturedProductsSection({
                       <div className={`mt-6 flex items-center justify-between opacity-40 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0 ${
                         isDark ? "text-white/60 group-hover:text-accent" : "text-primary/60 group-hover:text-accent-blue"
                       }`}>
-                         <span className="text-[10px] font-tech font-bold uppercase tracking-[0.3em]">Technical Details</span>
+                         <span className="text-[10px] font-tech font-bold uppercase tracking-[0.3em]">{technicalDetailsText || "Technical Details"}</span>
                          <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>

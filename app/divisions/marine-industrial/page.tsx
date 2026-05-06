@@ -1,15 +1,18 @@
-"use client";
-
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 import { ProductCatalog } from "@/components/product-catalog";
 import Image from "next/image";
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
 import { Ship, Anchor, Gauge, Cog, Filter, Zap, Compass, ChevronRight, Loader2 } from "lucide-react";
 import React, { Suspense } from "react";
 import Link from "next/link";
+import { MarineDivisionHero } from "./marine-hero"; // We'll extract the client-side logic
+import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
+import connectToDatabase from "@/lib/mongodb";
+import Product from "@/lib/models/Product";
+import Division from "@/lib/models/Division";
+import { STATIC_CATEGORIES } from "@/lib/categories";
+
+export const revalidate = 3600;
 
 const categories = [
   { icon: Ship, name: "Main & Auxiliary Engine Spares" },
@@ -20,54 +23,53 @@ const categories = [
   { icon: Anchor, name: "Deck Machinery & Engine Room" },
 ];
 
-export default function MarinePartsPage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end end"]
+async function getDivisionData() {
+  await connectToDatabase();
+  const [division, productsRaw, divisionsRaw] = await Promise.all([
+    Division.findOne({ slug: "marine-industrial" }).lean(),
+    Product.find({}).populate("division", "name slug").lean(),
+    Division.find({}).lean()
+  ]);
+
+  const products = productsRaw.map((p: any) => {
+    const cat = STATIC_CATEGORIES.find((c) => c.slug === p.category);
+    return {
+      ...p,
+      _id: p._id.toString(),
+      division: p.division ? { 
+        _id: p.division._id.toString(), 
+        name: p.division.name, 
+        slug: p.division.slug 
+      } : null,
+      category: cat ? { name: cat.name, slug: cat.slug } : { name: p.category, slug: p.category },
+    };
   });
 
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1.1, 1.2]);
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const divisions = divisionsRaw.map((d: any) => ({
+    ...d,
+    _id: d._id.toString()
+  }));
+
+  return { division, products, divisions };
+}
+
+export default async function MarinePartsPage() {
+  const { division, products, divisions } = await getDivisionData();
 
   return (
     <main className="min-h-screen bg-background">
       <Header />
 
-      {/* Cinematic Hero */}
-      <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-foreground">
-        <motion.div 
-          className="absolute inset-0 z-0"
-          style={{ scale: heroScale }}
-        >
-          <Image
-            src="/images/marine-parts-clean.png"
-            alt="Marine engine spare parts"
-            fill
-            className="object-cover opacity-60 contrast-125 saturate-[0.8]"
-            priority
-          />
-          {/* Legibility overlay */}
-          <div className="absolute inset-0 bg-black/40 pointer-events-none" />
-        </motion.div>
-
-        <div className="relative z-10 text-center px-6" style={{ textShadow: '0 2px 30px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.5)' }}>
-          <FadeInOnScroll>
-            <p className="label-tech text-white/80 mb-6 drop-shadow-xl uppercase tracking-[0.4em]">
-              Division 01
-            </p>
-            <h1 className="heading-display text-white !leading-[0.95] uppercase drop-shadow-2xl">
-              Marine & Industrial <br />
-              <span className="text-accent-blue italic">Global Sourcing.</span>
-            </h1>
-          </FadeInOnScroll>
-        </div>
-      </section>
+      <MarineDivisionHero />
 
       {/* Product Catalog */}
       <Suspense fallback={<div className="h-96 flex items-center justify-center bg-background text-primary/20"><Loader2 className="animate-spin" /></div>}>
-        <ProductCatalog divisionSlug="marine-industrial" divisionName="Marine & Industrial" />
+        <ProductCatalog 
+          divisionSlug="marine-industrial" 
+          divisionName="Marine & Industrial" 
+          initialProducts={products}
+          initialDivisions={divisions}
+        />
       </Suspense>
 
       {/* Section 1: Introduction & Capabilities */}

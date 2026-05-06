@@ -15,6 +15,17 @@ export const metadata: Metadata = {
   }
 }
 
-export default function ContactPage() {
-  return <ContactContent />
+import { client } from '@/sanity/lib/client'
+
+async function getContactPageData() {
+  const query = `{
+    "contact": *[_type == "contactPage"][0],
+    "footer": *[_type == "footer"][0]
+  }`
+  return await client.fetch(query)
+}
+
+export default async function ContactPage() {
+  const data = await getContactPageData()
+  return <ContactContent initialData={data.contact} footerData={data.footer} />
 }

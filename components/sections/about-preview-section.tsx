@@ -7,9 +7,27 @@ import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
 
 interface AboutPreviewSectionProps {
   isDark?: boolean;
+  label?: string;
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  secondaryText?: string;
+  experience?: string;
+  experienceLabel?: string;
+  image?: string;
 }
 
-export function AboutPreviewSection({ isDark = true }: AboutPreviewSectionProps) {
+export function AboutPreviewSection({ 
+  isDark = true,
+  label,
+  title,
+  subtitle,
+  description,
+  secondaryText,
+  experience,
+  experienceLabel,
+  image
+}: AboutPreviewSectionProps) {
   return (
     <section className={`py-24 md:py-32 relative overflow-hidden transition-colors duration-500 ${isDark ? "bg-primary" : "bg-background"}`}>
       {/* Background patterns */}
@@ -28,7 +46,7 @@ export function AboutPreviewSection({ isDark = true }: AboutPreviewSectionProps)
             <div className="relative group">
               <div className={`relative aspect-[4/3] rounded-none overflow-hidden border shadow-2xl transition-all duration-700 ${isDark ? "border-white/10" : "border-primary/10"}`}>
                 <Image
-                  src="/about-hero.png"
+                  src={image || "/about-hero.png"}
                   alt="Delta Impex Industrial Legacy"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -43,8 +61,12 @@ export function AboutPreviewSection({ isDark = true }: AboutPreviewSectionProps)
                 isDark ? "bg-background border-border" : "bg-primary border-white/10 shadow-[0_20px_50px_rgba(27,58,92,0.3)]"
               }`}>
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50" />
-                <span className={`font-display font-bold text-5xl block leading-none ${isDark ? "text-primary" : "text-white"}`}>20<span className="text-accent">+</span></span>
-                <span className={`font-tech text-[10px] uppercase font-bold tracking-[0.3em] block mt-3 ${isDark ? "text-accent" : "text-white/60"}`}>Years of Mastery</span>
+                <span className={`font-display font-bold text-5xl block leading-none ${isDark ? "text-primary" : "text-white"}`}>
+                  {experience || "20"}<span className="text-accent">+</span>
+                </span>
+                <span className={`font-tech text-[10px] uppercase font-bold tracking-[0.3em] block mt-3 ${isDark ? "text-accent" : "text-white/60"}`}>
+                  {experienceLabel || "Years of Mastery"}
+                </span>
                 <div className={`mt-4 pt-4 border-t flex items-center gap-2 ${isDark ? "border-border" : "border-white/10"}`}>
                   <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                   <span className={`text-[9px] font-tech uppercase tracking-widest ${isDark ? "text-muted-foreground" : "text-white/40"}`}>Industry Leader</span>
@@ -56,17 +78,17 @@ export function AboutPreviewSection({ isDark = true }: AboutPreviewSectionProps)
           {/* Content Side */}
           <div className="flex flex-col justify-center space-y-8">
             <FadeInOnScroll>
-              <p className="label-tech text-accent mb-4">The Delta Impex Legacy</p>
+              <p className="label-tech text-accent mb-4">{label || "The Delta Impex Legacy"}</p>
               <h2 className={`heading-display mb-6 uppercase tracking-tighter ${isDark ? "text-white" : "text-primary"}`}>
-                Marine Expertise. <br />
-                <span className="text-accent italic font-medium">Industrial Reliability.</span>
+                {title || "Marine Expertise."} <br />
+                <span className="text-accent italic font-medium">{subtitle || "Industrial Reliability."}</span>
               </h2>
               <div className="space-y-6">
                 <p className={`body-premium leading-relaxed ${isDark ? "text-white/80" : "text-slate-600"}`}>
-                  Internationally recognized as the most technically competent supplier from India for New, Recondition and Second-hand Engine Parts and Machinery.
+                  {description || "Internationally recognized as the most technically competent supplier from India for New, Recondition and Second-hand Engine Parts and Machinery."}
                 </p>
                 <p className={`body-text text-sm ${isDark ? "text-white/60" : "text-slate-500"}`}>
-                  Based in Bhavnagar, Gujarat, we have been a cornerstone of the maritime supply chain, specializing in high-quality marine ship spares and critical machinery equipment since 2017.
+                  {secondaryText || "Based in Bhavnagar, Gujarat, we have been a cornerstone of the maritime supply chain, specializing in high-quality marine ship spares and critical machinery equipment since 2017."}
                 </p>
               </div>
             </FadeInOnScroll>

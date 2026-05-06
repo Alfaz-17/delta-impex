@@ -1,63 +1,66 @@
-"use client";
-
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 import { ROProcessSection } from "@/components/sections/ro-process-section";
 import { ProductCatalog } from "@/components/product-catalog";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import type { Metadata } from 'next'
-
-import { motion, useScroll, useTransform } from "framer-motion";
-import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
 import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
+import { ROHero } from "./ro-hero";
+import { FadeInOnScroll } from "@/components/fade-in-on-scroll";
+import connectToDatabase from "@/lib/mongodb";
+import Product from "@/lib/models/Product";
+import Division from "@/lib/models/Division";
+import { STATIC_CATEGORIES } from "@/lib/categories";
 
-export default function ROSystemsPage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
+export const revalidate = 3600;
+
+async function getDivisionData() {
+  await connectToDatabase();
+  const [division, productsRaw, divisionsRaw] = await Promise.all([
+    Division.findOne({ slug: "ro-solutions" }).lean(),
+    Product.find({}).populate("division", "name slug").lean(),
+    Division.find({}).lean()
+  ]);
+
+  const products = productsRaw.map((p: any) => {
+    const cat = STATIC_CATEGORIES.find((c) => c.slug === p.category);
+    return {
+      ...p,
+      _id: p._id.toString(),
+      division: p.division ? { 
+        _id: p.division._id.toString(), 
+        name: p.division.name, 
+        slug: p.division.slug 
+      } : null,
+      category: cat ? { name: cat.name, slug: cat.slug } : { name: p.category, slug: p.category },
+    };
   });
 
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1.1, 1.2]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const divisions = divisionsRaw.map((d: any) => ({
+    ...d,
+    _id: d._id.toString()
+  }));
+
+  return { division, products, divisions };
+}
+
+export default async function ROSystemsPage() {
+  const { products, divisions } = await getDivisionData();
 
   return (
     <main className="min-h-screen bg-background">
       <Header />
 
-      {/* Hero Section */}
-      <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-foreground">
-        <motion.div className="absolute inset-0" style={{ scale: heroScale }}>
-          <Image
-            src="/ro/ro-plant-framed.png"
-            alt="Advanced RO Water Treatment systems"
-            fill
-            className="object-cover contrast-[1.1] saturate-[1.1] opacity-60"
-            priority
-          />
-        </motion.div>
-
-        {/* Dark overlay for text legibility */}
-        <div className="absolute inset-0 bg-black/40 z-0" />
-
-        <div className="relative z-10 text-center px-6" style={{ textShadow: '0 2px 30px rgba(0,0,0,0.8), 0 1px 4px rgba(0,0,0,0.5)' }}>
-          <FadeInOnScroll>
-            <p className="label-tech text-white/80 mb-6 drop-shadow-xl uppercase tracking-[0.4em]">
-              Division 02
-            </p>
-            <h1 className="heading-display text-white !leading-[0.95] uppercase drop-shadow-2xl">
-              Water Treatment <br /> & <span className="text-accent-blue italic">RO Systems.</span>
-            </h1>
-          </FadeInOnScroll>
-        </div>
-      </section>
+      <ROHero />
 
       {/* E-Commerce Catalog Section */}
       <Suspense fallback={<div className="h-96 flex items-center justify-center bg-background text-primary/20"><Loader2 className="animate-spin" /></div>}>
-        <ProductCatalog divisionSlug="ro-solutions" divisionName="RO Water Treatment" />
+        <ProductCatalog 
+          divisionSlug="ro-solutions" 
+          divisionName="RO Water Treatment" 
+          initialProducts={products}
+          initialDivisions={divisions}
+        />
       </Suspense>
 
       {/* Introduction Section */}

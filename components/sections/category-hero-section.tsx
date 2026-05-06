@@ -7,27 +7,47 @@ import { m } from "framer-motion";
 import { useState, useEffect } from "react";
 import { STATIC_CATEGORIES } from "@/lib/categories";
 
-export function CategoryHeroSection() {
+export function CategoryHeroSection({ 
+  heading, 
+  subheading, 
+  bgImage,
+  categoryLabel
+}: { 
+  heading?: string; 
+  subheading?: string; 
+  bgImage?: string; 
+  categoryLabel?: string;
+}) {
   const categories = STATIC_CATEGORIES;
 
   return (
     <section className="relative w-full h-[100dvh] overflow-hidden flex flex-col justify-between">
-      {/* Background Video */}
+      {/* Background Video or Image */}
       <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover object-[65%_center] md:object-center"
-          poster="/hero-fallback.webp"
-        >
-          <source src="/hero.mp4" type="video/mp4" />
-          <source src="/hero.webm" type="video/webm" />
-          Your browser does not support the video tag.
-        </video>
+        {bgImage ? (
+          <Image
+            src={bgImage}
+            alt="Hero Background"
+            fill
+            className="object-cover object-center"
+            priority
+          />
+        ) : (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover object-[65%_center] md:object-center"
+            poster="/hero-fallback.webp"
+          >
+            <source src="/hero.mp4" type="video/mp4" />
+            <source src="/hero.webm" type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
+        )}
         {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/0 bg-gradient-to-b from-black/5 via-transparent to-black/0" />
+        <div className="absolute inset-0 bg-black/20 bg-gradient-to-b from-black/5 via-transparent to-black/20" />
       </div>
 
       {/* Main Content */}
@@ -36,14 +56,25 @@ export function CategoryHeroSection() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-md space-y-3"
+          className="max-w-2xl space-y-3"
         >
           <div className="space-y-1">
-            <h1 className="font-display text-slate-300 text-2xl md:text-4xl lg:text-5xl uppercase leading-[1] tracking-tighter">
-              Marine & <br />
-              <span className="text-accent-blue italic">Industrial</span> <br />
-              Suppliers
+            <h1 className="font-display text-slate-100 text-2xl md:text-4xl lg:text-5xl uppercase leading-[1] tracking-tighter drop-shadow-lg">
+              {heading ? heading.split('\n').map((line, i) => (
+                <span key={i}>{line}<br /></span>
+              )) : (
+                <>
+                  Marine & <br />
+                  <span className="text-accent-blue italic">Industrial</span> <br />
+                  Suppliers
+                </>
+              )}
             </h1>
+            {subheading && (
+              <p className="text-slate-300 text-sm md:text-base max-w-md mt-4 font-tech tracking-wider uppercase opacity-80">
+                {subheading}
+              </p>
+            )}
           </div>
 
           <m.div
@@ -79,7 +110,7 @@ export function CategoryHeroSection() {
         <div className="max-w-[1400px] mx-auto px-6 mb-6">
           <div className="flex items-center gap-4">
             <span className="h-px w-8 bg-accent/30" />
-            <p className="font-tech text-[9px] font-bold uppercase tracking-[0.3em] text-accent-blue">Our Products Categories</p>
+            <p className="font-tech text-[9px] font-bold uppercase tracking-[0.3em] text-accent-blue">{categoryLabel || "Our Products Categories"}</p>
             <span className="h-px flex-1 bg-accent/10" />
           </div>
         </div>

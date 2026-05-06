@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import AboutContent from './about-content'
 import { SITE_INFO } from '@/lib/site'
+import { client } from '@/sanity/lib/client'
 
 export const metadata: Metadata = {
   title: 'About Us | Delta Impex',
@@ -15,6 +16,22 @@ export const metadata: Metadata = {
   }
 }
 
-export default function AboutPage() {
-  return <AboutContent />
+async function getAboutPageData() {
+  const query = `{
+    "about": *[_type == "aboutPage"][0] {
+      ...,
+      "heroImageUrl": heroImage.asset->url,
+      "teamMembers": teamMembers[] {
+        ...,
+        "imageUrl": image.asset->url
+      }
+    },
+    "footer": *[_type == "footer"][0]
+  }`
+  return await client.fetch(query)
+}
+
+export default async function AboutPage() {
+  const data = await getAboutPageData()
+  return <AboutContent initialData={data.about} footerData={data.footer} />
 }

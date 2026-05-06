@@ -31,14 +31,15 @@ const footerLinks = {
   ],
 };
 
-export function FooterSection() {
+export function FooterSection({ data }: { data?: any }) {
+  const currentYear = new Date().getFullYear();
+  
   return (
     <footer id="contact" className="relative overflow-hidden bg-primary">
       {/* Upper Edge Light Accent */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[2px] w-1/3 bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent blur-[1px]" />
       
-      {/* Technical Checkered Grid Pattern */}
       <div 
         className="absolute inset-0 opacity-[0.035]" 
         style={{ 
@@ -49,7 +50,6 @@ export function FooterSection() {
           backgroundSize: '3rem 3rem' 
         }} 
       />
-      {/* Secondary Fine Grid */}
       <div 
         className="absolute inset-0 opacity-[0.015]" 
         style={{ 
@@ -60,7 +60,6 @@ export function FooterSection() {
           backgroundSize: '0.75rem 0.75rem' 
         }} 
       />
-      {/* Bottom Glow */}
       <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-accent-blue/10 blur-[120px]" />
       
       <div className="relative z-10 border-t border-white/[0.06] px-6 py-16 md:px-12 md:py-20 lg:px-20">
@@ -75,14 +74,14 @@ export function FooterSection() {
               />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
-              Your trusted partner for marine and industrial spare parts and advanced RO water treatment systems worldwide.
+              {data?.description || "Your trusted partner for marine and industrial spare parts and advanced RO water treatment systems worldwide."}
             </p>
             <div className="mt-6 text-sm text-slate-400">
               <p className="font-medium text-white">Head Office</p>
               <p className="mt-1">
-                {SITE_INFO.addressLine1},
+                {data?.addressLine1 || SITE_INFO.addressLine1},
                 <br />
-                {SITE_INFO.addressLine2}
+                {data?.addressLine2 || SITE_INFO.addressLine2}
               </p>
               <a
                 href={SITE_INFO.mapsUrl}
@@ -96,7 +95,7 @@ export function FooterSection() {
             <div className="mt-6 text-sm text-slate-400">
               <p className="font-medium text-white">Owner</p>
               <p className="mt-1">
-                Anas Malek
+                {data?.ownerName || "Anas Malek"}
               </p>
             </div>
           </div>
@@ -154,7 +153,7 @@ export function FooterSection() {
       <div className="relative z-10 border-t border-white/[0.06] px-6 py-6 md:px-12 lg:px-20">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-slate-500 lowercase">
-            © 2026 Delta Impex. All rights reserved.
+            © {currentYear} {data?.copyrightText || "Delta Impex. All rights reserved."}
           </p>
 
           <div className="flex items-center gap-6">

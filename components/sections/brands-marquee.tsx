@@ -3,23 +3,12 @@
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 
-const brands = [
-  { src: "/brands/Screenshot 2026-02-08 115904.png", name: "DEUTZ" },
-  { src: "/brands/Screenshot 2026-02-08 115911.png", name: "MTU" },
-  { src: "/brands/Screenshot 2026-02-08 115918.png", name: "MAN B&W" },
-  { src: "/brands/Screenshot 2026-02-08 115925.png", name: "HANSHIN DIESEL" },
-  { src: "/brands/Screenshot 2026-02-08 115930.png", name: "VOLVO PENTA" },
-  { src: "/brands/Screenshot 2026-02-08 115936.png", name: "CUMMINS MARINE" },
-  { src: "/brands/Screenshot 2026-02-08 115948.png", name: "PERKINS" },
-  { src: "/brands/Screenshot 2026-02-08 120007.png", name: "CAT" },
-];
-
-function BrandItem({ src, name }: { src: string; name: string }) {
+function BrandItem({ imageUrl, name }: { imageUrl: string; name: string }) {
   return (
     <div className="brand-marquee-item flex-shrink-0 flex items-center justify-center mx-8 md:mx-12 lg:mx-16">
       <div className="relative h-12 w-28 md:h-16 md:w-36 lg:h-20 lg:w-44">
         <Image
-          src={src}
+          src={imageUrl}
           alt={name}
           fill
           className="object-contain"
@@ -30,7 +19,19 @@ function BrandItem({ src, name }: { src: string; name: string }) {
   );
 }
 
-export function BrandsMarquee() {
+export function BrandsMarquee({ brands: initialBrands }: { brands?: { imageUrl: string; name: string }[] }) {
+  const defaultBrands = [
+    { imageUrl: "/brands/Screenshot 2026-02-08 115904.png", name: "DEUTZ" },
+    { imageUrl: "/brands/Screenshot 2026-02-08 115911.png", name: "MTU" },
+    { imageUrl: "/brands/Screenshot 2026-02-08 115918.png", name: "MAN B&W" },
+    { imageUrl: "/brands/Screenshot 2026-02-08 115925.png", name: "HANSHIN DIESEL" },
+    { imageUrl: "/brands/Screenshot 2026-02-08 115930.png", name: "VOLVO PENTA" },
+    { imageUrl: "/brands/Screenshot 2026-02-08 115936.png", name: "CUMMINS MARINE" },
+    { imageUrl: "/brands/Screenshot 2026-02-08 115948.png", name: "PERKINS" },
+    { imageUrl: "/brands/Screenshot 2026-02-08 120007.png", name: "CAT" },
+  ];
+
+  const brands = initialBrands && initialBrands.length > 0 ? initialBrands : defaultBrands;
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -92,7 +93,7 @@ export function BrandsMarquee() {
 
         <div className="marquee-track-left flex">
           {duplicatedBrands.map((brand, i) => (
-            <BrandItem key={`row1-${i}`} src={brand.src} name={brand.name} />
+            <BrandItem key={`row1-${i}`} imageUrl={brand.imageUrl} name={brand.name} />
           ))}
         </div>
       </div>
@@ -111,7 +112,7 @@ export function BrandsMarquee() {
 
         <div className="marquee-track-right flex">
           {duplicatedBrands.map((brand, i) => (
-            <BrandItem key={`row2-${i}`} src={brand.src} name={brand.name} />
+            <BrandItem key={`row2-${i}`} imageUrl={brand.imageUrl} name={brand.name} />
           ))}
         </div>
       </div>

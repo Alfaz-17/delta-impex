@@ -9,6 +9,8 @@ import { motion, AnimatePresence } from "framer-motion";
 interface ProductCatalogProps {
   divisionSlug: string;
   divisionName: string;
+  initialProducts?: any[];
+  initialDivisions?: any[];
 }
 
 const ITEMS_PER_PAGE = 12;
@@ -16,19 +18,28 @@ const ITEMS_PER_PAGE = 12;
 import { STATIC_CATEGORIES } from "@/lib/categories";
 import { useSearchParams } from "next/navigation";
 
-export function ProductCatalog({ divisionSlug, divisionName }: ProductCatalogProps) {
+export function ProductCatalog({ 
+  divisionSlug, 
+  divisionName,
+  initialProducts = [],
+  initialDivisions = []
+}: ProductCatalogProps) {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || searchParams.get("categoryId") || "all";
 
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>(initialProducts);
   const [categories, setCategories] = useState<any[]>(STATIC_CATEGORIES.filter(c => c.division === divisionSlug));
   const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(initialProducts.length === 0);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     async function fetchData() {
+      if (initialProducts.length > 0 && products === initialProducts && initialDivisions.length > 0) {
+        setIsLoading(false);
+        return;
+      }
       setIsLoading(true);
       try {
         // Fetch all divisions to map the name if needed, but primarily we want categories

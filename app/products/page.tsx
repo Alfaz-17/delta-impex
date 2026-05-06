@@ -1,117 +1,89 @@
-"use client";
-
-import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 import { ProductCatalog } from "@/components/product-catalog";
 import { MarineLoader } from "@/components/ui/marine-loader";
+import connectToDatabase from "@/lib/mongodb";
+import Product from "@/lib/models/Product";
+import Division from "@/lib/models/Division";
 import { STATIC_CATEGORIES } from "@/lib/categories";
 
-type DivisionRecord = {
-  _id: string;
-  name: string;
-  slug: string;
-};
+export const revalidate = 3600; // Cache for 1 hour
 
-type CategoryRecord = {
-  _id: string;
-  slug: string;
-  division?: string | { _id?: string };
-};
+async function getProductsData() {
+  await connectToDatabase();
+  
+  const [productsRaw, divisionsRaw] = await Promise.all([
+    Product.find({}).populate("division", "name slug").lean(),
+    Division.find({}).lean()
+  ]);
 
-function normalizeDivisionSlug(value: string | null) {
-  if (!value) {
-    return null;
-  }
+  const products = productsRaw.map((p: any) => {
+    const cat = STATIC_CATEGORIES.find((c) => c.slug === p.category);
+    return {
+      ...p,
+      _id: p._id.toString(),
+      division: p.division ? { 
+        _id: p.division._id.toString(), 
+        name: p.division.name, 
+        slug: p.division.slug 
+      } : null,
+      category: cat ? { name: cat.name, slug: cat.slug } : { name: p.category, slug: p.category },
+    };
+  });
 
-  return value;
+  const divisions = divisionsRaw.map((d: any) => ({
+    ...d,
+    _id: d._id.toString()
+  }));
+
+  return { products, divisions };
 }
 
-function ProductsListingContent() {
-  const searchParams = useSearchParams();
-  const categoryId = searchParams.get("categoryId");
-  const categorySlug = searchParams.get("category");
-  const divisionId = searchParams.get("divisionId");
-  const rawDivisionSlug = searchParams.get("divisionSlug");
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const { products, divisions } = await getProductsData();
+  const params = await searchParams;
 
-  const [divisionSlug, setDivisionSlug] = useState<string>("marine-industrial");
-  const [divisionName, setDivisionName] = useState<string>("Marine & Industrial");
-  const [isReady, setIsReady] = useState(false);
+  const categoryId = params.categoryId as string;
+  const categorySlug = params.category as string;
+  const divisionId = params.divisionId as string;
+  const rawDivisionSlug = params.divisionSlug as string;
 
-  useEffect(() => {
-    async function resolveRoute() {
-      setIsReady(false);
+  let targetDiv =
+    (divisionId ? divisions.find((d) => d._id === divisionId) : undefined) ||
+    (rawDivisionSlug ? divisions.find((d) => d.slug === rawDivisionSlug) : undefined);
 
-      try {
-        const divRes = await fetch("/api/divisions");
-        const divisionsData = await divRes.json();
-        if (!divRes.ok) {
-          throw new Error(divisionsData?.error || "Failed to load divisions");
-        }
+  if (!targetDiv && (categoryId || categorySlug)) {
+    const category =
+      (categoryId ? STATIC_CATEGORIES.find((c: any) => c._id === categoryId) : undefined) ||
+      (categorySlug ? STATIC_CATEGORIES.find((c) => c.slug === categorySlug) : undefined);
 
-        const divisions: DivisionRecord[] = Array.isArray(divisionsData) ? divisionsData : [];
-        const requestedDivisionSlug = normalizeDivisionSlug(rawDivisionSlug);
-
-        let targetDiv =
-          (divisionId ? divisions.find((d) => d._id === divisionId) : undefined) ||
-          (requestedDivisionSlug ? divisions.find((d) => d.slug === requestedDivisionSlug) : undefined);
-
-
-        if (!targetDiv && (categoryId || categorySlug)) {
-          const category =
-            (categoryId ? STATIC_CATEGORIES.find((c: any) => (c as any)._id === categoryId) : undefined) ||
-            (categorySlug ? STATIC_CATEGORIES.find((c) => c.slug === categorySlug) : undefined);
-
-          if (category) {
-            const divSlug = category.division;
-            targetDiv = divisions.find((d) => d.slug === divSlug);
-          }
-        }
-
-        if (targetDiv) {
-          setDivisionSlug(targetDiv.slug);
-          setDivisionName(targetDiv.name);
-        } else {
-          setDivisionSlug("marine-industrial");
-          setDivisionName("Marine & Industrial");
-        }
-      } catch (error) {
-        console.error("Routing error:", error);
-        setDivisionSlug("marine-industrial");
-        setDivisionName("Marine & Industrial");
-      } finally {
-        setIsReady(true);
-      }
+    if (category) {
+      const divSlug = category.division;
+      targetDiv = divisions.find((d) => d.slug === divSlug);
     }
-
-    resolveRoute();
-  }, [categoryId, categorySlug, divisionId, rawDivisionSlug]);
-
-  if (!isReady) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-background">
-        <MarineLoader size="md" />
-      </div>
-    );
   }
 
-  return (
-    <main className="min-h-screen bg-background">
-      <ProductCatalog divisionSlug={divisionSlug} divisionName={divisionName} />
-    </main>
-  );
-}
+  const divisionSlug = targetDiv?.slug || "marine-industrial";
+  const divisionName = targetDiv?.name || "Marine & Industrial";
 
-export default function ProductsPage() {
   return (
     <>
       <Header />
-      <Suspense fallback={<div className="h-screen flex items-center justify-center"><MarineLoader size="lg" /></div>}>
-        <main className="min-h-screen bg-background">
-          <ProductsListingContent />
-        </main>
-      </Suspense>
+      <main className="min-h-screen bg-background">
+        <Suspense fallback={<div className="h-screen flex items-center justify-center"><MarineLoader size="lg" /></div>}>
+          <ProductCatalog 
+            divisionSlug={divisionSlug} 
+            divisionName={divisionName} 
+            initialProducts={products}
+            initialDivisions={divisions}
+          />
+        </Suspense>
+      </main>
       <FooterSection />
     </>
   );

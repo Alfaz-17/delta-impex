@@ -18,6 +18,14 @@ import { SITE_INFO } from "@/lib/site";
 
 export const revalidate = 3600; // Revalidate every hour, or when revalidatePath is called
 
+export async function generateStaticParams() {
+  await connectToDatabase();
+  const products = await Product.find({}, { slug: 1 }).lean();
+  return products.map((p: any) => ({
+    slug: p.slug,
+  }));
+}
+
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> },
   parent: ResolvingMetadata

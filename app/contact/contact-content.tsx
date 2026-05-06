@@ -9,41 +9,66 @@ import { Header } from "@/components/header";
 import { FooterSection } from "@/components/sections/footer-section";
 import { AnimatePresence, motion } from "framer-motion";
 
-const contactMethods = [
-  {
-    icon: MapPin,
-    title: "Global Headquarters",
-    primary: SITE_INFO.addressLine1,
-    secondary: SITE_INFO.addressLine2,
-    accent: "text-accent",
-  },
-  {
-    icon: Phone,
-    title: "Direct Support",
-    primary: `${SITE_INFO.phoneIndia} (IND)`,
-    secondary: `${SITE_INFO.phoneUAE} (UAE)`,
-    accent: "text-green-500",
-  },
-  {
-    icon: Mail,
-    title: "Direct Correspondence",
-    primary: "anas@deltaimpex.co",
-    secondary: "Anas Malek (Owner)",
-    accent: "text-accent",
-  },
-  {
-    icon: Globe,
-    title: "Service Reach",
-    primary: "150+ Major Ports",
-    secondary: "Marine & Industrial Supply",
-    accent: "text-orange-500",
-  },
-];
-
-export default function ContactContent() {
+export default function ContactContent({ initialData, footerData }: { initialData?: any, footerData?: any }) {
   const [formData, setFormData] = useState({ name: "", email: "", company: "", message: "" });
   const [submitStatus, setSubmitStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errors, setErrors] = useState<{ name?: string; email?: string; company?: string; message?: string }>({});
+
+  const contactMethods = initialData?.contactMethods || [
+    {
+      title: "Global Headquarters",
+      primary: "Office-07, Madina Tenement",
+      secondary: "Jamnakund Chowk, Bhavnagar - 364001, India",
+      type: "address",
+    },
+    {
+      title: "Direct Support",
+      primary: "+91 88661 14549 (IND)",
+      secondary: "+971 52 491 8899 (UAE)",
+      type: "phone",
+    },
+    {
+      title: "Direct Correspondence",
+      primary: "anas@deltaimpex.co",
+      secondary: "Anas Malek (Owner)",
+      type: "email",
+    },
+    {
+      title: "Service Reach",
+      primary: "150+ Major Ports",
+      secondary: "Marine & Industrial Supply",
+      type: "globe",
+    },
+  ];
+
+  const supportFeatures = initialData?.supportFeatures || [
+    { title: "Quality Check", desc: "Every part is inspected before we send it." },
+    { title: "Worldwide Delivery", desc: "We deliver to 150+ major ports around the world." },
+    { title: "Fast Response", desc: "We send price quotes within one working day." },
+  ];
+
+  const getIcon = (type: string) => {
+    switch (type) {
+        case 'address': return MapPin;
+        case 'phone': return Phone;
+        case 'email': return Mail;
+        default: return Globe;
+    }
+  };
+
+  const getFeatureIcon = (title: string) => {
+    if (title.includes("Quality")) return ShieldCheck;
+    if (title.includes("Delivery")) return Globe;
+    return Clock;
+  };
+
+  const getAccent = (type: string) => {
+    switch (type) {
+        case 'phone': return "text-green-500";
+        case 'globe': return "text-orange-500";
+        default: return "text-accent";
+    }
+  };
 
   function validateForm() {
     const nextErrors: { name?: string; email?: string; company?: string; message?: string } = {};
@@ -61,7 +86,7 @@ export default function ContactContent() {
     setSubmitStatus("loading");
     const subject = `Inquiry from ${formData.name} (${formData.company || "General"})`;
     const body = `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company}\n\nMessage:\n${formData.message}`;
-    window.location.href = `mailto:${SITE_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${initialData?.contactEmail || SITE_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSubmitStatus("success");
     setTimeout(() => setSubmitStatus("idle"), 5000);
   }
@@ -84,8 +109,9 @@ export default function ContactContent() {
           <FadeInOnScroll>
             <p className="label-tech text-accent mb-6 uppercase tracking-[0.4em]">Global Connectivity</p>
             <h1 className="heading-display text-white !leading-[0.9] uppercase tracking-tighter max-w-4xl mx-auto">
-              Consult Our <br />
-              <span className="text-accent italic font-medium">Engineering</span> Experts.
+              {initialData?.title || (
+                <>Consult Our <br /><span className="text-accent italic font-medium">Engineering</span> Experts.</>
+              )}
             </h1>
           </FadeInOnScroll>
         </div>
@@ -95,20 +121,24 @@ export default function ContactContent() {
       <section className="relative z-20 -mt-12 mb-24">
         <div className="section-container">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-slate-200 shadow-2xl border border-border">
-            {contactMethods.map((method, index) => (
-              <div key={index} className="bg-white p-10 group hover:bg-slate-50 transition-all duration-500">
-                <div className="w-12 h-12 bg-primary/5 flex items-center justify-center text-primary mb-8 group-hover:bg-primary group-hover:text-white transition-all duration-500">
-                   <method.icon size={20} />
+            {contactMethods.map((method: any, index: number) => {
+              const Icon = getIcon(method.type);
+              const accent = getAccent(method.type);
+              return (
+                <div key={index} className="bg-white p-10 group hover:bg-slate-50 transition-all duration-500">
+                  <div className={`w-12 h-12 bg-primary/5 flex items-center justify-center text-primary mb-8 group-hover:bg-primary group-hover:text-white transition-all duration-500`}>
+                     <Icon size={20} />
+                  </div>
+                  <h3 className={`font-tech text-[10px] font-bold uppercase tracking-[0.3em] ${accent} mb-4`}>{method.title}</h3>
+                  <p className="font-display text-lg font-bold text-primary mb-2 leading-tight group-hover:text-accent transition-colors">
+                    {method.primary}
+                  </p>
+                  <p className="text-xs text-slate-400 font-sans tracking-tight">
+                    {method.secondary}
+                  </p>
                 </div>
-                <h3 className="font-tech text-[10px] font-bold uppercase tracking-[0.3em] text-accent mb-4">{method.title}</h3>
-                <p className="font-display text-lg font-bold text-primary mb-2 leading-tight group-hover:text-accent transition-colors">
-                  {method.primary}
-                </p>
-                <p className="text-xs text-slate-400 font-sans tracking-tight">
-                  {method.secondary}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -124,26 +154,25 @@ export default function ContactContent() {
                 <div>
                   <h2 className="heading-display text-primary mb-8 uppercase tracking-tighter">How We <br />Can Help.</h2>
                   <p className="body-premium text-slate-600 border-l-4 border-accent pl-8 py-2">
-                    We provide reliable spare parts and fast support for ships and industries worldwide.
+                    {initialData?.description || "We provide reliable spare parts and fast support for ships and industries worldwide."}
                   </p>
                 </div>
                 
                 <div className="space-y-6 pt-12">
-                  {[
-                    { icon: ShieldCheck, title: "Quality Check", desc: "Every part is inspected before we send it." },
-                    { icon: Globe, title: "Worldwide Delivery", desc: "We deliver to 150+ major ports around the world." },
-                    { icon: Clock, title: "Fast Response", desc: "We send price quotes within one working day." },
-                  ].map((item, i) => (
-                    <div key={i} className="flex gap-6 group">
-                      <div className="w-12 h-12 shrink-0 bg-slate-50 border border-slate-100 flex items-center justify-center text-accent group-hover:bg-primary group-hover:text-white transition-all">
-                        <item.icon size={18} />
+                  {supportFeatures.map((item: any, i: number) => {
+                    const Icon = getFeatureIcon(item.title);
+                    return (
+                      <div key={i} className="flex gap-6 group">
+                        <div className="w-12 h-12 shrink-0 bg-slate-50 border border-slate-100 flex items-center justify-center text-accent group-hover:bg-primary group-hover:text-white transition-all">
+                          <Icon size={18} />
+                        </div>
+                        <div>
+                          <h4 className="font-tech text-[11px] font-bold uppercase tracking-widest text-primary mb-1">{item.title}</h4>
+                          <p className="text-xs text-slate-500 leading-relaxed max-w-xs">{item.desc}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="font-tech text-[11px] font-bold uppercase tracking-widest text-primary mb-1">{item.title}</h4>
-                        <p className="text-xs text-slate-500 leading-relaxed max-w-xs">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 <div className="pt-12 border-t border-slate-100">
@@ -152,9 +181,9 @@ export default function ContactContent() {
                     <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-accent/20 blur-[60px] group-hover:bg-accent/40 transition-all duration-700" />
                     
                     <div className="relative z-10">
-                      <p className="font-tech text-[10px] font-bold uppercase tracking-[0.4em] text-accent mb-4">Direct Contact</p>
-                      <h3 className="font-display text-2xl font-bold mb-2">Anas Malek</h3>
-                      <p className="text-[10px] font-tech font-bold uppercase tracking-widest text-white/60 mb-6">Managing Director & Owner</p>
+                      <p className="font-tech text-[10px] font-bold uppercase tracking-[0.4em] text-accent mb-4">{initialData?.ownerCardLabel || "Direct Contact"}</p>
+                      <h3 className="font-display text-2xl font-bold mb-2">{initialData?.ownerCardTitle || "Anas Malek"}</h3>
+                      <p className="text-[10px] font-tech font-bold uppercase tracking-widest text-white/60 mb-6">{initialData?.ownerCardRole || "Managing Director & Owner"}</p>
                       
                       <Link 
                         href={`https://wa.me/91${SITE_INFO.whatsappNumber}`} 
@@ -262,10 +291,10 @@ export default function ContactContent() {
               </div>
               
               <div>
-                <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-accent mb-3">Head Office</p>
-                <h3 className="font-display text-3xl font-bold text-primary mb-4">Bhavnagar Operations</h3>
+                <p className="font-tech text-[10px] font-bold uppercase tracking-widest text-accent mb-3">{initialData?.officeLabel || "Head Office"}</p>
+                <h3 className="font-display text-3xl font-bold text-primary mb-4">{initialData?.officeTitle || "Bhavnagar Operations"}</h3>
                 <p className="text-base text-slate-600 leading-relaxed font-sans max-w-lg mx-auto">
-                  {SITE_INFO.fullAddress}
+                  {initialData?.address || SITE_INFO.fullAddress}
                 </p>
               </div>
 
@@ -283,7 +312,7 @@ export default function ContactContent() {
         </div>
       </section>
 
-      <FooterSection />
+      <FooterSection data={footerData} />
     </main>
   );
 }

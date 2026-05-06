@@ -1,5 +1,4 @@
 "use client";
-
 import { Header } from "@/components/header";
 import { CategoryHeroSection } from "@/components/sections/category-hero-section";
 import dynamic from "next/dynamic";
@@ -12,44 +11,88 @@ const FooterSection = dynamic(() => import("@/components/sections/footer-section
 const SeoContentSection = dynamic(() => import("@/components/sections/seo-content-section").then(mod => mod.SeoContentSection));
 const FeaturedProductsSection = dynamic(() => import("@/components/sections/featured-products-section").then(mod => mod.FeaturedProductsSection));
 
-export default function HomeContent() {
+export default function HomeContent({ 
+  initialData, 
+  footerData,
+  marineProducts = [],
+  roProducts = []
+}: { 
+  initialData?: any, 
+  footerData?: any,
+  marineProducts?: any[],
+  roProducts?: any[]
+}) {
   return (
     <main className="min-h-screen bg-background">
       <Header />
       
-      {/* 01. HERO SECTION (Light/Brand Contrast) */}
-      <CategoryHeroSection />
+      {/* 01. HERO SECTION */}
+      <CategoryHeroSection 
+        heading={initialData?.heroHeading}
+        subheading={initialData?.heroSubheading}
+        bgImage={initialData?.heroImageUrl}
+        categoryLabel={initialData?.heroCategoryLabel}
+      />
 
-      {/* 02. MARINE FEATURED (Light Contrast - Rhythm) */}
+      {/* 02. MARINE FEATURED */}
       <FeaturedProductsSection 
         divisionSlug="marine-industrial" 
         hideTabs={true} 
         featuredOnly={true}
-        title="Marine Engineering." 
-        subtitle="Featured Inventory."
+        title={initialData?.marineTitle || "Marine Engineering."} 
+        subtitle={initialData?.marineSubtitle || "Featured Inventory."}
         isDark={false}
+        viewAllText={initialData?.viewAllText}
+        technicalDetailsText={initialData?.technicalDetailsText}
+        emptyText={initialData?.emptyText}
+        initialProducts={marineProducts}
       />
 
-      {/* 03. ABOUT PREVIEW (Dark Contrast) */}
-      <AboutPreviewSection isDark={true} />
+      {/* 03. ABOUT PREVIEW */}
+      <AboutPreviewSection 
+        isDark={true} 
+        label={initialData?.aboutLabel}
+        title={initialData?.aboutTitle}
+        subtitle={initialData?.aboutSubtitle}
+        description={initialData?.aboutDescription}
+        secondaryText={initialData?.aboutSecondaryText}
+        experience={initialData?.aboutExperience}
+        experienceLabel={initialData?.aboutExperienceLabel}
+        image={initialData?.aboutImageUrl}
+      />
       
-      {/* 04. WATER FEATURED (Light Contrast) */}
+      {/* 04. WATER FEATURED */}
       <FeaturedProductsSection 
         divisionSlug="ro-solutions" 
         hideTabs={true} 
         featuredOnly={true}
-        title="Water Treatment." 
-        subtitle="Technical Highlights."
+        title={initialData?.waterTitle || "Water Treatment."} 
+        subtitle={initialData?.waterSubtitle || "Technical Highlights."}
         isDark={false}
+        viewAllText={initialData?.viewAllText}
+        technicalDetailsText={initialData?.technicalDetailsText}
+        emptyText={initialData?.emptyText}
+        initialProducts={roProducts}
       />
 
-      {/* 05. BRANDS & TECH (Alternating) */}
-      <BrandsMarquee />
-      <TechnologySection />
+      {/* 05. BRANDS & TECH */}
+      <BrandsMarquee brands={initialData?.brands} />
+      <TechnologySection 
+        heading={initialData?.techHeading}
+        description={initialData?.techDescription}
+        secondaryDescription={initialData?.techSecondaryDescription}
+        label={initialData?.techLabel}
+        badgeLabel={initialData?.techBadgeLabel}
+        badgeTitle={initialData?.techBadgeTitle}
+        items={initialData?.techItems}
+      />
       
       {/* 06. SEO & FOOTER */}
-      <SeoContentSection />
-      <FooterSection />
+      <SeoContentSection 
+        title1={initialData?.seoTitle1}
+        content1={initialData?.seoContent1}
+      />
+      <FooterSection data={footerData} />
     </main>
   );
 }
