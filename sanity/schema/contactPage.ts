@@ -67,8 +67,8 @@ export default defineType({
         },
         { 
           title: 'Direct Correspondence', 
-          primary: 'anas@deltaimpex.co', 
-          secondary: 'Anas Malek (Owner)', 
+          primary: 'sales@deltaimpex.co', 
+          secondary: 'Sales Team', 
           type: 'email' 
         },
         { 
