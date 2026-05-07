@@ -67,7 +67,7 @@ export function FooterSection({ data }: { data?: any }) {
           <div className="col-span-2 md:col-span-1 lg:col-span-2">
             <Link href="/" className="relative mb-6 block h-24 w-36">
               <Image
-                src="/logo.png"
+                src="/logo.webp"
                 alt="Delta Impex Logo"
                 fill
                 className="object-contain object-left brightness-0 invert"

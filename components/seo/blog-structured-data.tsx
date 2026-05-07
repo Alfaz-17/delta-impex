@@ -29,7 +29,7 @@ export default function BlogStructuredData({ blog, slug }: BlogStructuredDataPro
       "name": SITE_INFO.name,
       "logo": {
         "@type": "ImageObject",
-        "url": `${SITE_INFO.domain}/logo.png`
+        "url": `${SITE_INFO.domain}/logo.webp`
       }
     },
     "description": blog.excerpt,
