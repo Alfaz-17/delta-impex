@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Globe } from "lucide-react";
 import { m } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { STATIC_CATEGORIES } from "@/lib/categories";
 
 export function CategoryHeroSection({ 
@@ -19,6 +19,16 @@ export function CategoryHeroSection({
   categoryLabel?: string;
 }) {
   const categories = STATIC_CATEGORIES;
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(error => {
+        console.warn("Autoplay was prevented:", error);
+      });
+    }
+  }, []);
 
   return (
     <section className="relative w-full h-[100dvh] overflow-hidden flex flex-col justify-between">
@@ -34,10 +44,12 @@ export function CategoryHeroSection({
           />
         ) : (
           <video
+            ref={videoRef}
             autoPlay
             loop
             muted
             playsInline
+            preload="auto"
             className="w-full h-full object-cover object-[65%_center] md:object-center"
             poster="/hero-fallback.webp"
           >
