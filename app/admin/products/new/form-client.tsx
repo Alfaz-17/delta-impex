@@ -346,14 +346,29 @@ export function ProductFormContent() {
         throw new Error(data.error || "AI Analysis failed");
       }
 
+      // Auto-fill Title and Description
       setFormData((prev) => ({
         ...prev,
         name: data.title || prev.name,
         description: data.description || prev.description,
       }));
 
-      // If categoryName was returned, it might need to be resolved to an ID later,
-      // but the instructions asked for Title and Description specifically.
+      // Enhanced: Auto-resolve Category
+      if (data.categoryName && filteredCategories.length > 0) {
+        const suggestedName = data.categoryName.toLowerCase();
+        // Try to find an exact match or a partial match in the current division's categories
+        const matchedCategory = filteredCategories.find(cat => 
+          cat.name.toLowerCase() === suggestedName || 
+          suggestedName.includes(cat.name.toLowerCase()) ||
+          cat.name.toLowerCase().includes(suggestedName)
+        );
+
+        if (matchedCategory) {
+          setFormData(prev => ({ ...prev, category: matchedCategory.slug }));
+          toast.success(`AI identified category: ${matchedCategory.name}`);
+        }
+      }
+
       toast.success("AI Analysis complete. Form Auto-filled.");
     } catch (error: any) {
       toast.error(error.message || "Failed to analyze image");
@@ -426,6 +441,7 @@ export function ProductFormContent() {
       toast.dismiss("product-upload");
       toast.success(editingId ? `Product "${formData.name}" updated successfully` : `Product "${formData.name}" created successfully`);
       const nextDivisionId = formData.division || activeDivisionId;
+      router.refresh();
       router.push(`/admin/products${nextDivisionId ? "?divisionId=" + nextDivisionId : ""}`);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to save product");

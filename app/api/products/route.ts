@@ -50,16 +50,18 @@ export async function GET(req: NextRequest) {
     const divisionSlug = searchParams.get("divisionSlug");
     const categorySlug = searchParams.get("category");
     const isFeatured = searchParams.get("isFeatured");
-    const limit = parseInt(searchParams.get("limit") || "0", 10);
+    const limit = parseInt(searchParams.get("limit") || "100", 10);
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const skip = (page - 1) * limit;
     
     let query: any = {};
     if (divisionId) {
-      if (!mongoose.Types.ObjectId.isValid(divisionId)) return NextResponse.json([]);
+      if (!mongoose.Types.ObjectId.isValid(divisionId)) return NextResponse.json({ products: [], total: 0 });
       query.division = divisionId;
     } else if (divisionSlug) {
       const slugCandidates = DIVISION_SLUG_ALIASES[divisionSlug] || [divisionSlug];
       const divisionIds = await Division.find({ slug: { $in: slugCandidates } }).distinct("_id");
-      if (!divisionIds?.length) return NextResponse.json([]);
+      if (!divisionIds?.length) return NextResponse.json({ products: [], total: 0 });
       query.division = { $in: divisionIds };
     }
     if (categorySlug) {
@@ -67,16 +69,15 @@ export async function GET(req: NextRequest) {
     }
     if (isFeatured === "true") query.isFeatured = true;
     
-    let dbQuery = Product.find(query)
+    const total = await Product.countDocuments(query);
+    
+    const products = await Product.find(query)
       .populate("division", "name slug")
       .select("name slug imageUrl isFeatured category division description price condition")
-      .sort({ createdAt: -1 });
-
-    if (limit > 0) {
-        dbQuery = dbQuery.limit(limit);
-    }
-      
-    const products = await dbQuery.lean();
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
 
     // Enrich category field with static data for display
     const enriched = products.map((p: any) => {
@@ -87,7 +88,12 @@ export async function GET(req: NextRequest) {
       };
     });
       
-    return NextResponse.json(enriched, {
+    return NextResponse.json({
+      products: enriched,
+      total,
+      page,
+      limit
+    }, {
       headers: {
         "Cache-Control": "public, s-maxage=120, stale-while-revalidate=600",
       },

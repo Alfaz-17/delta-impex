@@ -30,14 +30,14 @@ export function ProductsContent() {
     }
 
     try {
-      const res = await fetch(`/api/products?divisionId=${activeDivisionId}`);
+      const res = await fetch(`/api/products?divisionId=${activeDivisionId}&limit=100`);
       const data = await res.json();
 
       if (!res.ok) {
         throw new Error(data?.error || "Failed to load products");
       }
 
-      setProducts(Array.isArray(data) ? data : []);
+      setProducts(Array.isArray(data.products) ? data.products : []);
       setSelectedIds([]);
     } catch (error: any) {
       setProducts([]);
@@ -93,13 +93,21 @@ export function ProductsContent() {
   const handleBulkDelete = async () => {
     if (!confirm(`Are you sure you want to delete ${selectedIds.length} item(s)? This action cannot be undone.`)) return;
 
-    setIsLoading(true);
-    toast.loading("Deleting products...", { id: "bulk-delete" });
+    // 1. Save current state for rollback
+    const previousProducts = [...products];
+    const previousSelected = [...selectedIds];
+
+    // 2. Optimistic Update: Remove from UI immediately
+    setProducts(prev => prev.filter(p => !selectedIds.includes(p._id)));
+    setSelectedIds([]);
+
+    toast.loading("Deleting records...", { id: "bulk-delete" });
+    
     try {
       const res = await fetch("/api/products", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ids: selectedIds }),
+        body: JSON.stringify({ ids: previousSelected }),
       });
 
       const data = await res.json();
@@ -107,14 +115,12 @@ export function ProductsContent() {
         throw new Error(data?.error || "Failed to delete products");
       }
 
-      toast.success(`${selectedIds.length} product(s) deleted successfully`);
-      setSelectedIds([]);
-      fetchProducts();
+      toast.success(`${previousSelected.length} unit(s) removed from inventory`, { id: "bulk-delete" });
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Error deleting products");
-    } finally {
-      toast.dismiss("bulk-delete");
-      setIsLoading(false);
+      // 3. Rollback if server fails
+      setProducts(previousProducts);
+      setSelectedIds(previousSelected);
+      toast.error(error instanceof Error ? error.message : "Error deleting products", { id: "bulk-delete" });
     }
   };
 
