@@ -101,21 +101,38 @@ export function InquiriesClient() {
                   }`}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className={`font-bold uppercase tracking-tight truncate max-w-[200px] ${
-                      selectedInquiry?._id === inquiry._id ? "text-white" : "text-primary"
-                    }`}>
-                      {inquiry.name}
-                    </h3>
-                    <span className="text-[9px] font-bold opacity-60 flex items-center gap-1">
-                      <Calendar size={10} />
-                      {format(new Date(inquiry.createdAt), "MMM dd")}
-                    </span>
+                    <div className="flex-1 min-w-0 pr-4">
+                      <h3 className={`font-bold uppercase tracking-tight truncate ${
+                        selectedInquiry?._id === inquiry._id ? "text-white" : "text-primary"
+                      }`}>
+                        {inquiry.name}
+                      </h3>
+                      <p className={`text-[9px] uppercase tracking-widest font-bold truncate ${
+                        selectedInquiry?._id === inquiry._id ? "text-white/60" : "text-accent"
+                      }`}>
+                        {inquiry.company || "General Inquiry"}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-2">
+                      <span className="text-[9px] font-bold opacity-60 flex items-center gap-1">
+                        <Calendar size={10} />
+                        {format(new Date(inquiry.createdAt), "MMM dd")}
+                      </span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(inquiry._id);
+                        }}
+                        className={`p-1.5 rounded-md transition-colors ${
+                          selectedInquiry?._id === inquiry._id 
+                            ? "hover:bg-white/20 text-white" 
+                            : "hover:bg-red-50 text-red-400 hover:text-red-600"
+                        }`}
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </div>
-                  <p className={`text-[10px] uppercase tracking-widest font-bold truncate ${
-                    selectedInquiry?._id === inquiry._id ? "text-white/60" : "text-accent"
-                  }`}>
-                    {inquiry.company || "General Inquiry"}
-                  </p>
                   <p className={`text-xs mt-3 line-clamp-2 italic ${
                     selectedInquiry?._id === inquiry._id ? "text-white/80" : "text-muted-foreground"
                   }`}>
