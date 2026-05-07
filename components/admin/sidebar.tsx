@@ -20,6 +20,7 @@ export default function AdminSidebar({ active, isOpen = false, onClose }: Sideba
   const menuItems = [
     { id: "dashboard", name: "Dashboard", icon: Home, href: `/admin/dashboard${divisionId ? "?divisionId=" + divisionId : ""}` },
     { id: "products", name: "Products", icon: Package, href: `/admin/products${divisionId ? "?divisionId=" + divisionId : ""}` },
+    { id: "inquiries", name: "Inquiries", icon: Mail, href: "/admin/inquiries" },
     { id: "settings", name: "Settings", icon: Settings, href: "/admin/settings" },
   ];
 

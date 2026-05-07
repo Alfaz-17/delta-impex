@@ -264,11 +264,11 @@ export function ProductCatalog({
                     animate={{ opacity: 1, scale: 1 }}
                     className="py-12 text-center space-y-4"
                   >
-                    <div className="w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div className="w-16 h-16 bg-accent text-white rounded-none flex items-center justify-center mx-auto mb-6 shadow-xl">
                       <ShieldCheck size={32} />
                     </div>
-                    <h3 className="font-display text-2xl font-bold text-primary">Inquiry Received</h3>
-                    <p className="text-slate-500 font-tech text-[10px] uppercase tracking-widest">Our technical team will respond within 24 hours.</p>
+                    <h3 className="font-display text-2xl font-bold text-primary uppercase">Transmission Complete.</h3>
+                    <p className="text-slate-500 font-tech text-[9px] uppercase tracking-[0.3em] font-bold">Technical Sourcing initiated. Response expected within 24 Hours.</p>
                   </motion.div>
                 ) : (
                   <form onSubmit={handleInquirySubmit} className="space-y-6 relative z-10">

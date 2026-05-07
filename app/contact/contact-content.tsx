@@ -79,16 +79,28 @@ export default function ContactContent({ initialData, footerData }: { initialDat
     return Object.keys(nextErrors).length === 0;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validateForm()) return;
 
     setSubmitStatus("loading");
-    const subject = `Inquiry from ${formData.name} (${formData.company || "General"})`;
-    const body = `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company}\n\nMessage:\n${formData.message}`;
-    window.location.href = `mailto:${initialData?.contactEmail || SITE_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setSubmitStatus("success");
-    setTimeout(() => setSubmitStatus("idle"), 5000);
+    
+    try {
+      const res = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) throw new Error("Failed to send inquiry");
+
+      setSubmitStatus("success");
+      setFormData({ name: "", email: "", company: "", message: "" });
+      setTimeout(() => setSubmitStatus("idle"), 5000);
+    } catch (error) {
+      setSubmitStatus("error");
+      setTimeout(() => setSubmitStatus("idle"), 5000);
+    }
   }
 
   return (
@@ -267,9 +279,9 @@ export default function ContactContent({ initialData, footerData }: { initialDat
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="mt-8 p-4 bg-green-50 text-green-600 font-tech text-[10px] font-bold uppercase tracking-widest text-center"
+                      className="mt-8 p-6 bg-primary text-white font-tech text-[10px] font-bold uppercase tracking-[0.3em] text-center border-l-4 border-accent shadow-2xl"
                     >
-                      Your inquiry has been processed. Opening email draft...
+                      Inquiry Transmitted Successfully. <br />Our technical team will respond via sales@deltaimpex.co
                     </motion.div>
                   )}
                 </AnimatePresence>
