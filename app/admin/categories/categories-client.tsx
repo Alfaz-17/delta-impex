@@ -13,13 +13,15 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { removeBackgroundClient } from "@/lib/background-removal-client";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 export function CategoriesContent() {
   const searchParams = useSearchParams();
   const activeDivisionId = searchParams.get("divisionId");
   
   const [categories, setCategories] = useState<any[]>([]);
   const [formData, setFormData] = useState({ name: "", division: "", imageUrl: "" });
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -41,9 +43,11 @@ export function CategoriesContent() {
     if (!activeDivisionId) {
       setCategories([]);
       setSelectedIds([]);
+      setIsLoading(false);
       return;
     }
 
+    setIsLoading(true);
     try {
       const res = await fetch(`/api/categories?divisionId=${activeDivisionId}`);
       const data = await res.json();
@@ -57,6 +61,8 @@ export function CategoriesContent() {
     } catch (error: any) {
       setCategories([]);
       toast.error(error?.message || "Failed to load categories");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -326,7 +332,24 @@ export function CategoriesContent() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
-                          {categories.map((category, i) => (
+                          {isLoading ? (
+                            Array(5).fill(0).map((_, i) => (
+                              <tr key={i}>
+                                <td className="py-6 px-6 text-center"><Skeleton className="h-4 w-4 mx-auto" /></td>
+                                <td className="py-6 px-6">
+                                  <div className="flex items-center gap-4">
+                                    <Skeleton className="w-12 h-12 shrink-0" />
+                                    <div className="space-y-2">
+                                      <Skeleton className="h-4 w-48" />
+                                      <Skeleton className="h-3 w-24" />
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="py-6 px-6 text-right"><Skeleton className="h-4 w-8 ml-auto" /></td>
+                              </tr>
+                            ))
+                          ) : (
+                          categories.map((category, i) => (
                               <motion.tr 
                                 key={category._id} 
                                 initial={{ opacity: 0 }}
@@ -373,7 +396,8 @@ export function CategoriesContent() {
                                       </button>
                                   </td>
                               </motion.tr>
-                          ))}
+                          ))
+                          )}
                         </tbody>
                     </table>
                 </div>

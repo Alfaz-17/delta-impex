@@ -17,12 +17,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // Do not show sidebar/header on login page
   const isLoginPage = pathname === "/admin/login";
 
-  useEffect(() => {
-    if (!isLoginPage && status === "unauthenticated") {
-      router.push("/admin/login");
-    }
-  }, [isLoginPage, router, status]);
-
   if (isLoginPage) {
     return <>{children}</>;
   }
@@ -33,10 +27,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
       </div>
     );
-  }
-
-  if (status !== "authenticated") {
-    return null;
   }
 
   return (

@@ -8,6 +8,8 @@ import { DivisionSwitcher } from "@/components/admin/division-switcher";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 export function DashboardContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -16,12 +18,6 @@ export function DashboardContent() {
   
   const [stats, setStats] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/admin/login");
-    }
-  }, [status, router]);
 
   useEffect(() => {
     async function fetchStats() {
@@ -70,25 +66,31 @@ export function DashboardContent() {
           </div>
       </header>
 
-      {isLoading ? (
-      <div className="text-xs font-bold uppercase tracking-widest animate-pulse p-4">Loading Management Data...</div>
-      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {stats.map((stat, i) => (
-          <motion.div 
-            key={i} 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-white p-8 border border-border group hover:border-accent transition-all relative overflow-hidden shadow-sm hover:shadow-xl"
-          >
-              <stat.icon className={`w-8 h-8 mb-6 group-hover:scale-110 transition-transform ${stat.color}`} />
-              <dt className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">{stat.title}</dt>
-              <dd className="text-4xl font-extrabold text-primary tracking-tighter">{stat.value}</dd>
-          </motion.div>
-          ))}
+          {isLoading ? (
+            Array(4).fill(0).map((_, i) => (
+              <div key={i} className="bg-white p-8 border border-border shadow-sm">
+                <Skeleton className="w-8 h-8 mb-6" />
+                <Skeleton className="h-3 w-20 mb-2" />
+                <Skeleton className="h-10 w-12" />
+              </div>
+            ))
+          ) : (
+            stats.map((stat, i) => (
+            <motion.div 
+              key={i} 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-white p-8 border border-border group hover:border-accent transition-all relative overflow-hidden shadow-sm hover:shadow-xl"
+            >
+                <stat.icon className={`w-8 h-8 mb-6 group-hover:scale-110 transition-transform ${stat.color}`} />
+                <dt className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">{stat.title}</dt>
+                <dd className="text-4xl font-extrabold text-primary tracking-tighter">{stat.value}</dd>
+            </motion.div>
+            ))
+          )}
       </div>
-      )}
 
       <div className="grid lg:grid-cols-2 gap-8 mt-12">
         <motion.div 

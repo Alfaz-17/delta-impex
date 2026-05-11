@@ -10,12 +10,14 @@ import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { removeBackgroundClient } from "@/lib/background-removal-client";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 export function ProductsContent() {
   const searchParams = useSearchParams();
   const activeDivisionId = searchParams.get("divisionId");
   
   const [products, setProducts] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   
   useEffect(() => {
@@ -26,9 +28,11 @@ export function ProductsContent() {
     if (!activeDivisionId) {
       setProducts([]);
       setSelectedIds([]);
+      setIsLoading(false);
       return;
     }
 
+    setIsLoading(true);
     try {
       const res = await fetch(`/api/products?divisionId=${activeDivisionId}&limit=100`);
       const data = await res.json();
@@ -42,6 +46,8 @@ export function ProductsContent() {
     } catch (error: any) {
       setProducts([]);
       toast.error(error?.message || "Failed to load products");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -188,6 +194,25 @@ export function ProductsContent() {
                 </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
+                {isLoading ? (
+                  Array(5).fill(0).map((_, i) => (
+                    <tr key={i}>
+                      <td className="py-6 px-6 text-center"><Skeleton className="h-4 w-4 mx-auto" /></td>
+                      <td className="py-6 px-6">
+                        <div className="flex items-center gap-6">
+                          <Skeleton className="w-16 h-16 shrink-0" />
+                          <div className="space-y-2">
+                            <Skeleton className="h-4 w-48" />
+                            <Skeleton className="h-3 w-24" />
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-6 px-6"><Skeleton className="h-6 w-24" /></td>
+                      <td className="py-6 px-6"><Skeleton className="h-8 w-8 mx-auto rounded-full" /></td>
+                      <td className="py-6 px-6 text-right"><Skeleton className="h-4 w-8 ml-auto" /></td>
+                    </tr>
+                  ))
+                ) : (
                 <AnimatePresence>
                   {products.map((product, i) => (
                       <motion.tr 
@@ -246,9 +271,10 @@ export function ProductsContent() {
                       </motion.tr>
                   ))}
                 </AnimatePresence>
+                )}
                 </tbody>
             </table>
-            {products.length === 0 && (
+            {!isLoading && products.length === 0 && (
                 <div className="p-20 text-center border-t border-border bg-muted/10">
                 <Package className="w-12 h-12 mx-auto mb-6 text-muted-foreground/30" />
                 <p className="text-sm font-semibold text-foreground/60 uppercase tracking-widest">No Products in Inventory</p>

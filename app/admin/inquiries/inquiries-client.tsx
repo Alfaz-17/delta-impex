@@ -8,18 +8,14 @@ import { format } from "date-fns";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 export function InquiriesClient() {
   const { status } = useSession();
   const router = useRouter();
   const [inquiries, setInquiries] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedInquiry, setSelectedInquiry] = useState<any>(null);
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/admin/login");
-    }
-  }, [status, router]);
 
   const fetchInquiries = async () => {
     setIsLoading(true);
@@ -55,15 +51,19 @@ export function InquiriesClient() {
     }
   };
 
-  if (status === "loading" || isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent animate-pulse">
-          Accessing Communication Logs...
+  const InquirySkeleton = () => (
+    <div className="p-6 border border-border bg-white space-y-4">
+      <div className="flex justify-between items-start">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-3 w-20" />
         </div>
+        <Skeleton className="h-4 w-12" />
       </div>
-    );
-  }
+      <Skeleton className="h-3 w-full" />
+      <Skeleton className="h-3 w-2/3" />
+    </div>
+  );
 
   return (
     <div className="space-y-8">
@@ -73,13 +73,18 @@ export function InquiriesClient() {
           <p className="text-xs font-bold text-accent uppercase tracking-[0.3em] mt-2">Client Communication Hub</p>
         </div>
         <div className="mt-4 md:mt-0">
-          <span className="text-[10px] font-bold text-muted-foreground uppercase">Total Received: {inquiries.length}</span>
+          <span className="text-[10px] font-bold text-muted-foreground uppercase">
+            {isLoading ? <Skeleton className="h-3 w-24" /> : `Total Received: ${inquiries.length}`}
+          </span>
         </div>
       </header>
 
       <div className="grid lg:grid-cols-12 gap-8">
         {/* Inquiry List */}
         <div className="lg:col-span-5 space-y-4 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+          {isLoading ? (
+            Array(4).fill(0).map((_, i) => <InquirySkeleton key={i} />)
+          ) : (
           <AnimatePresence mode="popLayout">
             {inquiries.length === 0 ? (
               <div className="p-12 text-center border-2 border-dashed border-border rounded-2xl">
@@ -148,6 +153,7 @@ export function InquiriesClient() {
               ))
             )}
           </AnimatePresence>
+          )}
         </div>
 
         {/* Inquiry Detail */}
