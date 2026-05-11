@@ -22,6 +22,14 @@ export default function SettingsPage() {
     geminiModel: 'gemini-2.5-flash'
   });
 
+  const [profile, setProfile] = useState({
+    email: '',
+    name: '',
+    password: '',
+    isDefault: false
+  });
+  const [profileLoading, setProfileLoading] = useState(true);
+
   const fetchSettings = async () => {
     try {
       const res = await fetch('/api/settings');
@@ -42,8 +50,28 @@ export default function SettingsPage() {
     }
   };
 
+  const fetchProfile = async () => {
+    try {
+      const res = await fetch('/api/admin/profile');
+      const data = await res.json();
+      if (res.ok) {
+        setProfile({
+          email: data.email || '',
+          name: data.name || '',
+          password: '',
+          isDefault: data.isDefault
+        });
+      }
+    } catch (err) {
+      console.error('Error fetching profile:', err);
+    } finally {
+      setProfileLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchSettings();
+    fetchProfile();
   }, []);
 
   const handleSave = async () => {
@@ -70,7 +98,36 @@ export default function SettingsPage() {
     }
   };
 
-  if (loading) {
+  const handleProfileSave = async () => {
+    setSaving(true);
+    const toastId = toast.loading('Updating security credentials...');
+    try {
+      const res = await fetch('/api/admin/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: profile.email,
+          name: profile.name,
+          password: profile.password || undefined
+        })
+      });
+
+      if (res.ok) {
+        toast.success('Security credentials updated successfully', { id: toastId });
+        setProfile({ ...profile, password: '' });
+      } else {
+        const errData = await res.json();
+        toast.error(errData.error || 'Failed to update credentials', { id: toastId });
+      }
+    } catch (err) {
+      console.error('Error saving profile:', err);
+      toast.error('An error occurred while updating profile', { id: toastId });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading || profileLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
@@ -90,11 +147,71 @@ export default function SettingsPage() {
       <div className="border-b border-border pb-8">
         <h1 className="text-3xl font-bold uppercase tracking-tighter text-primary">System Infrastructure</h1>
         <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-accent mt-2">
-          Technical Parameters & AI Configuration
+          Technical Parameters & Security Configuration
         </p>
       </div>
 
       <div className="grid gap-6">
+        {/* ACCOUNT SECURITY */}
+        <Card className="border-border bg-white rounded-none shadow-none">
+          <CardHeader className="border-b border-border bg-muted/10">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/5 text-primary">
+                <Save className="w-5 h-5" />
+              </div>
+              <div>
+                <CardTitle className="text-sm font-bold uppercase tracking-widest text-primary">Account Security</CardTitle>
+                <CardDescription className="text-[10px] uppercase font-medium text-slate-400">
+                  Update administrative access credentials
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="p-8 space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label className="text-[11px] font-bold uppercase tracking-wider text-primary">Admin Email</Label>
+                <Input
+                  value={profile.email}
+                  onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                  placeholder="admin@example.com"
+                  className="h-12 border-border bg-muted/20 rounded-none text-xs font-bold"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-[11px] font-bold uppercase tracking-wider text-primary">Display Name</Label>
+                <Input
+                  value={profile.name}
+                  onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                  placeholder="Administrator"
+                  className="h-12 border-border bg-muted/20 rounded-none text-xs font-bold"
+                />
+              </div>
+              <div className="space-y-2 md:col-span-2">
+                <Label className="text-[11px] font-bold uppercase tracking-wider text-primary">New Password</Label>
+                <Input
+                  type="password"
+                  value={profile.password}
+                  onChange={(e) => setProfile({ ...profile, password: e.target.value })}
+                  placeholder="••••••••"
+                  className="h-12 border-border bg-muted/20 rounded-none text-xs font-bold"
+                />
+                <p className="text-[10px] text-slate-400 uppercase font-medium">Leave blank to keep current password</p>
+              </div>
+            </div>
+            <div className="flex justify-end pt-4">
+              <Button 
+                onClick={handleProfileSave}
+                disabled={saving}
+                variant="outline"
+                className="h-12 px-8 border-primary text-primary hover:bg-primary hover:text-white rounded-none text-[10px] font-bold uppercase tracking-widest transition-all"
+              >
+                Update Credentials
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* AI MODEL SELECTION */}
         <Card className="border-border bg-white rounded-none shadow-none">
           <CardHeader className="border-b border-border bg-muted/10">
