@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Package, Layers, Settings, LogOut, Home, Star, X } from "lucide-react";
+import { Package, Layers, Settings, LogOut, Home, Star, X, Mail } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
