@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { Save, Loader2, Sparkles, Copyright, Type, Brain, ArrowLeft } from 'lucide-react';
+import { Save, Loader2, Sparkles, Copyright, Type, Brain, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
@@ -29,6 +29,7 @@ export default function SettingsPage() {
     isDefault: false
   });
   const [profileLoading, setProfileLoading] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const fetchSettings = async () => {
     try {
@@ -189,13 +190,22 @@ export default function SettingsPage() {
               </div>
               <div className="space-y-2 md:col-span-2">
                 <Label className="text-[11px] font-bold uppercase tracking-wider text-primary">New Password</Label>
-                <Input
-                  type="password"
-                  value={profile.password}
-                  onChange={(e) => setProfile({ ...profile, password: e.target.value })}
-                  placeholder="••••••••"
-                  className="h-12 border-border bg-muted/20 rounded-none text-xs font-bold"
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    value={profile.password}
+                    onChange={(e) => setProfile({ ...profile, password: e.target.value })}
+                    placeholder="••••••••"
+                    className="h-12 border-border bg-muted/20 rounded-none text-xs font-bold pr-12"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-primary transition-colors focus:outline-none"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
                 <p className="text-[10px] text-slate-400 uppercase font-medium">Leave blank to keep current password</p>
               </div>
             </div>

@@ -40,8 +40,21 @@ export async function POST(req: NextRequest) {
     const { email, password, name } = await req.json();
     await connectToDatabase();
 
-    // Find the current user or create if they were logged in via ENV
+    // 1. Find user by session email
     let user = await User.findOne({ email: session.user?.email });
+
+    // 2. If not found by session email, check if there's an existing user with the requested email
+    if (!user && email) {
+      user = await User.findOne({ email });
+    }
+
+    // 3. Prevent duplicate email conflicts with other accounts
+    if (email && email !== session.user?.email) {
+      const emailTaken = await User.findOne({ email });
+      if (emailTaken && (!user || emailTaken._id.toString() !== user._id.toString())) {
+        return NextResponse.json({ error: "Email is already taken by another account" }, { status: 400 });
+      }
+    }
 
     if (password && password.length < 6) {
       return NextResponse.json({ error: "Password must be at least 6 characters" }, { status: 400 });
@@ -50,7 +63,7 @@ export async function POST(req: NextRequest) {
     const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
 
     if (!user) {
-      // Create new user in DB if they were using ENV credentials
+      // Create new user in DB if they were using ENV credentials and no match in DB
       user = await User.create({
         email: email || session.user?.email,
         password: hashedPassword || await bcrypt.hash(process.env.ADMIN_PASSWORD!, 10),
