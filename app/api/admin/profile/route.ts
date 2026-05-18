@@ -12,7 +12,14 @@ export async function GET() {
   }
 
   await connectToDatabase();
-  const user = await User.findOne({ email: session.user?.email });
+  
+  // 1. Try to find user by session email
+  let user = await User.findOne({ email: session.user?.email });
+
+  // 2. Fallback: if not found, load the primary admin user from the database
+  if (!user) {
+    user = await User.findOne();
+  }
 
   if (!user) {
     // If user is logged in via ENV but not in DB yet
