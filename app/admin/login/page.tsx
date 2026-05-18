@@ -42,12 +42,10 @@ export default function AdminLoginPage() {
         setIsLoading(false);
       } else {
         toast.success("Access Granted", { id: toastId });
-        // Use replace for a more direct navigation that clears the login page from history
-        router.replace("/admin/dashboard");
-        // Force a refresh if the push doesn't trigger middleware update
+        // Trigger a full browser refresh to ensure session and middleware sync perfectly
         setTimeout(() => {
-          router.refresh();
-        }, 100);
+          window.location.href = "/admin/dashboard";
+        }, 500);
       }
     } catch (error) {
       toast.error("Authentication failed", { id: toastId });
