@@ -62,7 +62,7 @@ export default defineType({
         { 
           title: 'Direct Support', 
           primary: '+91 88661 14549 (IND)', 
-          secondary: '+971 52 491 8899 (UAE)', 
+          secondary: '+91 99259 99945 (IND)', 
           type: 'phone' 
         },
         { 

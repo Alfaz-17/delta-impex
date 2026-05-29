@@ -20,7 +20,7 @@ const footerLinks = {
   ],
   service: [
     { label: `${SITE_INFO.phoneIndia} (IN)`, href: SITE_INFO.phoneIndiaHref },
-    { label: `${SITE_INFO.phoneUAE} (UAE)`, href: SITE_INFO.phoneUAEHref },
+    { label: `${SITE_INFO.phoneIndia2} (IN)`, href: SITE_INFO.phoneIndia2Href },
     { label: SITE_INFO.email, href: `mailto:${SITE_INFO.email}` },
   ],
   quick: [
